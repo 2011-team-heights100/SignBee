@@ -39,8 +39,8 @@ export const drawHand = (predictions, ctx) => {
 
 			for (let i = 0; i < landmarks.length; i++) {
 				const x = landmarks[i][0];
-				const y = landmarks[i][1];
-				console.log('so far so good over here too');
+            const y = landmarks[i][1];
+            
 				//draw
 				ctx.beginPath();
 				ctx.arc(x, y, 10, 0, 3 * Math.PI);
