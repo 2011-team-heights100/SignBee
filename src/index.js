@@ -3,11 +3,11 @@ import ReactDOM from "react-dom";
 //import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import LandingPage from "./components/LandingPage";
+import Routes from "./components/Routes";
 
 ReactDOM.render(
   <React.StrictMode>
-    <LandingPage />
+    <Routes />
   </React.StrictMode>,
   document.getElementById("root")
 );

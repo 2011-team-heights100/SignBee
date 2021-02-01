@@ -8,128 +8,156 @@ import { drawHand } from "../utilities";
 import Handsigns from "../handsigns";
 
 function App() {
-  const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [guess, setGuess] = useState("");
+	const webcamRef = useRef(null);
+	const canvasRef = useRef(null);
+	const [guess, setGuess] = useState("");
 
-  const runHandpose = async () => {
-    const net = await handpose.load();
-    console.log("loaded!");
-    //loop and detect hands
-    setInterval(() => {
-      detect(net);
-    }, 100);
-  };
+	//have a loading screen while the model loads
+	//store the model in indexedDB
 
-  const detect = async (net) => {
-    //check if data is available
-    if (
-      typeof webcamRef.current !== "undefined" &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      //get video properties
-      const video = webcamRef.current.video;
-      const videoWidth = video.videoWidth;
-      const videoHeight = video.videoHeight;
+	const runHandpose = async () => {
+		const net = await handpose.load();
+		console.log("loaded!");
+		//loop and detect hands
+		//if there's a hand, increase pose detection speed, otherwise, slow it down
+		setInterval(() => {
+			detect(net);
+		}, 500);
+	};
 
-      // set video h and w
-      video.width = videoWidth;
-      video.height = videoHeight;
+	const detect = async (net) => {
+		//check if data is available
+		if (
+			typeof webcamRef.current !== "undefined" &&
+			webcamRef.current !== null &&
+			webcamRef.current.video.readyState === 4
+		) {
+			//get video properties
+			const video = webcamRef.current.video;
+			const videoWidth = video.videoWidth;
+			const videoHeight = video.videoHeight;
 
-      //set canvas h and w
-      canvasRef.current.width = videoWidth;
-      canvasRef.current.height = videoHeight;
+			// set video h and w
+			video.width = videoWidth;
+			video.height = videoHeight;
 
-      //made detections
-      const hand = await net.estimateHands(video);
-      // console.log(hand);
+			//set canvas h and w
+			canvasRef.current.width = videoWidth;
+			canvasRef.current.height = videoHeight;
 
-      //draw
-      const ctx = canvasRef.current.getContext("2d");
+			//made detections
+			const hand = await net.estimateHands(video);
+			// console.log(hand);
 
-      //change this for 3D maybe?
-      drawHand(hand, ctx);
+			//draw
+			const ctx = canvasRef.current.getContext("2d");
 
-      if (hand.length > 0) {
-        const GE = new fp.GestureEstimator([
-          fp.Gestures.ThumbsUpGesture,
-          Handsigns.aSign,
-          Handsigns.bSign,
-          Handsigns.cSign,
-          Handsigns.dSign,
-          Handsigns.eSign,
-          Handsigns.fSign,
-          Handsigns.gSign,
-          Handsigns.hSign,
-          Handsigns.iSign,
-          Handsigns.jSign,
-          Handsigns.kSign,
-          Handsigns.lSign,
-          Handsigns.mSign,
-          Handsigns.nSign,
-          Handsigns.oSign,
-          Handsigns.pSign,
-          Handsigns.qSign,
-          Handsigns.rSign,
-          Handsigns.sSign,
-          Handsigns.tSign,
-          Handsigns.uSign,
-          Handsigns.vSign,
-          Handsigns.wSign,
-          Handsigns.xSign,
-          Handsigns.ySign,
-          Handsigns.zSign,
-        ]);
+			//change this for 3D maybe?
+			requestAnimationFrame(() => {
+				drawHand(hand, ctx);
+			});
 
-        const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
-        let estimated = estimatedGestures.gestures.sort(
-          (a, b) => b.confidence - a.confidence
-        );
+			if (hand.length > 0) {
+				const GE = new fp.GestureEstimator([
+					fp.Gestures.ThumbsUpGesture,
+					Handsigns.aSign,
+					Handsigns.bSign,
+					Handsigns.cSign,
+					Handsigns.dSign,
+					Handsigns.eSign,
+					Handsigns.fSign,
+					Handsigns.gSign,
+					Handsigns.hSign,
+					Handsigns.iSign,
+					Handsigns.jSign,
+					Handsigns.kSign,
+					Handsigns.lSign,
+					Handsigns.mSign,
+					Handsigns.nSign,
+					Handsigns.oSign,
+					Handsigns.pSign,
+					Handsigns.qSign,
+					Handsigns.rSign,
+					Handsigns.sSign,
+					Handsigns.tSign,
+					Handsigns.uSign,
+					Handsigns.vSign,
+					Handsigns.wSign,
+					Handsigns.xSign,
+					Handsigns.ySign,
+					Handsigns.zSign,
+				]);
 
-        console.log("gesture:", estimated[0]);
-        if (estimated[0]) setGuess(estimated[0].name);
-      }
-    }
-  };
+				const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
+				let estimated = estimatedGestures.gestures.sort(
+					(a, b) => b.confidence - a.confidence
+				);
 
-  runHandpose();
+				// the following code is a sample function we might use to delay a user getting an answer wrong.
+				// const prompt = {
+				//    q: "a",
+				//    answer: Handsigns.aSign,
+				//    next:
+				// }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-      </header>
-      <div id="gesture-guess">GUESS {guess}</div>
-    </div>
-  );
+				// const moveOn = async (correctAnswer, userGesture) => {
+				//    await delay(5000)
+				//    if (correctAnswer === userGesture) {
+				//       prompt.next
+				//    }
+				// }
+				// moveOn(prompt.answer, estimated[0])
+
+				// console.log("gesture:", estimated[0]);
+
+				//the line below logs the amount of tensors that are stored in our environment when the app runs. We need to clean those up periodically
+
+				console.log("Num of tensors:", tf.memory().numTensors);
+
+				if (estimated[0]) setGuess(estimated[0].name);
+
+				// tf.dispose(hand); <---cleanup method. But it doesn't work...yet
+			}
+		}
+	};
+
+	runHandpose();
+
+	return (
+		<div className="App">
+			<header className="App-header">
+				<Webcam
+					ref={webcamRef}
+					style={{
+						position: "absolute",
+						marginLeft: "auto",
+						marginRight: "auto",
+						left: 0,
+						right: 0,
+						textAlign: "center",
+						zindex: 9,
+						width: 640,
+						height: 480,
+					}}
+				/>
+				<canvas
+					ref={canvasRef}
+					style={{
+						position: "absolute",
+						marginLeft: "auto",
+						marginRight: "auto",
+						left: 0,
+						right: 0,
+						textAlign: "center",
+						zindex: 9,
+						width: 640,
+						height: 480,
+					}}
+				/>
+			</header>
+			<div id="gesture-guess">GUESS {guess}</div>
+		</div>
+	);
 }
 
 export default App;
