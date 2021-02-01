@@ -6,11 +6,13 @@ import App from "./App";
 
 import React from "react";
 import Dashboard from "./Dashboard";
+import Navbar from "./Navbar"
 
 export default function Routes() {
 	return (
 		<Router>
 			<AuthProvider>
+            <Navbar />
 				<Switch>
 					<Route path="/signup" component={SignUp} />
 					<Route path="/signin" component={SignIn} />
