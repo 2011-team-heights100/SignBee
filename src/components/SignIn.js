@@ -17,7 +17,7 @@ export default function SignIn() {
       setError("");
       setLoading(true);
       await signin(emailRef.current.value, passwordRef.current.value);
-      history.push("/app");
+      history.push("/dashboard"); // was app
     } catch (error) {
       setError(`${error.message}`);
       console.log(error);

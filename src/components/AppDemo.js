@@ -1,20 +1,42 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line
 import * as tf from "@tensorflow/tfjs";
+// eslint-disable-next-line
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
 import { drawHand } from "../utilities";
+import { useLocation, useHistory } from "react-router-dom"
 
 import Handsigns from "../handsigns";
 
-function App() {
+function AppDemo() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const location = useLocation();
+  const history = useHistory();
   const [guess, setGuess] = useState("");
+  const [level, setLevel]= useState("");
+  const [score, setScore] = useState(0);
+  // eslint-disable-next-line
+  // const [correctAnswer, setCorrectAnswer]= useState("");
+  const [questionCount]= useState(1);
 
- const [score, setScore] = useState(0)
- 
+
+     useEffect (() => {
+    console.log(location.pathname); // result: '/secondpage'
+    // console.log(location.search); // result: '?query=abc'
+    setLevel(location.state.curLevel); // result: 'some_value'
+ }, [location]);
+
+    // let count= 0;
+    // let key = level;
+    // setCorrectAnswer(key[count]);
+let correctAnswer;
+let round= 0
+correctAnswer = level[round]
+
+
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("loaded!");
@@ -96,12 +118,11 @@ function App() {
     }
   };
 
-  runHandpose();
-
-    let correctAnswer= "A"
+ runHandpose();
 
   function guessed() {
    let previousScore = score;
+    // let previousQuestionCount= questionCount;
     if (guess === correctAnswer) {
       console.log("cheers", guess);
       let newScore = previousScore++;
@@ -114,6 +135,19 @@ function App() {
       console.log("score", newScore);
     }
     setGuess("");
+    round=+ 1;
+    console.log("round", round)
+    correctAnswer = level[round]
+    console.log("correctAnswer", correctAnswer)
+
+    // let newCount = previousQuestionCount++;
+    // setQuestionCount(previousQuestionCount);
+    // console.log("q#", newCount)
+    // setCorrectAnswer(key[count++])
+  }
+
+  const exit = ()=>{
+    history.push("/alphabet")
   }
 
   return (
@@ -148,20 +182,24 @@ function App() {
           }}
         />
       </header>
-     <div>
+      <div>
+        <div>Level: {level}</div>
       <div>Score: {score}</div>
+      <div>Question {questionCount}: {correctAnswer}</div>
       {guess ? (
         <div>
-          <div id="gesture-guess">GUESS Ready</div>
+
+          <div id="gesture-guess">Guess Ready</div>
           <button onClick={guessed}>Submit Current Guess</button>
         </div>
       ) : (
-        <div id="make-guess">Please make a sign</div>
+        <div id="make-guess">Please make your sign</div>
       )}
+      <button id="exit" onClick={exit}>Exit Level</button>
     </div>
 
     </div>
-  )
+  );
 }
 
-export default App;
+export default AppDemo;
