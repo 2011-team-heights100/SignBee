@@ -1,7 +1,8 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import {AppBar, Toolbar} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import ProfileSummary from "./ProfileSummary"
 
 export default function Navbar() {
 	return (
@@ -11,6 +12,7 @@ export default function Navbar() {
 					<AccountCircle />
 				</Toolbar>
 			</AppBar>
+         <ProfileSummary />
 		</>
 	);
 }
