@@ -1,13 +1,13 @@
 body {
-   background-color: #FEF5E4;
-   width: 100%;
+	background-color: #fef5e4;
+	width: 100%;
 }
 
 .hexagon {
 	position: relative;
 	/* display: inline-block; */
 	width: 120px;
-   height: 120px;
+	height: 120px;
 }
 .hexagon .hexagon-shape {
 	position: absolute;
@@ -15,7 +15,7 @@ body {
 	left: -60px;
 	overflow: hidden;
 	display: inline-block;
-   margin: 48px 0;
+	margin: 48px 0;
 	width: 240px;
 	height: 208px;
 	-webkit-transform: rotate(-30deg) skewX(30deg) scale(0.5);
@@ -23,7 +23,7 @@ body {
 	-ms-transform: rotate(-30deg) skewX(30deg) scale(0.5);
 	-o-transform: rotate(-30deg) skewX(30deg) scale(0.5);
 	transform: rotate(-30deg) skewX(30deg) scale(0.5);
-   border-radius: 15px;
+	border-radius: 15px;
 }
 .hexagon .hexagon-shape *,
 .hexagon .hexagon-shape *:before {
@@ -31,7 +31,7 @@ body {
 	overflow: hidden;
 	width: inherit;
 	height: inherit;
-   border-radius: inherit;
+	border-radius: inherit;
 }
 .hexagon .hexagon-shape .hexagon-shape-inner {
 	-webkit-transform: skewX(-30deg) rotate(60deg) skewX(30deg);
@@ -39,7 +39,7 @@ body {
 	-ms-transform: skewX(-30deg) rotate(60deg) skewX(30deg);
 	-o-transform: skewX(-30deg) rotate(60deg) skewX(30deg);
 	transform: skewX(-30deg) rotate(60deg) skewX(30deg);
-   /* opacity: 1; */
+	/* opacity: 1; */
 }
 .hexagon .hexagon-shape:first-child .hexagon-shape-inner:before,
 .hexagon .hexagon-shape .hexagon-shape-inner-2 {
@@ -49,14 +49,14 @@ body {
 	-o-transform: skewX(-30deg) rotate(60deg) skewX(30deg);
 	transform: skewX(-30deg) rotate(60deg) skewX(30deg);
 	background: transparent;
-   content: "";
+	content: "";
 }
 .hexagon.hexagon-with-border .hexagon-shape.content-panel {
 	-webkit-transform: rotate(-30deg) skewX(30deg) scale(0.46);
 	-moz-transform: rotate(-30deg) skewX(30deg) scale(0.46);
 	-ms-transform: rotate(-30deg) skewX(30deg) scale(0.46);
 	-o-transform: rotate(-30deg) skewX(30deg) scale(0.46);
-   transform: rotate(-30deg) skewX(30deg) scale(0.48);
+	transform: rotate(-30deg) skewX(30deg) scale(0.48);
 }
 .hexagon.hexagon-with-border
 	.hexagon-shape.content-panel:first-child
@@ -64,7 +64,7 @@ body {
 .hexagon.hexagon-with-border
 	.hexagon-shape.content-panel
 	.hexagon-shape-inner-2 {
-	background: #FEF5E4;
+	background: #fef5e4;
 }
 
 .hexagon .hexagon-content {
@@ -87,7 +87,7 @@ body {
 
 .hexagon.warning .hexagon-shape:first-child .hexagon-shape-inner:before,
 .hexagon.warning .hexagon-shape-inner-2 {
-   background: #F6A400;
+	background: #f6a400;
 }
 
 #hexGrid {
@@ -98,6 +98,46 @@ body {
 
 .row {
 	display: flex;
-   flex-direction: row;
-   margin-bottom: -20px;
+	flex-direction: row;
+	margin-bottom: -20px;
+}
+
+.centerme {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* border: 2px solid #F6A400; */
+	border-radius: 10%;
+	text-align: center;
+	align-content: center;
+
+	padding: 30px;
+	background-color: #fef5e4;
+	height: 600px;
+	width: 300px;
+	position: fixed;
+	left: calc(50vw - 150px);
+	top: 5vh;
+}
+
+.verticalform {
+	text-align: match-parent;
+	width: 200px;
+	height: 350px;
+}
+
+.formdiv {
+	border-radius: 10%;
+	background-color: #ffffff;
+	opacity: 90%;
+	padding: 10px;
+}
+.landingbody {
+	text-align: match-parent;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+	transition: color 0.5s ease;
 }
