@@ -41,22 +41,7 @@ export default function UpdateProfile () {
     }).finally(() => {
       setLoading(false)
     })
-
   }
-// does this go here on on the auth contexts to be called above?
-// var user = firebase.auth().currentUser;
-// user.updateProfile({
-//   firstName: firstNameRef.current.value,
-//   lastName: lastNameRef.current.value,
-//   email:emailRef.current.value,
-//   password: passwordRef.current.value,
-// }).then(function() {
-//   // Update successful.
-// }).catch(function(error) {
-//   // An error happened.
-// });
-
-
 
   return (
 		<>
