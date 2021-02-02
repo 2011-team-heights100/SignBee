@@ -1,5 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
+import 'firebase/firestore';
+// import app from '../firebase';
+import firebase from 'firebase/app';
 
 const AuthContext = React.createContext();
 
@@ -11,7 +14,8 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  function signin(email, password) {
+  function signin (email, password) {
+
     return auth.signInWithEmailAndPassword(email, password);
   }
 
@@ -19,8 +23,23 @@ export function AuthProvider({ children }) {
     return auth.signOut();
   }
 
-  function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
+  function signup(email, password, firstName, lastName) {
+    return auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log(auth.currentUser.uid);
+          firebase.firestore().collection('Users').doc(firebase.auth().currentUser.uid)
+            .set({
+              firstName: firstName,
+              lastName: lastName,
+              points: 0,
+            })
+            .catch(error => {
+              console.log('Something went wrong with adding user to firestore:', error);
+          })
+        })
+        .catch(error => {
+          console.log('Something went wrong with sign up:', error);
+      })
   }
 
   useEffect(() => {

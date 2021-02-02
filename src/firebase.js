@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import 'firebase/firestore';
 
 const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -11,4 +12,12 @@ const app = firebase.initializeApp({
 });
 
 export const auth = app.auth();
+const db = app.firestore();
+const sectionsRef = db.collection('Sections').doc('2').collection('Levels').doc('1');
+sectionsRef.get()
+	.then((querySnapshot) => {
+		// const data = querySnapshot.docs.map((doc) => doc.data());
+		console.log(querySnapshot);
+	});
+
 export default app;
