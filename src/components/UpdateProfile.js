@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 
-export default function SignUp() {
+export default function UpdateProfile () {
   const emailRef = useRef();
   const passwordRef = useRef();
   const firstNameRef =useRef();
@@ -11,7 +11,7 @@ export default function SignUp() {
   const passwordConfirmRef = useRef();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signup } = useAuth();
+  const { updateProfile } = useAuth();
   const history = useHistory();
 
   async function handleSubmit(e) {
@@ -24,7 +24,7 @@ export default function SignUp() {
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value, );
+      await updateProfile(emailRef.current.value, passwordRef.current.value, firstNameRef.current.value, lastNameRef.current.value);
       history.push("/dashboard");
     } catch (error) {
       setError(`${error.message}`);
@@ -32,18 +32,19 @@ export default function SignUp() {
     }
     setLoading(false);
   }
-
-// sign up only takes email and password
-  //this infor needs to be sent only have the the account is created
+// does this go here on on the auth contexts to be called above?
 // var user = firebase.auth().currentUser;
 // user.updateProfile({
 //   firstName: firstNameRef.current.value,
-//   lastName: lastNameRef.current.value
+//   lastName: lastNameRef.current.value,
+//   email:emailRef.current.value,
+//   password: passwordRef.current.value,
 // }).then(function() {
 //   // Update successful.
 // }).catch(function(error) {
 //   // An error happened.
 // });
+
 
 
   return (
@@ -78,7 +79,7 @@ export default function SignUp() {
         <br/>
         <br/>
         <Button variant="contained" color="primary"  type="submit" disabled={loading}>
-          Sign Up
+          Update Profile
         </Button>
       </form>
       <br/>
