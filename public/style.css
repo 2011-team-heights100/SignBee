@@ -110,13 +110,12 @@ body {
 	border-radius: 10%;
 	text-align: center;
 	align-content: center;
-
 	padding: 30px;
 	background-color: #fef5e4;
 	height: 600px;
 	width: 300px;
-	position: fixed;
-	left: calc(50vw - 150px);
+	position: relative;
+	/* left: calc(50vw - 150px); */
 	top: 5vh;
 }
 
@@ -129,7 +128,7 @@ body {
 .formdiv {
 	border-radius: 10%;
 	background-color: #ffffff;
-	opacity: 90%;
+	opacity: 70%;
 	padding: 10px;
 }
 .landingbody {

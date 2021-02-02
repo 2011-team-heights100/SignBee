@@ -13,8 +13,11 @@ export default createMuiTheme({
       },
    },
    typography: {
-      h1: {
+      h2: {
          fontFamily: "Changa One"
       }
+   },
+   shape: {
+      borderRadius: 50
    }
 });
