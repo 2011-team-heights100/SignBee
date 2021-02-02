@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const firstNameRef =useRef();
+  const firstNameRef = useRef();
   const lastNameRef = useRef();
   const passwordConfirmRef = useRef();
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ export default function SignUp() {
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value, );
+      await signup(emailRef.current.value, passwordRef.current.value, firstNameRef.current.value, lastNameRef.current.value);
       history.push("/dashboard");
     } catch (error) {
       setError(`${error.message}`);
