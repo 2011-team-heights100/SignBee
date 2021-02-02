@@ -15,15 +15,6 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [dbUser, setDbUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  // if (currentUser) {
-  //   let userDb;
-  //   const userRef = db.collection('Users').doc(currentUser.uid);
-  //   (async () => {
-  //     userDb = await userRef.get()
-  //     // setDbUser(userDb.data());
-  //   })()
-  // }
-
 
 	function signin(email, password) {
 		return auth.signInWithEmailAndPassword(email, password);
