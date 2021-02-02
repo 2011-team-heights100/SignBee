@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import { Button, Typography } from '@material-ui/core';
 
 export default function SignIn() {
   const emailRef = useRef();
@@ -33,7 +33,7 @@ export default function SignIn() {
     <br/>
     <br/>
     <div className="formdiv">
-      <h2>SIGNBEE</h2>
+      <Typography variant="h2">SIGN IN</Typography>
       {error && <div>{error}</div>}
 
       <form className="veritcalform" onSubmit={handleSubmit}>
