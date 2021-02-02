@@ -9,7 +9,7 @@ export default function Navbar() {
 		<>
 			<AppBar position="static" color="transparent" elevation={0}>
 				<Toolbar>
-					<IconButton>
+					<IconButton >
 						<AccountCircle />
 					</IconButton>
 				</Toolbar>
