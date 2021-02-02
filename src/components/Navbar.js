@@ -1,5 +1,5 @@
 import React from "react";
-import {AppBar, Toolbar} from "@material-ui/core";
+import {AppBar, Toolbar, IconButton} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import ProfileSummary from "./ProfileSummary"
@@ -7,12 +7,14 @@ import ProfileSummary from "./ProfileSummary"
 export default function Navbar() {
 	return (
 		<>
-			<AppBar position="static" color="transparent" >
+			<AppBar position="static" color="transparent" elevation={0}>
 				<Toolbar>
-					<AccountCircle />
+					<IconButton>
+						<AccountCircle />
+					</IconButton>
 				</Toolbar>
 			</AppBar>
-         <ProfileSummary />
+			<ProfileSummary />
 		</>
 	);
 }
