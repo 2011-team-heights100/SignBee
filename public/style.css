@@ -56,3 +56,51 @@
 	font-size: 24px;
 	margin-top: 1rem;
 }
+
+.centerme{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* border: 2px solid #F6A400; */
+	border-radius: 10%;
+	text-align: center;
+	align-content: center;
+
+	padding: 30px;
+	background-color: #FEF5E4;
+height:600px;
+width: 300px;
+	position: fixed;
+	 left: calc( 50vw - 150px);
+  top:  5vh ;
+}
+
+.verticalform {
+text-align: match-parent;
+	width: 200px;
+	height: 350px;
+}
+
+.formdiv{
+	border-radius: 10%;
+	background-color: #ffffff;
+	opacity: 90%;
+	padding: 10px;
+}
+.landingbody{
+	text-align:match-parent;
+}
+
+
+body{
+	background-color: #FEF5E4;
+}
+
+	/* #F6A400 */
+
+a{
+			text-decoration: none;
+			color: black;
+			transition: color 0.5s ease;
+
+	}
