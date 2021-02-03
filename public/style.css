@@ -120,6 +120,19 @@ body {
 	top: 5vh;
 }
 
+.center-modal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	border-radius: 10%;
+	text-align: center;
+	align-content: center;
+   padding: 10px;
+   margin: 10px;
+	background-color: #fef5e4;
+	position: relative;
+}
+
 .verticalform {
 	text-align: match-parent;
 	width: 200px;
