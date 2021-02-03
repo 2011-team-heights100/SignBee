@@ -16,7 +16,7 @@ export default function SignUp() {
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-
+		console.log(emailRef.current.value);
 		if (passwordRef.current.value !== passwordConfirmRef.current.value) {
 			return setError("Passwords do not match");
 		}
@@ -47,14 +47,18 @@ export default function SignUp() {
 					<Typography variant="h2">SIGN UP</Typography>
 					{error && <div>{error}</div>}
 					<form className="veritcalform" onSubmit={handleSubmit}>
-						<TextField type="text" label="First Name" ref={firstNameRef} />
-						<TextField type="text" label="Last Name" ref={lastNameRef} />
-						<TextField type="email" label="Email" ref={emailRef} />
-						<TextField type="password" label="Password" ref={passwordRef} />
+						<TextField type="text" label="First Name" inputRef={firstNameRef} />
+						<TextField type="text" label="Last Name" inputRef={lastNameRef} />
+						<TextField type="email" label="Email" inputRef={emailRef} />
+						<TextField
+							type="password"
+							label="Password"
+							inputRef={passwordRef}
+						/>
 						<TextField
 							type="password"
 							label="Confirm Password"
-							ref={passwordConfirmRef}
+							inputRef={passwordConfirmRef}
 						/>
 						<Button type="submit" disabled={loading}>
 							Sign Up

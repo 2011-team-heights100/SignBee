@@ -21,7 +21,7 @@ export default function UpdateProfile() {
 	} = useAuth();
 	const history = useHistory();
 
-	console.log("dbUser", dbUser);
+	// console.log("dbUser", dbUser);
 	function handleSubmit(e) {
 		e.preventDefault();
 
@@ -65,32 +65,32 @@ export default function UpdateProfile() {
 						<TextField
 							type="text"
 							label="First Name"
-							ref={firstNameRef}
+							inputRef={firstNameRef}
 							defaultValue={dbUser && dbUser.firstName}
 						/>
 						<TextField
 							type="text"
 							label="Last Name"
-							ref={lastNameRef}
+							inputRef={lastNameRef}
 							defaultValue={dbUser && dbUser.lastName}
 						/>
 						<TextField
 							required
 							type="email"
 							// label="Email"
-							ref={emailRef}
+							inputRef={emailRef}
 							defaultValue={currentUser.email}
 						/>
 						<TextField
 							type="password"
 							// label="Password"
-							ref={passwordRef}
+							inputRef={passwordRef}
 							placeholder="Leave blank to keep the same"
 						/>
 						<TextField
 							type="password"
 							// label="Confirm Password"
-							ref={passwordConfirmRef}
+							inputRef={passwordConfirmRef}
 							placeholder="Leave blank to keep the same"
 						/>
 						<Button type="submit" disabled={loading}>

@@ -1,6 +1,9 @@
 import React from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Dashboard() {
+   const {dbUser, currentUser} = useAuth()
+   
 	return (
 		<div id="hexGrid">
 			<div className="row">

@@ -37,8 +37,12 @@ export default function SignIn() {
 					{error && <div>{error}</div>}
 
 					<form className="veritcalform" onSubmit={handleSubmit}>
-						<TextField type="email" label="Email" ref={emailRef} />
-						<TextField type="password" label="Password" ref={passwordRef} />
+						<TextField type="email" label="Email" inputRef={emailRef} />
+						<TextField
+							type="password"
+							label="Password"
+							inputRef={passwordRef}
+						/>
 						<br />
 						<br />
 						<Button type="submit" disabled={loading}>

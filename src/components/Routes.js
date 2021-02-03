@@ -7,8 +7,8 @@ import App from "./App";
 
 import React from "react";
 import Dashboard from "./Dashboard";
-import Navbar from "./Navbar"
-import theme from "../contexts/Theme"
+import Navbar from "./Navbar";
+import theme from "../contexts/Theme";
 import LandingPage from "./LandingPage";
 import UpdateProfile from "./UpdateProfile";
 import About from "./About";
@@ -20,12 +20,12 @@ export default function Routes() {
 				<AuthProvider>
 					<Navbar />
 					<Switch>
-            <Route exact path="/" component={LandingPage} />
+						<Route exact path="/" component={LandingPage} />
 						<Route path="/signup" component={SignUp} />
 						<Route path="/signin" component={SignIn} />
 						<Route path="/app" component={App} />
 						<Route path="/dashboard" component={Dashboard} />
-            <Route path="/updateprofile" component={UpdateProfile} />
+						<Route path="/updateprofile" component={UpdateProfile} />
 						<Route path="/about" component={About} />
 					</Switch>
 				</AuthProvider>
