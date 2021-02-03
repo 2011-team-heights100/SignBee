@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [dbUser, setDbUser] = useState(null);
    const [loading, setLoading] = useState(true);
-   
+
    const history = useHistory();
 
 	function signin(email, password) {
@@ -34,7 +34,8 @@ export function AuthProvider({ children }) {
 			.then(() => {
 				firebase
 					.firestore()
-					.collection("Users")
+
+					.collection('Users')
 					.doc(firebase.auth().currentUser.uid)
 					.set({
 						firstName: firstName,
@@ -74,23 +75,23 @@ export function AuthProvider({ children }) {
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
-			setCurrentUser(user);
+      setCurrentUser(user);
 			setLoading(false);
-		});
+    });
 		return unsubscribe;
-	}, []);
+  }, []);
 
-	useEffect(() => {
-		if (currentUser) {
-			let userDb;
-			const userRef = db.collection("Users").doc(currentUser.uid);
-			(async () => {
-				userDb = await userRef.get();
-				setDbUser(userDb.data());
-			})();
-		}
-		return;
-	}, [currentUser]);
+  useEffect(() => {
+    if (currentUser) {
+      let userDb;
+      const userRef = db.collection('Users').doc(currentUser.uid);
+      (async () => {
+        userDb = await userRef.get();
+        setDbUser(userDb.data());
+      })();
+    }
+    return
+  }, [currentUser])
 
 	const value = {
 		currentUser,
@@ -99,10 +100,10 @@ export function AuthProvider({ children }) {
 		signout,
 		updateEmail,
 		updatePassword,
-		updateUser,
-		dbUser,
+    updateUser,
+    dbUser
 	};
-	return (
+  return (
 		<AuthContext.Provider value={value}>
 			{!loading && children}
 		</AuthContext.Provider>
