@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { AppBar, Grid, Toolbar, IconButton, Link } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { AppBar, Grid, Toolbar, IconButton, Button } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { useAuth } from "../contexts/AuthContext";
 import ProfileSummary from "./ProfileSummary";
@@ -7,6 +8,7 @@ import ProfileSummary from "./ProfileSummary";
 export default function Navbar() {
    const { dbUser, currentUser } = useAuth();
    const [modalShow, setModalShow ] = useState(false)
+   const history = useHistory();
 
 	const handleClick = (e) => {
       e.preventDefault();
@@ -19,7 +21,7 @@ export default function Navbar() {
 				<Toolbar>
 					<Grid container justify="space-between">
 						<div></div>
-						<Link to="/app">APP</Link>
+						<Button onClick={() => history.push("/app")}>APP</Button>
 						{dbUser && (
 							<IconButton color="secondary" onClick={handleClick}>
 								<AccountCircle />
