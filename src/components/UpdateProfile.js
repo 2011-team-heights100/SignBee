@@ -1,117 +1,105 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import { Button, Typography, TextField } from "@material-ui/core";
 // import { db } from '../firebase';
 
-export default function UpdateProfile () {
-  const emailRef = useRef();
-  const passwordRef = useRef()
-  const passwordConfirmRef = useRef()
-  const firstNameRef = useRef()
-  const lastNameRef = useRef()
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { currentUser, updateEmail, updatePassword, dbUser, updateUser } = useAuth();
-  const history = useHistory();
+export default function UpdateProfile() {
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const passwordConfirmRef = useRef();
+	const firstNameRef = useRef();
+	const lastNameRef = useRef();
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const {
+		currentUser,
+		updateEmail,
+		updatePassword,
+		dbUser,
+		updateUser,
+	} = useAuth();
+	const history = useHistory();
 
-  console.log('dbUser', dbUser)
-  function handleSubmit (e) {
-    e.preventDefault();
+	// console.log("dbUser", dbUser);
+	function handleSubmit(e) {
+		e.preventDefault();
 
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match");
-    }
-    const promises = []
-    setLoading(true);
-    setError('');
+		if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+			return setError("Passwords do not match");
+		}
+		const promises = [];
+		setLoading(true);
+		setError("");
 
-    if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value))
-    }
-    if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value))
-    }
-    updateUser(firstNameRef.current.value, lastNameRef.current.value)
+		if (emailRef.current.value !== currentUser.email) {
+			promises.push(updateEmail(emailRef.current.value));
+		}
+		if (passwordRef.current.value) {
+			promises.push(updatePassword(passwordRef.current.value));
+		}
+		updateUser(firstNameRef.current.value, lastNameRef.current.value);
 
-    Promise.all(promises).then(() => {
-      history.push('/dashboard')
-    }).catch(() => {
-      setError('Failed to update account')
-    }).finally(() => {
-      setLoading(false)
-    })
-  }
+		Promise.all(promises)
+			.then(() => {
+				history.push("/dashboard");
+			})
+			.catch(() => {
+				setError("Failed to update account");
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}
 
-  return (
+	return (
 		<>
-			<div className='centerme'>
+			<div className="centerme">
 				<div>SignBee Logo</div>
 				<br />
 				<br />
-				<div className='formdiv'>
-					<h2>SIGNBEE</h2>
+				<div className="formdiv">
+					<Typography variant="h2">UPDATE</Typography>
 					{error && <div>{error}</div>}
-					<form className='veritcalform' onSubmit={handleSubmit}>
-						<label htmlFor='firstName'>First Name</label>
-						<br />
-						<input
-              type='text'
-              ref={firstNameRef}
-              defaultValue={dbUser && dbUser.firstName}
+					<form className="veritcalform" onSubmit={handleSubmit}>
+						<TextField
+							type="text"
+							label="First Name"
+							inputRef={firstNameRef}
+							defaultValue={dbUser && dbUser.firstName}
 						/>
-						<br />
-						<label htmlFor='lastName'>Last Name</label>
-						<br />
-						<input
-              type='text'
-              ref={lastNameRef}
-              defaultValue={dbUser && dbUser.lastName}
+						<TextField
+							type="text"
+							label="Last Name"
+							inputRef={lastNameRef}
+							defaultValue={dbUser && dbUser.lastName}
 						/>
-						<br />
-						<label htmlFor='email'>Email</label>
-						<br />
-						<input
-							type='email'
-							ref={emailRef}
+						<TextField
 							required
+							type="email"
+							// label="Email"
+							inputRef={emailRef}
 							defaultValue={currentUser.email}
 						/>
-						<br />
-						<label htmlFor='password'>Password</label>
-						<br />
-						<input
-							type='password'
-							ref={passwordRef}
-							placeholder='Leave blank to keep the same'
+						<TextField
+							type="password"
+							// label="Password"
+							inputRef={passwordRef}
+							placeholder="Leave blank to keep the same"
 						/>
-						<br />
-						<label htmlFor='confirmPassword'>Confirm Password</label>
-						<br />
-						<input
-							type='password'
-							ref={passwordConfirmRef}
-							placeholder='Leave blank to keep the same'
+						<TextField
+							type="password"
+							// label="Confirm Password"
+							inputRef={passwordConfirmRef}
+							placeholder="Leave blank to keep the same"
 						/>
-						<br />
-						<br />
-						<Button
-							variant='contained'
-							color='primary'
-							type='submit'
-							disabled={loading}
-						>
+						<Button type="submit" disabled={loading}>
 							Update Profile
 						</Button>
 					</form>
-					<br />
-					<div>
-						<a href='/'>
-							<Button variant='contained' color='primary'>
-								Back
-							</Button>
-						</a>
-					</div>
+					<Button variant="outlined" onClick={() => history.push("/")}>
+						Back
+					</Button>
 				</div>
 			</div>
 		</>

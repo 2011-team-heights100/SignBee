@@ -1,35 +1,40 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { auth } from "../firebase";
-import 'firebase/firestore';
+import "firebase/firestore";
 // import app from '../firebase';
-import firebase from 'firebase/app';
-import { db } from '../firebase';
+import firebase from "firebase/app";
+import { db } from "../firebase";
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
-  return useContext(AuthContext);
+	return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [dbUser, setDbUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+	const [currentUser, setCurrentUser] = useState(null);
+	const [dbUser, setDbUser] = useState(null);
+   const [loading, setLoading] = useState(true);
+   
+   const history = useHistory();
 
 	function signin(email, password) {
 		return auth.signInWithEmailAndPassword(email, password);
 	}
 
 	function signout() {
-		return auth.signOut();
+      history.push("/");
+      return auth.signOut();
 	}
 
-  function signup (email, password, firstName, lastName) {
+	function signup(email, password, firstName, lastName) {
 		return auth
 			.createUserWithEmailAndPassword(email, password)
 			.then(() => {
 				firebase
 					.firestore()
+
 					.collection('Users')
 					.doc(firebase.auth().currentUser.uid)
 					.set({
@@ -39,20 +44,21 @@ export function AuthProvider({ children }) {
 					})
 					.catch((error) => {
 						console.log(
-							'Something went wrong with adding user to firestore:',
+							"Something went wrong with adding user to firestore:",
+
 							error
 						);
 					});
 			})
 			.catch((error) => {
-				console.log('Something went wrong with sign up:', error);
+				console.log("Something went wrong with sign up:", error);
 			});
 	}
 
 	function updateUser(firstName, lastName) {
 		return firebase
 			.firestore()
-			.collection('Users')
+			.collection("Users")
 			.doc(currentUser.uid)
 			.update({
 				firstName: firstName,
@@ -60,7 +66,7 @@ export function AuthProvider({ children }) {
 			});
 	}
 
-  function updateEmail (email) {
+	function updateEmail(email) {
 		return currentUser.updateEmail(email);
 	}
 
