@@ -21,6 +21,7 @@ export default function UpdateProfile() {
 	} = useAuth();
 	const history = useHistory();
 
+console.log('dbuser',dbUser)
 	// console.log("dbUser", dbUser);
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -42,7 +43,7 @@ export default function UpdateProfile() {
 
 		Promise.all(promises)
 			.then(() => {
-				history.push("/dashboard");
+				// history.push("/dashboard");
 			})
 			.catch(() => {
 				setError("Failed to update account");
@@ -52,7 +53,7 @@ export default function UpdateProfile() {
 			});
 	}
 
-	return (
+	return dbUser && (
 		<>
 			<div className="centerme">
 				<div>SignBee Logo</div>
@@ -66,13 +67,13 @@ export default function UpdateProfile() {
 							type="text"
 							label="First Name"
 							inputRef={firstNameRef}
-							defaultValue={dbUser && dbUser.firstName}
+							defaultValue={dbUser.firstName}
 						/>
 						<TextField
 							type="text"
 							label="Last Name"
 							inputRef={lastNameRef}
-							defaultValue={dbUser && dbUser.lastName}
+							defaultValue={dbUser.lastName}
 						/>
 						<TextField
 							required
@@ -93,11 +94,11 @@ export default function UpdateProfile() {
 							inputRef={passwordConfirmRef}
 							placeholder="Leave blank to keep the same"
 						/>
-						<Button type="submit" disabled={loading}>
+						<Button type="submit" disabled={loading} onClick={() => window.location='/dashboard'}>
 							Update Profile
 						</Button>
 					</form>
-					<Button variant="outlined" onClick={() => history.push("/")}>
+					<Button variant="outlined" onClick={() => history.push("/dashboard")}>
 						Back
 					</Button>
 				</div>
