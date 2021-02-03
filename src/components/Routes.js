@@ -20,7 +20,7 @@ export default function Routes() {
 				<AuthProvider>
 					<Navbar />
 					<Switch>
-						<Route exact path="/" component={LandingPage} />
+            <Route exact path="/" component={LandingPage} />
 						<Route path="/signup" component={SignUp} />
 						<Route path="/signin" component={SignIn} />
 						<Route path="/app" component={App} />
