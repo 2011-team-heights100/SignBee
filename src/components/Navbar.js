@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppBar, Grid, Toolbar, IconButton } from "@material-ui/core";
+import { AppBar, Grid, Toolbar, IconButton, Link } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { useAuth } from "../contexts/AuthContext";
 import ProfileSummary from "./ProfileSummary";
@@ -19,6 +19,7 @@ export default function Navbar() {
 				<Toolbar>
 					<Grid container justify="space-between">
 						<div></div>
+						<Link to="/app">APP</Link>
 						{dbUser && (
 							<IconButton color="secondary" onClick={handleClick}>
 								<AccountCircle />
