@@ -121,7 +121,7 @@ function App() {
 		}
 	};
 
-	// runHandpose();
+	 runHandpose();
 
 	return (
 		<div className="App video-container">
