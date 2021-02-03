@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [dbUser, setDbUser] = useState(null);
    const [loading, setLoading] = useState(true);
-   
+
    const history = useHistory();
 
 	function signin(email, password) {
@@ -45,7 +45,6 @@ export function AuthProvider({ children }) {
 					.catch((error) => {
 						console.log(
 							"Something went wrong with adding user to firestore:",
-
 							error
 						);
 					});

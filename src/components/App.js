@@ -42,20 +42,20 @@ function App() {
 			video.height = videoHeight;
 
 			//set canvas h and w
-			canvasRef.current.width = videoWidth;
-			canvasRef.current.height = videoHeight;
+			// canvasRef.current.width = videoWidth;
+			// canvasRef.current.height = videoHeight;
 
 			//made detections
 			const hand = await net.estimateHands(video);
 			// console.log(hand);
 
 			//draw
-			const ctx = canvasRef.current.getContext("2d");
+			// const ctx = canvasRef.current.getContext("2d");
 
 			//change this for 3D maybe?
-			requestAnimationFrame(() => {
-				drawHand(hand, ctx);
-			});
+			// requestAnimationFrame(() => {
+			// 	drawHand(hand, ctx);
+			// });
 
 			if (hand.length > 0) {
 				const GE = new fp.GestureEstimator([
@@ -121,26 +121,26 @@ function App() {
 		}
 	};
 
-	runHandpose();
+	 runHandpose();
 
 	return (
-		<div className="App">
+		<div className="App video-container">
 			<header className="App-header">
-				<Webcam
+				<Webcam className='video'
 					ref={webcamRef}
-					style={{
-						position: "absolute",
-						marginLeft: "auto",
-						marginRight: "auto",
-						left: 0,
-						right: 0,
-						textAlign: "center",
-						zindex: 9,
-						width: 640,
-						height: 480,
-					}}
+					// style={{
+					// 	position: "absolute",
+					// 	marginLeft: "auto",
+					// 	marginRight: "auto",
+					// 	left: 0,
+					// 	right: 0,
+					// 	textAlign: "center",
+					// 	zindex: 9,
+					// 	width: 640,
+					// 	height: 480,
+					// }}
 				/>
-				<canvas
+				{/* <canvas
 					ref={canvasRef}
 					style={{
 						position: "absolute",
@@ -153,7 +153,7 @@ function App() {
 						width: 640,
 						height: 480,
 					}}
-				/>
+				/> */}
 			</header>
 			<div id="gesture-guess">GUESS {guess}</div>
 		</div>
