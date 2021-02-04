@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
@@ -14,13 +14,25 @@ import {
 	Avatar,
 } from "@material-ui/core";
 
-//this does not open. Need to add toggle functionality.
 export default function ProfileSummary(props) {
 	const history = useHistory();
 	const { dbUser, signout } = useAuth();
+	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		setOpen(props.show);
+	}, [props.show]);
+
+	const handleClickAway = () => {
+		setOpen(false);
+	};
 
 	return (
-		<Dialog open={props.show}>
+		<Dialog
+			open={open}
+			onBackdropClick={handleClickAway}
+			closeAfterTransition={true}
+		>
 			<DialogTitle>Hey there, {dbUser && dbUser.firstName}!</DialogTitle>
 			<div className="center-modal">
 				<Typography>LIVES</Typography>
@@ -32,9 +44,9 @@ export default function ProfileSummary(props) {
 				<ListItem
 					button
 					onClick={() => {
+						setOpen(false);
 						history.push("/updateprofile");
 					}}
-					key="updateProfile"
 				>
 					<ListItemAvatar>
 						<Avatar>
@@ -43,7 +55,13 @@ export default function ProfileSummary(props) {
 					</ListItemAvatar>
 					<ListItemText primary="Edit Account Info" />
 				</ListItem>
-				<ListItem button onClick={signout} key="updateProfile">
+				<ListItem
+					button
+					onClick={() => {
+						setOpen(false)
+						signout()
+					}}
+				>
 					<ListItemAvatar>
 						<Avatar>
 							<IndeterminateCheckBoxIcon color="secondary" />

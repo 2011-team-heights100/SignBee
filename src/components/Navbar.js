@@ -6,14 +6,14 @@ import { useAuth } from "../contexts/AuthContext";
 import ProfileSummary from "./ProfileSummary";
 
 export default function Navbar() {
-   const { dbUser, currentUser } = useAuth();
+   const { dbUser } = useAuth();
    const [modalShow, setModalShow ] = useState(false)
    const history = useHistory();
-
-	const handleClick = (e) => {
+   
+   const handleClick = (e) => {
       e.preventDefault();
       setModalShow(!modalShow)
-	};
+   };
 	
 	return (
 		<>
