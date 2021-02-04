@@ -21,7 +21,7 @@ export default function Navbar() {
 				<Toolbar>
 					<Grid container justify="space-between">
 						<div></div>
-						<Button onClick={() => history.push("/app")}>APP</Button>
+						<Button onClick={() => history.push("/app")}>START</Button>
 						{dbUser && (
 							<IconButton color="secondary" onClick={handleClick}>
 								<AccountCircle />
