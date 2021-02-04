@@ -1,16 +1,18 @@
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
-import { ThemeProvider } from "@material-ui/styles";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import React, { useState, useEffect } from "react";
 import {
 	BrowserRouter as Router,
 	Switch,
 	Route,
-	useHistory,
+	Redirect,
 } from "react-router-dom";
-import App from "./App";
+import { AuthProvider } from "../contexts/AuthContext";
+import firebase from "firebase/app";
 
-import React, { useEffect, useState } from "react";
+import { ThemeProvider } from "@material-ui/styles";
+
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
+import App from "./App";
 import Dashboard from "./Dashboard";
 import Navbar from "./Navbar";
 import theme from "../contexts/Theme";
@@ -19,13 +21,14 @@ import UpdateProfile from "./UpdateProfile";
 import About from "./About";
 
 export default function Routes() {
-	// const history = useHistory();
-	// const { currentUser } = useAuth();
-	// const [isLoggedin, setIsLoggedIn] = useState(false);
-	// console.log(currentUser);
-	// useEffect(() => {
-	// 	if (!!!currentUser.uid) setIsLoggedIn(true);
-	// }, [currentUser]);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) setIsLoggedIn(true);
+			else setIsLoggedIn(false);
+		});
+	});
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -37,7 +40,10 @@ export default function Routes() {
 						<Route path="/signup" component={SignUp} />
 						<Route path="/signin" component={SignIn} />
 						<Route exact path="/app" component={App} />
-						<Route path="/dashboard" component={Dashboard} />
+						<Route path="/dashboard">
+							{/* {<Dashboard />} */}
+							{isLoggedIn ? <Dashboard /> : <Redirect to="/" />}
+						</Route>
 						<Route path="/updateprofile" component={UpdateProfile} />
 						<Route path="/about" component={About} />
 					</Switch>

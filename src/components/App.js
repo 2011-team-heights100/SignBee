@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -11,7 +11,7 @@ import { Typography, Box } from "@material-ui/core";
 
 function App() {
   const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
+//   const canvasRef = useRef(null);
   const [guess, setGuess] = useState("");
 
   //have a loading screen while the model loads
@@ -122,7 +122,10 @@ function App() {
     }
   };
 
-  runHandpose();
+useEffect(() => {
+   runHandpose()
+}, []);
+
   //   function tensorMemory() {
   //     const memory = tf.memory().numTensors;
   //     return memory;
@@ -180,7 +183,7 @@ function App() {
       </Typography>
       <div className="prompt-card">
         <div className="prompt-box">
-          <div class="prompt-content">
+          <div className="prompt-content">
             <p>PROMPT</p>
           </div>
         </div>
