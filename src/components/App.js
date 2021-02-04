@@ -6,6 +6,7 @@ import Webcam from "react-webcam";
 import { drawHand } from "../utilities";
 
 import Handsigns from "../handsigns";
+import { dispose } from '@tensorflow/tfjs';
 
 function App() {
 	const webcamRef = useRef(null);
