@@ -22,9 +22,9 @@ export default function Dashboard() {
 		setLevels(getLevels)
 		console.log('snapshot', snapshot)
 		console.log('getLevels', getLevels)
-
 	}, [dbUser])
-	console.log('levels', levels)
+   console.log('levels', levels)
+   
 	return (
 		<div id="hexGrid">
 			<div className="row">
