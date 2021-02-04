@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
-// import { db } from '../firebase';
 
 export default function UpdateProfile() {
 	const emailRef = useRef();
@@ -21,8 +20,6 @@ export default function UpdateProfile() {
 	} = useAuth();
 	const history = useHistory();
 
-console.log('dbuser',dbUser)
-	// console.log("dbUser", dbUser);
 	function handleSubmit(e) {
 		e.preventDefault();
 
@@ -94,7 +91,11 @@ console.log('dbuser',dbUser)
 							inputRef={passwordConfirmRef}
 							placeholder="Leave blank to keep the same"
 						/>
-						<Button type="submit" disabled={loading} onClick={() => window.location='/dashboard'}>
+						<Button
+							type="submit"
+							disabled={loading}
+							onClick={() => (window.location = "/dashboard")}
+						>
 							Update Profile
 						</Button>
 					</form>
@@ -104,5 +105,5 @@ console.log('dbuser',dbUser)
 				</div>
 			</div>
 		</>
-	);
+	)
 }

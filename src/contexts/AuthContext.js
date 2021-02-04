@@ -14,18 +14,18 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
-	const [dbUser, setDbUser] = useState('');
-   const [loading, setLoading] = useState(true);
+	const [dbUser, setDbUser] = useState("");
+	const [loading, setLoading] = useState(true);
 
-   const history = useHistory();
+	const history = useHistory();
 
 	function signin(email, password) {
 		return auth.signInWithEmailAndPassword(email, password);
 	}
 
 	function signout() {
-      history.push("/");
-      return auth.signOut();
+		history.push("/");
+		return auth.signOut();
 	}
 
 	function signup(email, password, firstName, lastName) {
@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
 				firebase
 					.firestore()
 
-					.collection('Users')
+					.collection("Users")
 					.doc(firebase.auth().currentUser.uid)
 					.set({
 						firstName: firstName,
@@ -75,33 +75,19 @@ export function AuthProvider({ children }) {
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
+			setCurrentUser(user);
 			setLoading(false);
-    });
-    if (currentUser) {
-
-			const userRef = db.collection('Users').doc(currentUser.uid);
-			( () => {
-        userRef.get().then((user) => {
-          setDbUser(user.data())
-        })
-				// setDbUser(userDb.data());
+		});
+		if (currentUser) {
+			const userRef = db.collection("Users").doc(currentUser.uid);
+			(() => {
+				userRef.get().then((user) => {
+					setDbUser(user.data());
+				});
 			})();
 		}
 		return unsubscribe;
-  }, [currentUser]);
-
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     let userDb;
-  //     const userRef = db.collection('Users').doc(currentUser.uid);
-  //     (async () => {
-  //       userDb = await userRef.get();
-  //       setDbUser(userDb.data());
-  //     })();
-  //   }
-  //   return
-  // }, [currentUser])
+	}, [currentUser]);
 
 	const value = {
 		currentUser,
@@ -110,10 +96,10 @@ export function AuthProvider({ children }) {
 		signout,
 		updateEmail,
 		updatePassword,
-    updateUser,
-    dbUser
+		updateUser,
+		dbUser,
 	};
-  return (
+	return (
 		<AuthContext.Provider value={value}>
 			{!loading && children}
 		</AuthContext.Provider>
