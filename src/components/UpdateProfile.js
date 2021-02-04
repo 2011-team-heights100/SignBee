@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
-// import { db } from '../firebase';
 
 export default function UpdateProfile() {
 	const emailRef = useRef();
@@ -21,8 +20,6 @@ export default function UpdateProfile() {
 	} = useAuth();
 	const history = useHistory();
 
-console.log('dbuser',dbUser)
-	// console.log("dbUser", dbUser);
 	function handleSubmit(e) {
 		e.preventDefault();
 
