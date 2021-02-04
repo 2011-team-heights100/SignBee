@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { AppBar, Grid, Toolbar, IconButton, Button } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -6,10 +6,9 @@ import { useAuth } from "../contexts/AuthContext";
 import ProfileSummary from "./ProfileSummary";
 
 export default function Navbar() {
-   const { dbUser, currentUser } = useAuth();
+   const { dbUser } = useAuth();
    const [modalShow, setModalShow ] = useState(false)
    const history = useHistory();
-   const node = useRef()
    
    const handleClick = (e) => {
       e.preventDefault();

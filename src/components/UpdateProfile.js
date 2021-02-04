@@ -91,7 +91,11 @@ export default function UpdateProfile() {
 							inputRef={passwordConfirmRef}
 							placeholder="Leave blank to keep the same"
 						/>
-						<Button type="submit" disabled={loading} onClick={() => window.location='/dashboard'}>
+						<Button
+							type="submit"
+							disabled={loading}
+							onClick={() => (window.location = "/dashboard")}
+						>
 							Update Profile
 						</Button>
 					</form>
@@ -101,5 +105,5 @@ export default function UpdateProfile() {
 				</div>
 			</div>
 		</>
-	);
+	)
 }

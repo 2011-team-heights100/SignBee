@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
@@ -47,7 +47,6 @@ export default function ProfileSummary(props) {
 						setOpen(false);
 						history.push("/updateprofile");
 					}}
-					key="updateProfile"
 				>
 					<ListItemAvatar>
 						<Avatar>
@@ -62,7 +61,6 @@ export default function ProfileSummary(props) {
 						setOpen(false)
 						signout()
 					}}
-					key="updateProfile"
 				>
 					<ListItemAvatar>
 						<Avatar>
