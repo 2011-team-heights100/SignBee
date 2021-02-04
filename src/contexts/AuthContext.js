@@ -14,7 +14,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
-	const [dbUser, setDbUser] = useState(null);
+	const [dbUser, setDbUser] = useState('');
    const [loading, setLoading] = useState(true);
 
    const history = useHistory();
@@ -78,20 +78,30 @@ export function AuthProvider({ children }) {
       setCurrentUser(user);
 			setLoading(false);
     });
-		return unsubscribe;
-  }, []);
-
-  useEffect(() => {
     if (currentUser) {
-      let userDb;
-      const userRef = db.collection('Users').doc(currentUser.uid);
-      (async () => {
-        userDb = await userRef.get();
-        setDbUser(userDb.data());
-      })();
-    }
-    return
-  }, [currentUser])
+
+			const userRef = db.collection('Users').doc(currentUser.uid);
+			( () => {
+        userRef.get().then((user) => {
+          setDbUser(user.data())
+        })
+				// setDbUser(userDb.data());
+			})();
+		}
+		return unsubscribe;
+  }, [currentUser]);
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     let userDb;
+  //     const userRef = db.collection('Users').doc(currentUser.uid);
+  //     (async () => {
+  //       userDb = await userRef.get();
+  //       setDbUser(userDb.data());
+  //     })();
+  //   }
+  //   return
+  // }, [currentUser])
 
 	const value = {
 		currentUser,
