@@ -26,6 +26,15 @@ export default createMuiTheme({
 				height: 40,
 				marginTop: 10,
 				marginBottom: 10,
+				marginLeft: 20,
+				marginRight: 20,
+			},
+		},
+		MuiDialog: {
+			paper: {
+				borderRadius: 20,
+				opacity: "70%",
+				padding: 15,
 			},
 		},
 		MuiPaper: {
