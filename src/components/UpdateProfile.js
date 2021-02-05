@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
+import { useUser } from '../contexts/UserContext';
 
 export default function UpdateProfile() {
 	const emailRef = useRef();
@@ -15,10 +16,14 @@ export default function UpdateProfile() {
 		currentUser,
 		updateEmail,
 		updatePassword,
-		dbUser,
 		updateUser,
 	} = useAuth();
+	const { dbUser, getDbUser } = useUser();
 	const history = useHistory();
+
+	useEffect(() => {
+		getDbUser()
+	}, [currentUser])
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -26,7 +31,9 @@ export default function UpdateProfile() {
 		if (passwordRef.current.value !== passwordConfirmRef.current.value) {
 			return setError("Passwords do not match");
 		}
-		const promises = [];
+		const promises = [
+			updateUser(firstNameRef.current.value, lastNameRef.current.value),
+		];
 		setLoading(true);
 		setError("");
 
@@ -36,11 +43,11 @@ export default function UpdateProfile() {
 		if (passwordRef.current.value) {
 			promises.push(updatePassword(passwordRef.current.value));
 		}
-		updateUser(firstNameRef.current.value, lastNameRef.current.value);
+		;
 
 		Promise.all(promises)
 			.then(() => {
-				// history.push("/dashboard");
+				history.push("/dashboard");
 			})
 			.catch(() => {
 				setError("Failed to update account");
@@ -50,7 +57,7 @@ export default function UpdateProfile() {
 			});
 	}
 
-	return dbUser && (
+	return currentUser && (
 		<>
 			<div className="centerme">
 				<div>SignBee Logo</div>
@@ -94,7 +101,6 @@ export default function UpdateProfile() {
 						<Button
 							type="submit"
 							disabled={loading}
-							onClick={() => (window.location = "/dashboard")}
 						>
 							Update Profile
 						</Button>

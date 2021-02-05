@@ -16,6 +16,7 @@ export default function SectionModal({rounds, show}) {
 	const { showModal, setShowModal } = useRef(false);
 	const history = useHistory();
 	console.log('rounds', rounds)
+
 	return (
 		<Dialog open={show}>
 			<DialogTitle>
