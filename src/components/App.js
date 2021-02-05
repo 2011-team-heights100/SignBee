@@ -6,13 +6,19 @@ import Webcam from "react-webcam";
 import { drawHand } from "../utilities";
 
 import Handsigns from "../handsigns";
-import { dispose } from '@tensorflow/tfjs';
-import { Typography, Box } from "@material-ui/core";
+import { dispose } from "@tensorflow/tfjs";
+import { Typography } from "@material-ui/core";
+import PlayLevel from "./PlayLevel";
 
 function App() {
   const webcamRef = useRef(null);
-//   const canvasRef = useRef(null);
+  //   const canvasRef = useRef(null);
   const [guess, setGuess] = useState("");
+  const [seconds, setSeconds] = useState(10);
+  const [game, setGame] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [nextPrompt, setNextPrompt] = useState(true);
 
   //have a loading screen while the model loads
   //store the model in indexedDB
@@ -122,21 +128,37 @@ function App() {
     }
   };
 
-useEffect(() => {
-   runHandpose()
-}, []);
+  function timer() {
+    if (seconds > 0) {
+      setTimeout(() => setSeconds(seconds - 1), 500);
+    } else {
+      setSeconds("Time Out!");
+    }
+  }
 
-  //   function tensorMemory() {
-  //     const memory = tf.memory().numTensors;
-  //     return memory;
-  //   }
+  //dummy data for the letters
 
-  //   function disposeMemory() {
-  //     tf.disposeVariables(() => {
-  //       tensorMemory();
-  //     });
-  //   }
-  //   disposeMemory();
+  const letters = ["A", "B", "C", "D"];
+  const rightAnswers = [];
+  const wrongAnswers = [];
+
+  //start
+  if (seconds === "Time Out!") setGame("start");
+  //if(letters)
+  let stoppingPoint = letters.length;
+  let counter = 0;
+  if (stoppingPoint > 0) {
+    if (nextPrompt) {
+      setNextPrompt(false);
+      setPrompt(letters[counter]);
+      counter++;
+    }
+  }
+
+  useEffect(() => {
+    runHandpose();
+    timer();
+  }, [seconds]);
 
   return (
     <div className="App video-container">
@@ -174,20 +196,22 @@ useEffect(() => {
 					}}
 				/> */}
       </header>
-      <Typography
-        id="gesture-guess"
-        color="initial"
-        fontWeight="fontWeightBold"
-      >
-        GUESS {guess}
-      </Typography>
-      <div className="prompt-card">
-        <div className="prompt-box">
-          <div className="prompt-content">
-            <p>PROMPT</p>
+      <div>{seconds}</div>
+      <h4>{prompt}</h4>
+      {game ? (
+        <div>
+          <Typography id="gesture-guess" color="initial">
+            GUESS {guess}
+          </Typography>
+          <div className="prompt-card">
+            <div className="prompt-box">
+              <div className="prompt-content"></div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div>Wait up!.. Loading</div>
+      )}
     </div>
   );
 }
