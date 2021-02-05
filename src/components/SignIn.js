@@ -36,7 +36,7 @@ export default function SignIn() {
 					<Typography variant="h2">SIGN IN</Typography>
 					{error && <div>{error}</div>}
 
-					<form className="veritcalform" onSubmit={handleSubmit}>
+					<form className="verticalform" onSubmit={handleSubmit}>
 						<TextField type="email" label="Email" inputRef={emailRef} />
 						<TextField
 							type="password"

@@ -5,7 +5,7 @@ import SectionModal from './SectionModal';
 function HoneyComb ({name, rounds}) {
   // const { name, rounds } = props
   const [showModal, setShowModal] = useState(false)
-
+// console.log('honeycomb',rounds)
   const handleClick = (e) => {
       e.preventDefault();
 			setShowModal(!showModal);
@@ -26,7 +26,7 @@ function HoneyComb ({name, rounds}) {
 			<div className='hexagon-content'>
 				<div className='content-title'>{name}</div>
 				{/* sectionmodal component needed props =  */}
-				<SectionModal rounds={rounds} show={showModal} />
+				{/* <SectionModal rounds={rounds} show={showModal} /> */}
 			</div>
 		</div>
 	);

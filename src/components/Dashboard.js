@@ -2,29 +2,36 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from '../firebase';
 import HoneyComb from './HoneyComb';
+import { useUser } from '../contexts/UserContext';
 
-export default function Dashboard() {
-  const {dbUser, currentUser} = useAuth()
+export default function Dashboard () {
+	const { dbUser, getDbUser } = useUser();
+  const { currentUser} = useAuth()
 	const sectionsRef = db.collection('Sections')
 	const [levels, setLevels] = useState({})
+	const getLevels = {}
 
-	useEffect(async () => {
-		const getLevels = {}
-		const snapshot = await sectionsRef.get().then((snapshot) => {
-			// console.log(snapshot.data())
-			snapshot.docs.forEach((doc) => {
-				console.log('doc', doc.data())
-				// getLevels.push(doc.data())
-				const section = doc.data()
-				getLevels[section.name] = section.levels
-			})
-		})
-		setLevels(getLevels)
-		console.log('snapshot', snapshot)
-		console.log('getLevels', getLevels)
-	}, [dbUser])
-   console.log('levels', levels)
-   
+	useEffect(() => {
+		getDbUser();
+	}, []);
+	// useEffect(() => {
+	// 	async function fetchData () {
+	// 		await sectionsRef.get().then((snapshot) => {
+	// 			snapshot.docs.forEach((doc) => {
+	// 				const section = doc.data()
+	// 				console.log(section)
+	// 				getLevels[section.name] = section.levels
+	// 				// console.log(getLevels)
+	// 				setLevels(getLevels)
+	// 			})
+	// 		})
+	// 	}
+	// 	fetchData()
+	// }, [currentUser])
+	// console.log('levels', levels)
+	// console.log('currentUser', currentUser)
+	// console.log('dbuser', dbUser)
+
 	return (
 		<div id="hexGrid">
 			<div className="row">
