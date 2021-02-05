@@ -1,6 +1,9 @@
 body {
+  position: relative;
+  display: flex;
   background-color: #fef5e4;
   width: 100%;
+  align-content: center;
 }
 
 .hexagon {
@@ -94,6 +97,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 500px;
 }
 
 .row {
@@ -106,17 +110,16 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* border: 2px solid #F6A400; */
   border-radius: 10%;
   text-align: center;
   align-content: center;
+  align-self: center;
   padding: 30px;
   margin: 10px;
   background-color: #fef5e4;
-  /* height: 600px;
-  width: 300px; */
+  max-width: 600px;
   position: relative;
-  /* left: calc(50vw - 150px); */
+  /* left: 25%; */
   top: 5vh;
 }
 
@@ -133,10 +136,10 @@ body {
   position: relative;
 }
 
-.verticalform {
-  text-align: match-parent;
-  width: 200px;
-  height: 350px;
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .formdiv {

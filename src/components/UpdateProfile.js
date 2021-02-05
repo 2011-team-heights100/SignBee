@@ -66,7 +66,7 @@ export default function UpdateProfile() {
 				<div className="formdiv">
 					<Typography variant="h2">UPDATE</Typography>
 					{error && <div>{error}</div>}
-					<form className="veritcalform" onSubmit={handleSubmit}>
+					<form onSubmit={handleSubmit}>
 						<TextField
 							type="text"
 							label="First Name"

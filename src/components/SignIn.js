@@ -28,32 +28,32 @@ export default function SignIn() {
 
 	return (
 		<>
-			<div className="centerme">
-				<div>SignBee Logo</div>
-				<br />
-				<br />
-				<div className="formdiv">
-					<Typography variant="h2">SIGN IN</Typography>
-					{error && <div>{error}</div>}
+				<div className="centerme">
+					<div>SignBee Logo</div>
+					<br />
+					<br />
+					<div className="formdiv">
+						<Typography variant="h2">SIGN IN</Typography>
+						{error && <div>{error}</div>}
 
-					<form className="verticalform" onSubmit={handleSubmit}>
-						<TextField type="email" label="Email" inputRef={emailRef} />
-						<TextField
-							type="password"
-							label="Password"
-							inputRef={passwordRef}
-						/>
-						<br />
-						<br />
-						<Button type="submit" disabled={loading}>
-							Sign In
+						<form onSubmit={handleSubmit}>
+							<TextField type="email" label="Email" inputRef={emailRef} />
+							<TextField
+								type="password"
+								label="Password"
+								inputRef={passwordRef}
+							/>
+							<br />
+							<br />
+							<Button type="submit" disabled={loading}>
+								Sign In
+							</Button>
+						</form>
+						<Button variant="outlined" onClick={() => history.push("/")}>
+							Back
 						</Button>
-					</form>
-					<Button variant="outlined" onClick={() => history.push("/")}>
-						Back
-					</Button>
+					</div>
 				</div>
-			</div>
 		</>
 	);
 }
