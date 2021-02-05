@@ -3,7 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { db } from '../firebase';
 import HoneyComb from './HoneyComb';
 import { useUser } from '../contexts/UserContext';
-import { Grid } from "@material-ui/core";
 
 export default function Dashboard () {
 	const { dbUser, getDbUser } = useUser();
