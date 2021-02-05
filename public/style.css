@@ -116,7 +116,7 @@ body {
 	align-self: center;
 	padding: 30px;
 	margin: 10px;
-	background-color: #fef5e4;
+	/* background-color: #fef5e4; */
 	max-width: 600px;
 	position: relative;
 	/* left: 25%; */
@@ -161,8 +161,8 @@ form {
 	padding: 30px;
   margin: 10px;
   margin-top: 20%;
-  background-color: #fef5e4;
-  opacity: 85%;
+  background-color: #ffffff;
+  opacity: 70%;
   max-width: 600px;
 	/* position: relative; */
 }

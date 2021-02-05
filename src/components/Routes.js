@@ -20,6 +20,8 @@ import LandingPage from "./LandingPage";
 import UpdateProfile from "./UpdateProfile";
 import About from "./About";
 import GameSummary from "./GameSummary"
+import GameplayText from "./GameplayText";
+import ResetPassword from "./ResetPassword"
 
 export default function Routes() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,11 +43,7 @@ export default function Routes() {
 							<Route exact path="/" component={LandingPage} />
 							<Route path="/signup" component={SignUp} />
 							<Route path="/signin">
-								{isLoggedIn ? (
-									<Redirect to="/dashboard" />
-								) : (
-									<SignIn />
-								)}
+								{isLoggedIn ? <Redirect to="/dashboard" /> : <SignIn />}
 							</Route>
 							<Route exact path="/app" component={App} />
 							<Route path="/dashboard">
@@ -55,6 +53,8 @@ export default function Routes() {
 							<Route path="/updateprofile" component={UpdateProfile} />
 							<Route path="/about" component={About} />
 							<Route path="/gamesummary" component={GameSummary} />
+							<Route path="/gameplaytext" component={GameplayText} />
+							<Route path="/resetpassword" component={ResetPassword} />
 						</Switch>
 					</AuthProvider>
 				</UserProvider>

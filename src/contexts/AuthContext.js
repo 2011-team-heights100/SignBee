@@ -5,7 +5,7 @@ import "firebase/firestore";
 // import app from '../firebase';
 import firebase from "firebase/app";
 import { db } from "../firebase";
-import { useUser} from './UserContext'
+import { useUser } from "./UserContext";
 
 const AuthContext = React.createContext();
 
@@ -15,8 +15,8 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const {setDbUser} = useUser()
+	const [loading, setLoading] = useState(true);
+	const { setDbUser } = useUser();
 
 	const history = useHistory();
 
@@ -24,9 +24,9 @@ export function AuthProvider({ children }) {
 		return auth.signInWithEmailAndPassword(email, password);
 	}
 
-  function signout () {
-    setDbUser(null)
-    history.push("/");
+	function signout() {
+		setDbUser(null);
+		history.push("/");
 		return auth.signOut();
 	}
 
@@ -74,6 +74,10 @@ export function AuthProvider({ children }) {
 		return currentUser.updatePassword(password);
 	}
 
+	function resetPassword(email) {
+    return auth.sendPasswordResetEmail(email)
+  }
+
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
@@ -96,8 +100,9 @@ export function AuthProvider({ children }) {
 		signin,
 		signout,
 		updateEmail,
-		updatePassword,
-		updateUser,
+    updatePassword,
+    resetPassword,
+    updateUser,
 	};
 	return (
 		<AuthContext.Provider value={value}>
