@@ -5,7 +5,7 @@ import "firebase/firestore";
 // import app from '../firebase';
 import firebase from "firebase/app";
 import { db } from "../firebase";
-import { useUser} from './UserContext'
+import { useUser } from './UserContext'
 
 const AuthContext = React.createContext();
 
@@ -16,7 +16,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {setDbUser} = useUser()
+	const { setDbUser } = useUser();
 
 	const history = useHistory();
 
@@ -42,6 +42,43 @@ export function AuthProvider({ children }) {
 						firstName: firstName,
 						lastName: lastName,
 						points: 0,
+						progress: {
+							'ABCD': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+							'EFGH': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+							'IJKL': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+							'MNOP': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+							'QRST': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+							'UVW': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+							'XYZ': {
+								easy: false,
+								medium: false,
+								hard: false,
+							},
+						}
 					})
 					.catch((error) => {
 						console.log(

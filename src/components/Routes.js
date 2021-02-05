@@ -37,18 +37,24 @@ export default function Routes() {
 					<AuthProvider>
 						<Navbar />
 						<Switch>
-							<Route exact path="/" component={LandingPage} />
-							<Route path="/signup" component={SignUp} />
-							<Route path="/signin" >
-								{isLoggedIn ? <Redirect to='/dashboard'/> : <SignIn/>}
+							<Route exact path='/'>
+								{isLoggedIn ? <Redirect to='/dashboard' /> : <LandingPage />}
 							</Route>
-							<Route exact path="/app" component={App} />
-							<Route path="/dashboard">
+							<Route path='/signup'>
+								{isLoggedIn ? <Redirect to='/dashboard' /> : <SignUp />}
+							</Route>
+							<Route path='/signin'>
+								{isLoggedIn ? <Redirect to='/dashboard' /> : <SignIn />}
+							</Route>
+							<Route exact path='/app' component={App} />
+							<Route path='/dashboard'>
 								{/* {<Dashboard />} */}
-								{isLoggedIn ? <Dashboard /> : <Redirect to="/" />}
+								{isLoggedIn ? <Dashboard /> : <Redirect to='/' />}
 							</Route>
-							<Route path="/updateprofile" component={UpdateProfile} />
-							<Route path="/about" component={About} />
+							<Route path='/updateprofile'>
+								{isLoggedIn ? <UpdateProfile /> : <Redirect to='/signin' />}
+							</Route>
+							<Route path='/about' component={About} />
 						</Switch>
 					</AuthProvider>
 				</UserProvider>

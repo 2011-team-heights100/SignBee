@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
-import { useAuth } from "../contexts/AuthContext";
+import React, { useRef, useEffect } from 'react';
+import { useUser } from '../contexts/UserContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
 import {
 	Dialog,
@@ -11,16 +12,26 @@ import {
 	 Typography
 } from "@material-ui/core";
 
-export default function SectionModal({rounds, show}) {
-  const { dbUser, currentUser } = useAuth();
-	const { showModal, setShowModal } = useRef(false);
+export default function SectionModal({name, rounds, show}) {
+	const { dbUser, getDbUser } = useUser();
 	const history = useHistory();
-	console.log('rounds', rounds)
+	let levelsCompleted = 0;
+
+	useEffect(() => {
+		getDbUser();
+	}, [])
+
+	if (dbUser) {
+		let progress = dbUser.progress[name]
+		for (let key in progress) {
+			if (progress[key] === true) levelsCompleted++
+		}
+	}
 
 	return (
 		<Dialog open={show}>
 			<DialogTitle>
-				<Typography variant='h2'>LEARN</Typography>
+				<Typography variant='h2'>{name}</Typography>
 			</DialogTitle>
 			<List>
 				<ListItem>
@@ -28,8 +39,7 @@ export default function SectionModal({rounds, show}) {
 				</ListItem>
 				<ListItem>
 					<ListItemText primary='Levels' />
-					{/* <ListItemText primary={rounds.entries().length} /> */}
-					<ListItemText primary={rounds && '\n' + Object.keys(rounds).length} />
+					<ListItemText primary={levelsCompleted + '/3'} />
 				</ListItem>
 			</List>
 			<Button onClick={() => history.push('/app')}>Begin</Button>
