@@ -117,6 +117,5 @@ console.log('user', levels)
 					</div>
 				</div>
 			</div>
-		</div>
 	);
 }

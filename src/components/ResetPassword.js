@@ -2,25 +2,27 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
-export default function SignIn() {
+export default function ResetPassword() {
+  const {resetPassword} = useAuth()
 	const emailRef = useRef();
-	const passwordRef = useRef();
-	const [error, setError] = useState("");
-	const [loading, setLoading] = useState(false);
-	const { signin } = useAuth();
-	const history = useHistory();
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  
 
 	async function handleSubmit(e) {
 		e.preventDefault();
 
 		try {
+      setMessage("")
 			setError("");
 			setLoading(true);
-			await signin(emailRef.current.value, passwordRef.current.value);
-			history.push("/dashboard");
-		}
-		catch (error) {
+			await resetPassword(emailRef.current.value);
+			setMessage("A password reset link has buzzed into your inbox!")
+		} catch (error) {
 			setError(`${error.message}`);
 			console.log(error);
 		}
@@ -34,28 +36,21 @@ export default function SignIn() {
 				<br />
 				<br />
 				<div className="formdiv">
-					<Typography variant="h2">SIGN IN</Typography>
-					{error && <div>{error}</div>}
-
+					<Typography variant="h2">RESET</Typography>
+					{error && <Alert severity="error">{error}</Alert>}
+					{message && <Alert severity="success">{message}</Alert>}
 					<form onSubmit={handleSubmit}>
 						<TextField type="email" label="Email" inputRef={emailRef} />
-						<TextField
-							type="password"
-							label="Password"
-							inputRef={passwordRef}
-						/>
 						<br />
 						<Button type="submit" disabled={loading}>
-							Sign In
+							Send Email
 						</Button>
 					</form>
-					{/* <Button variant="outlined" onClick={() => history.push("/")}>
+					<Button variant="outlined" onClick={() => history.push("/signin")}>
 						Back
-					</Button> */}
+					</Button>
 					<br />
 					<Link to="/signup">Need an Account? Sign Up</Link>
-					<br />
-					<Link>Forgot Password?</Link>
 				</div>
 			</div>
 		</>

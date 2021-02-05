@@ -19,6 +19,9 @@ import theme from "../contexts/Theme";
 import LandingPage from "./LandingPage";
 import UpdateProfile from "./UpdateProfile";
 import About from "./About";
+import GameSummary from "./GameSummary"
+import GameplayText from "./GameplayText";
+import ResetPassword from "./ResetPassword"
 
 export default function Routes() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,6 +58,9 @@ export default function Routes() {
 								{isLoggedIn ? <UpdateProfile /> : <Redirect to='/signin' />}
 							</Route>
 							<Route path='/about' component={About} />
+							<Route path="/gamesummary" component={GameSummary} />
+							<Route path="/gameplaytext" component={GameplayText} />
+							<Route path="/resetpassword" component={ResetPassword} />
 						</Switch>
 					</AuthProvider>
 				</UserProvider>
