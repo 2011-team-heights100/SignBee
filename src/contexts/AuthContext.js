@@ -98,7 +98,6 @@ export function AuthProvider({ children }) {
 		updateEmail,
 		updatePassword,
 		updateUser,
-		// dbUser,
 	};
 	return (
 		<AuthContext.Provider value={value}>
