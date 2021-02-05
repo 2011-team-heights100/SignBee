@@ -15,7 +15,7 @@ export default function Navbar() {
 	useEffect(() => {
 		getDbUser();
 	}, [])
-	
+	console.log(currentUser)
    const handleClick = (e) => {
       e.preventDefault();
       setModalShow(!modalShow)
