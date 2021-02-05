@@ -5,6 +5,7 @@ import "firebase/firestore";
 // import app from '../firebase';
 import firebase from "firebase/app";
 import { db } from "../firebase";
+import { useUser} from './UserContext'
 
 const AuthContext = React.createContext();
 
@@ -14,8 +15,8 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
-	const [dbUser, setDbUser] = useState("");
-	const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const {setDbUser} = useUser()
 
 	const history = useHistory();
 
@@ -23,8 +24,9 @@ export function AuthProvider({ children }) {
 		return auth.signInWithEmailAndPassword(email, password);
 	}
 
-	function signout() {
-		history.push("/");
+  function signout () {
+    setDbUser(null)
+    history.push("/");
 		return auth.signOut();
 	}
 
@@ -34,7 +36,6 @@ export function AuthProvider({ children }) {
 			.then(() => {
 				firebase
 					.firestore()
-
 					.collection("Users")
 					.doc(firebase.auth().currentUser.uid)
 					.set({
@@ -78,16 +79,16 @@ export function AuthProvider({ children }) {
 			setCurrentUser(user);
 			setLoading(false);
 		});
-		if (currentUser) {
-			const userRef = db.collection("Users").doc(currentUser.uid);
-			(() => {
-				userRef.get().then((user) => {
-					setDbUser(user.data());
-				});
-			})();
-		}
+		// if (currentUser) {
+		// 	const userRef = db.collection("Users").doc(currentUser.uid);
+		// 	(() => {
+		// 		userRef.get().then((user) => {
+		// 			setDbUser(user.data());
+		// 		});
+		// 	})();
+		// }
 		return unsubscribe;
-	}, [currentUser]);
+	}, []);
 
 	const value = {
 		currentUser,
@@ -97,7 +98,6 @@ export function AuthProvider({ children }) {
 		updateEmail,
 		updatePassword,
 		updateUser,
-		dbUser,
 	};
 	return (
 		<AuthContext.Provider value={value}>

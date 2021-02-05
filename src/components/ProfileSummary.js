@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useUser } from '../contexts/UserContext'
+
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import {
@@ -14,16 +16,18 @@ import {
 	Avatar,
 } from "@material-ui/core";
 
-export default function ProfileSummary(props) {
+export default function ProfileSummary ({show, setModalShow}) {
 	const history = useHistory();
-	const { dbUser, signout } = useAuth();
+	const { dbUser } = useUser();
+	const { signout } = useAuth()
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		setOpen(props.show);
-	}, [props.show]);
+		setOpen(show);
+	}, [show]);
 
 	const handleClickAway = () => {
+		setModalShow(false)
 		setOpen(false);
 	};
 
@@ -45,6 +49,7 @@ export default function ProfileSummary(props) {
 					button
 					onClick={() => {
 						setOpen(false);
+						setModalShow(false)
 						history.push("/updateprofile");
 					}}
 				>
@@ -59,6 +64,7 @@ export default function ProfileSummary(props) {
 					button
 					onClick={() => {
 						setOpen(false)
+						setModalShow(false);
 						signout()
 					}}
 				>

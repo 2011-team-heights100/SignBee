@@ -6,8 +6,8 @@ import {
 	Redirect,
 } from "react-router-dom";
 import { AuthProvider } from "../contexts/AuthContext";
+import { UserProvider } from '../contexts/UserContext'
 import firebase from "firebase/app";
-
 import { ThemeProvider } from "@material-ui/styles";
 
 import SignUp from "./SignUp";
@@ -33,21 +33,25 @@ export default function Routes() {
 	return (
 		<ThemeProvider theme={theme}>
 			<Router>
-				<AuthProvider>
-					<Navbar />
-					<Switch>
-						<Route exact path="/" component={LandingPage} />
-						<Route path="/signup" component={SignUp} />
-						<Route path="/signin" component={SignIn} />
-						<Route exact path="/app" component={App} />
-						<Route path="/dashboard">
-							{/* {<Dashboard />} */}
-							{isLoggedIn ? <Dashboard /> : <Redirect to="/" />}
-						</Route>
-						<Route path="/updateprofile" component={UpdateProfile} />
-						<Route path="/about" component={About} />
-					</Switch>
-				</AuthProvider>
+				<UserProvider>
+					<AuthProvider>
+						<Navbar />
+						<Switch>
+							<Route exact path="/" component={LandingPage} />
+							<Route path="/signup" component={SignUp} />
+							<Route path="/signin" >
+								{isLoggedIn ? <Redirect to='/dashboard'/> : <SignIn/>}
+							</Route>
+							<Route exact path="/app" component={App} />
+							<Route path="/dashboard">
+								{/* {<Dashboard />} */}
+								{isLoggedIn ? <Dashboard /> : <Redirect to="/" />}
+							</Route>
+							<Route path="/updateprofile" component={UpdateProfile} />
+							<Route path="/about" component={About} />
+						</Switch>
+					</AuthProvider>
+				</UserProvider>
 			</Router>
 		</ThemeProvider>
 	);
