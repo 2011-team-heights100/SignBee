@@ -10,15 +10,37 @@ import { dispose } from "@tensorflow/tfjs";
 import { Typography } from "@material-ui/core";
 import PlayLevel from "./PlayLevel";
 
+const lettersFromDatabase = ["A", "B", "C", "D"];
+
 function App() {
   const webcamRef = useRef(null);
   //   const canvasRef = useRef(null);
   const [guess, setGuess] = useState("");
-  const [seconds, setSeconds] = useState(10);
+  const [timer, setTimer] = useState(10);
   const [game, setGame] = useState("");
+  const [promptArray, setPromptArray] = useState([]);
   const [prompt, setPrompt] = useState("");
-  const [feedback, setFeedback] = useState(null);
+  const [feedback, setFeedback] = useState(null); //import into public file
   const [nextPrompt, setNextPrompt] = useState(true);
+  const [points, setPoints] = useState(0);
+
+  useEffect(() => {
+    setPromptArray(lettersFromDatabase);
+  }, []);
+
+  const rightAnswers = [];
+  const wrongAnswers = [];
+
+  // //if(letters)
+  // let stoppingPoint = letters.length;
+  // let counter = 0;
+  // if (stoppingPoint > 0) {
+  //   if (nextPrompt) {
+  //     setNextPrompt(false);
+  //     setPrompt(letters[counter]);
+  //     counter++;
+  //   }
+  // }
 
   //have a loading screen while the model loads
   //store the model in indexedDB
@@ -48,21 +70,8 @@ function App() {
       video.width = videoWidth;
       video.height = videoHeight;
 
-      //set canvas h and w
-      // canvasRef.current.width = videoWidth;
-      // canvasRef.current.height = videoHeight;
-
       //made detections
       const hand = await net.estimateHands(video);
-
-      // console.log(hand);
-
-      //draw
-      // const ctx = canvasRef.current.getContext("2d");
-
-      //change this for 3D maybe?
-      // requestAnimationFrame(() => {
-      // 	drawHand(hand, ctx);
 
       if (hand.length > 0) {
         const GE = new fp.GestureEstimator([
@@ -95,123 +104,60 @@ function App() {
           Handsigns.zSign,
         ]);
 
+        let i = 0;
+        let interval = setInterval(() => {
+          setPrompt(promptArray[i]);
+          i++;
+          if (i === promptArray.length) {
+            clearInterval(interval);
+          }
+        }, 5000);
+
         const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
 
         let estimated = estimatedGestures.gestures.sort(
           (a, b) => b.confidence - a.confidence
         );
 
-        // the following code is a sample function we might use to delay a user getting an answer wrong.
-        // const prompt = {
-        //    q: "a",
-        //    answer: Handsigns.aSign,
-        //    next:
-        // }
-
-        // const moveOn = async (correctAnswer, userGesture) => {
-        //    await delay(5000)
-        //    if (correctAnswer === userGesture) {
-        //       prompt.next
-        //    }
-        // }
-        // moveOn(prompt.answer, estimated[0])
-
-        // console.log("gesture:", estimated[0]);
-
-        //the line below logs the amount of tensors that are stored in our environment when the app runs. We need to clean those up periodically
-
         if (estimated[0]) setGuess(estimated[0].name);
-
-        // tf.dispose(hand); <---cleanup method. But it doesn't work...yet
       }
-      console.log("Num of tensors:", tf.memory().numTensors);
+      //console.log("Num of tensors:", tf.memory().numTensors);
     }
   };
 
-  function timer() {
-    if (seconds > 0) {
-      setTimeout(() => setSeconds(seconds - 1), 500);
-    } else {
-      setSeconds("Time Out!");
-    }
-  }
-
-  //dummy data for the letters
-
-  const letters = ["A", "B", "C", "D"];
-  const rightAnswers = [];
-  const wrongAnswers = [];
-
-  //start
-  if (seconds === "Time Out!") setGame("start");
-  //if(letters)
-  let stoppingPoint = letters.length;
-  let counter = 0;
-  if (stoppingPoint > 0) {
-    if (nextPrompt) {
-      setNextPrompt(false);
-      setPrompt(letters[counter]);
-      counter++;
-    }
-  }
-
-  useEffect(() => {
-    runHandpose();
-    timer();
-  }, [seconds]);
+  // function timerFunc() {
+  //   if (timer > 0) {
+  //     setTimeout(() => setTimer(timer - 1), 500);
+  //     console.log("this is the timer", timer);
+  //   }
+  // }
+  //timerFunc();
+  //useEffect(() => {
+  runHandpose();
+  //}, []);
 
   return (
     <div className="App video-container">
       <header className="App-header">
-        <Typography variant="h5" align="center" color="primary">
+        {/* <Typography variant="h5" align="center" color="primary">
           Are you ready to Sign? 👍
-        </Typography>
-        <Webcam
-          className="video"
-          ref={webcamRef}
-          // style={{
-          // 	position: "absolute",
-          // 	marginLeft: "auto",
-          // 	marginRight: "auto",
-          // 	left: 0,
-          // 	right: 0,
-          // 	textAlign: "center",
-          // 	zindex: 9,
-          // 	width: 640,
-          // 	height: 480,
-          // }}
-        />
-        {/* <canvas
-					ref={canvasRef}
-					style={{
-						position: "absolute",
-						marginLeft: "auto",
-						marginRight: "auto",
-						left: 0,
-						right: 0,
-						textAlign: "center",
-						zindex: 9,
-						width: 640,
-						height: 480,
-					}}
-				/> */}
+        </Typography> */}
+        <Webcam className="video" ref={webcamRef} />
       </header>
-      <div>{seconds}</div>
-      <h4>{prompt}</h4>
-      {game ? (
-        <div>
-          <Typography id="gesture-guess" color="initial">
-            GUESS {guess}
-          </Typography>
-          <div className="prompt-card">
-            <div className="prompt-box">
-              <div className="prompt-content"></div>
+      <div>
+        <Typography id="gesture-guess" color="initial">
+          GUESS {guess}
+        </Typography>
+        {/* <div>{timer}</div> */}
+        <div className="prompt-card">
+          <div className="prompt-box">
+            <div className="prompt-content">
+              <h4>{prompt}</h4>
             </div>
           </div>
         </div>
-      ) : (
-        <div>Wait up!.. Loading</div>
-      )}
+      </div>
+      <div>Wait up!.. Loading</div>
     </div>
   );
 }
