@@ -7,17 +7,19 @@ import Handsigns from "../handsigns";
 // import { dispose } from "@tensorflow/tfjs";
 import { Typography } from "@material-ui/core";
 import { ThumbUp, ThumbDown } from "@material-ui/icons";
+import { useUser } from "../contexts/UserContext";
 // import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
-let importedLetters = ["A", "B", "C", "D"];
-
-function App() {
+function App({ rounds }) {
 	const webcamRef = useRef(null);
 	const [guess, setGuess] = useState("");
 	const [points, setPoints] = useState(0);
-	const [promptArr, setPromptArr] = useState(importedLetters);
+	const { currentLevel, dbUser } = useUser();
+	const [promptArr, setPromptArr] = useState(currentLevel.easy.prompts);
 	const [prompt, setPrompt] = useState("");
 	// const [thumb, setThumb] = useState("");
+
+	console.log(currentLevel);
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -89,7 +91,7 @@ function App() {
 				if (estimated[0]) setGuess(estimated[0].name);
 			}
 			console.log("Num of tensors:", tf.memory().numTensors);
-			console.log(points);
+			// console.log(points);
 		}
 	};
 
@@ -103,7 +105,7 @@ function App() {
 
 	useEffect(() => {
 		// setPromptArr(importedLetters);
-		// runHandpose();
+		runHandpose();
 		displayPrompt();
 	}, []);
 
@@ -116,13 +118,16 @@ function App() {
 			<div className="prompt-card">
 				<div id="thumb-containter">
 					<div>
-						{(guess !== "" || prompt !== "") && guess === prompt
-							? (<ThumbUp color="primary" style={{ fontSize: 100 }} />)
-							: ""
-							  // <ThumbDown color="primary" style={{ fontSize: 100 }} />
+						{
+							(guess !== "" || prompt !== "") && guess === prompt ? (
+								<ThumbUp color="primary" style={{ fontSize: 100 }} />
+							) : (
+								""
+							)
+							// <ThumbDown color="primary" style={{ fontSize: 100 }} />
 						}
 					</div>
-          <Typography variant="h2">{points}</Typography>
+					<Typography variant="h2">{points}</Typography>
 				</div>
 				<div className="prompt-box">
 					<div className="prompt-content">

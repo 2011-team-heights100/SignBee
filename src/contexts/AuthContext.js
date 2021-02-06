@@ -2,11 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { auth } from "../firebase";
 import "firebase/firestore";
-// import app from '../firebase';
 import firebase from "firebase/app";
-import { db } from "../firebase";
 import { useUser } from "./UserContext";
-
 
 const AuthContext = React.createContext();
 
@@ -121,14 +118,7 @@ export function AuthProvider({ children }) {
 			setCurrentUser(user);
 			setLoading(false);
 		});
-		// if (currentUser) {
-		// 	const userRef = db.collection("Users").doc(currentUser.uid);
-		// 	(() => {
-		// 		userRef.get().then((user) => {
-		// 			setDbUser(user.data());
-		// 		});
-		// 	})();
-		// }
+
 		return unsubscribe;
 	}, []);
 

@@ -9,17 +9,17 @@ import ProfileSummary from "./ProfileSummary";
 export default function Navbar() {
 	const { getDbUser } = useUser();
 	const { currentUser } = useAuth()
-   const [modalShow, setModalShow ] = useState(false)
+  const [modalShow, setModalShow ] = useState(false)
 	const history = useHistory();
 
 	useEffect(() => {
 		getDbUser();
 	}, [])
-	console.log(currentUser)
-   const handleClick = (e) => {
-      e.preventDefault();
-      setModalShow(!modalShow)
-   };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setModalShow(!modalShow)
+  };
 
 	return (
 		<>

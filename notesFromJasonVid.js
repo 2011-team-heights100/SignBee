@@ -30,27 +30,27 @@ video.addEventListener("loadeddata", ()=> {
 	//   }
 	// }
 
-	// const match = () => {
-	// 	while (prompt !== "") {
-	// 		if (guess === "" || prompt === "") {
-	// 			setThumb("");
-	// 		} else if (guess !== "" && guess === prompt) {
-	// 			setPoints(points + 1);
-	// 			setThumb(
-	// 				<ThumbUp color="primary" style={{ fontSize: 100, float: "center" }} />
-	// 			);
-	// 		} else {
-	// 			// setTimeout(() => {
-	// 			setThumb(
-	// 				<ThumbDown
-	// 					color="primary"
-	// 					style={{ fontSize: 100, float: "center" }}
-	// 				/>
-	// 			);
-	// 			// }, 1000);
-	// 		}
-	// 	}
-  // };
+	const match = () => {
+		while (prompt !== "") {
+			if (guess === "" || prompt === "") {
+				setThumb("");
+			} else if (guess !== "" && guess === prompt) {
+				setPoints(points + 1);
+				setThumb(
+					<ThumbUp color="primary" style={{ fontSize: 100, float: "center" }} />
+				);
+			} else {
+				// setTimeout(() => {
+				setThumb(
+					<ThumbDown
+						color="primary"
+						style={{ fontSize: 100, float: "center" }}
+					/>
+				);
+				// }, 1000);
+			}
+		}
+  };
   
 
   		// the following code is a sample function we might use to delay a user getting an answer wrong.
