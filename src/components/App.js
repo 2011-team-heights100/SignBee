@@ -10,44 +10,53 @@ import { dispose } from "@tensorflow/tfjs";
 import { Typography } from "@material-ui/core";
 import PlayLevel from "./PlayLevel";
 
+//import Prompt from "./Prompt";
+
 const lettersFromDatabase = ["A", "B", "C", "D"];
 
 function App() {
+  let hand = 0;
   const webcamRef = useRef(null);
   //   const canvasRef = useRef(null);
   const [guess, setGuess] = useState("");
   const [timer, setTimer] = useState(10);
   const [game, setGame] = useState("");
   const [promptArray, setPromptArray] = useState([]);
-  const [prompt, setPrompt] = useState("");
-  const [feedback, setFeedback] = useState(null); //import into public file
+  const [prompt, setPrompt] = useState("A");
+  //const [feedback, setFeedback] = useState(null); //import into public file
   const [nextPrompt, setNextPrompt] = useState(true);
   const [points, setPoints] = useState(0);
+  const [isRightOrWrong, setRightOrWrong] = useState("");
 
-  useEffect(() => {
-    setPromptArray(lettersFromDatabase);
-  }, []);
+  // useEffect(() => {
+  //   setPromptArray(lettersFromDatabase);
+  // }, []);
 
-  const rightAnswers = [];
-  const wrongAnswers = [];
-
-  // //if(letters)
-  // let stoppingPoint = letters.length;
-  // let counter = 0;
-  // if (stoppingPoint > 0) {
-  //   if (nextPrompt) {
-  //     setNextPrompt(false);
-  //     setPrompt(letters[counter]);
-  //     counter++;
-  //   }
-  // }
+  //dummy data
+  // lettersFromDatabase.forEach((char, i) => {
+  //   //console.log(this.state);
+  //   //console.log(el);
+  //   setTimeout(() => {
+  //     console.log(char);
+  //   }, 5000 * (i + 1));
+  // });
 
   //have a loading screen while the model loads
   //store the model in indexedDB
 
+  // initially set your prompt
+  const changePrompt = () => {
+    //randomly generate A B C D
+    let randomNum = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+    setPrompt(lettersFromDatabase[randomNum]);
+  };
+
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("loaded!");
+
+    changePrompt();
+
     //loop and detect hands
     //if there's a hand, increase pose detection speed, otherwise, slow it down
     setInterval(() => {
@@ -71,7 +80,7 @@ function App() {
       video.height = videoHeight;
 
       //made detections
-      const hand = await net.estimateHands(video);
+      hand = await net.estimateHands(video);
 
       if (hand.length > 0) {
         const GE = new fp.GestureEstimator([
@@ -104,14 +113,25 @@ function App() {
           Handsigns.zSign,
         ]);
 
-        let i = 0;
-        let interval = setInterval(() => {
-          setPrompt(promptArray[i]);
-          i++;
-          if (i === promptArray.length) {
-            clearInterval(interval);
-          }
-        }, 5000);
+        // let i = 0;
+        // let interval = setInterval(() => {
+        //   setPrompt(promptArray[i]);
+        //   i++;
+        //   if (i === promptArray.length) {
+        //     clearInterval(interval);
+        //   }
+        // }, 5000);
+
+        //dummy data
+        // lettersFromDatabase.map((char, i) => {
+        //   //console.log(this.state);
+        //   //console.log();
+        //   setPrompt(char);
+        //   console.log("state", prompt);
+        //   // setInterval(() => {
+        //   //   //console.log(char);
+        //   // }, 5000 * (i + 1));
+        // });
 
         const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
 
@@ -120,10 +140,26 @@ function App() {
         );
 
         if (estimated[0]) setGuess(estimated[0].name);
+
+        // hand detected and made a guess, now we have to check if guess is right
+        isGuessCorrect();
       }
       //console.log("Num of tensors:", tf.memory().numTensors);
     }
   };
+
+  // function that compares your guess with the prompt
+  const isGuessCorrect = () => {
+    if (guess === prompt) {
+      setRightOrWrong("Correct");
+      //set timer here that lasts for 3 seconds that says yay correct! onto the next prompt or you earned a point
+      changePrompt();
+    } else if (guess !== prompt) {
+      setRightOrWrong("Try Again!");
+    }
+  };
+
+  runHandpose();
 
   // function timerFunc() {
   //   if (timer > 0) {
@@ -133,7 +169,6 @@ function App() {
   // }
   //timerFunc();
   //useEffect(() => {
-  runHandpose();
   //}, []);
 
   return (
@@ -152,12 +187,16 @@ function App() {
         <div className="prompt-card">
           <div className="prompt-box">
             <div className="prompt-content">
+              {/* <Prompt /> */}
               <h4>{prompt}</h4>
             </div>
           </div>
         </div>
       </div>
-      <div>Wait up!.. Loading</div>
+      <Typography id="gesture-guess" color="initial">
+        IS GUESS CORRECT: {isRightOrWrong}
+      </Typography>
+      {/* <div>Wait up!.. Loading</div> */}
     </div>
   );
 }
