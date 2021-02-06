@@ -3,18 +3,20 @@ import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
+import { useUser } from '../contexts/UserContext';
 // import { drawHand } from "../utilities";
 
 import Handsigns from "../handsigns";
 import { Typography, Box } from "@material-ui/core";
 
-function App() {
+function App({rounds}) {
   const webcamRef = useRef(null);
   const [guess, setGuess] = useState("");
+  const { currentLevel, dbUser } = useUser();
 
   //have a loading screen while the model loads
   //store the model in indexedDB
-
+console.log(currentLevel)
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("loaded!");
@@ -40,21 +42,8 @@ function App() {
       video.width = videoWidth;
       video.height = videoHeight;
 
-      //set canvas h and w
-      // canvasRef.current.width = videoWidth;
-      // canvasRef.current.height = videoHeight;
-
       //made detections
       const hand = await net.estimateHands(video);
-
-      // console.log(hand);
-
-      //draw
-      // const ctx = canvasRef.current.getContext("2d");
-
-      //change this for 3D maybe?
-      // requestAnimationFrame(() => {
-      // 	drawHand(hand, ctx);
 
       if (hand.length > 0) {
         const GE = new fp.GestureEstimator([
@@ -120,9 +109,9 @@ function App() {
     }
   };
 
-useEffect(() => {
-   runHandpose()
-}, []);
+// useEffect(() => {
+//    runHandpose()
+// }, []);
 
   //   function tensorMemory() {
   //     const memory = tf.memory().numTensors;
@@ -145,32 +134,7 @@ useEffect(() => {
         <Webcam
           className="video"
           ref={webcamRef}
-          // style={{
-          // 	position: "absolute",
-          // 	marginLeft: "auto",
-          // 	marginRight: "auto",
-          // 	left: 0,
-          // 	right: 0,
-          // 	textAlign: "center",
-          // 	zindex: 9,
-          // 	width: 640,
-          // 	height: 480,
-          // }}
         />
-        {/* <canvas
-					ref={canvasRef}
-					style={{
-						position: "absolute",
-						marginLeft: "auto",
-						marginRight: "auto",
-						left: 0,
-						right: 0,
-						textAlign: "center",
-						zindex: 9,
-						width: 640,
-						height: 480,
-					}}
-				/> */}
       </header>
       <Typography
         id="gesture-guess"

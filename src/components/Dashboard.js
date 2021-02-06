@@ -3,31 +3,30 @@ import HoneyComb from './HoneyComb';
 import { useUser } from '../contexts/UserContext';
 
 export default function Dashboard () {
-	const { getDbUser, levels, getLevels } = useUser();
+	const { getDbUser } = useUser();
 
 	useEffect(() => {
 		getDbUser();
-		getLevels();
 	}, []);
 
 	return (
 		<div id='hexGrid'>
 			<div className='row'>
-				<HoneyComb name='LEARN' rounds={levels['learn']} />
+				<HoneyComb name='LEARN' />
 			</div>
 			<div className='row'>
-				<HoneyComb name='ABCD' rounds={levels['ABCD']} />
-				<HoneyComb name='EFGH' rounds={levels['EFGH']} />
+				<HoneyComb name='ABCD' />
+				<HoneyComb name='EFGH' />
 			</div>
 			<div className='row'>
-				<HoneyComb name='IJKL' rounds={levels['IJKL']} />
-				<HoneyComb name='MNOP' rounds={levels['MNOP']} />
-				<HoneyComb name='QRST' rounds={levels['QRST']} />
+				<HoneyComb name='IJKL' />
+				<HoneyComb name='MNOP' />
+				<HoneyComb name='QRST' />
 			</div>
 			<div className='row'>
-				<HoneyComb name='UVW' rounds={levels['UVW']} />
-				<HoneyComb name='XYZ' rounds={levels['XYZ']} />
+				<HoneyComb name='UVW' />
+				<HoneyComb name='XYZ' />
 			</div>
-		</div>
+			</div>
 	);
 }

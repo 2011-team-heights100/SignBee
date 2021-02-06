@@ -12,7 +12,8 @@ export function useUser () {
 export function UserProvider ({ children }) {
 	const [dbUser, setDbUser] = useState('');
 	const isLoggedIn = auth.currentUser;
-  const [levels, setLevels] = useState({});
+	const [levels, setLevels] = useState({});
+	const [currentLevel, setCurrentLevel] = useState({});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -59,7 +60,9 @@ export function UserProvider ({ children }) {
 		getDbUser,
     setDbUser,
     getLevels,
-    levels,
+		levels,
+		setCurrentLevel,
+		currentLevel
   };
 
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
