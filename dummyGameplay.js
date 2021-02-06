@@ -3,20 +3,19 @@ import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
-import Handsigns from "../handsigns";
-// import { dispose } from "@tensorflow/tfjs";
-import { Typography } from "@material-ui/core";
-import { ThumbUp, ThumbDown } from "@material-ui/icons";
-// import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import { drawHand } from "../utilities";
 
-let importedLetters = ["A", "B", "C", "D"];
+import Handsigns from "../handsigns";
+import { dispose } from "@tensorflow/tfjs";
+import { Typography, Box } from "@material-ui/core";
 
 function App() {
 	const webcamRef = useRef(null);
+	//   const canvasRef = useRef(null);
 	const [guess, setGuess] = useState("");
-	const [points, setPoints] = useState(0);
-	const [promptArr, setPromptArr] = useState(importedLetters);
-	const [prompt, setPrompt] = useState("");
+
+	//have a loading screen while the model loads
+	//store the model in indexedDB
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -27,7 +26,6 @@ function App() {
 			detect(net);
 		}, 500);
 	};
-
 	const detect = async (net) => {
 		//check if data is available
 		if (
@@ -44,9 +42,21 @@ function App() {
 			video.width = videoWidth;
 			video.height = videoHeight;
 
+			//set canvas h and w
+			// canvasRef.current.width = videoWidth;
+			// canvasRef.current.height = videoHeight;
+
 			//made detections
 			const hand = await net.estimateHands(video);
+
 			// console.log(hand);
+
+			//draw
+			// const ctx = canvasRef.current.getContext("2d");
+
+			//change this for 3D maybe?
+			// requestAnimationFrame(() => {
+			// 	drawHand(hand, ctx);
 
 			if (hand.length > 0) {
 				const GE = new fp.GestureEstimator([
@@ -112,43 +122,69 @@ function App() {
 		}
 	};
 
-  //display the prompt every 5 seconds
-	const displayPrompt = () => {
-		let i = 0;
-		// const interval =
-		setInterval(async () => {
-			await setPrompt(promptArr[i++]);
-		}, 5000);
-	};
-
 	useEffect(() => {
-		// setPromptArr(importedLetters);
 		runHandpose();
-		displayPrompt();
 	}, []);
+
+	//   function tensorMemory() {
+	//     const memory = tf.memory().numTensors;
+	//     return memory;
+	//   }
+
+	//   function disposeMemory() {
+	//     tf.disposeVariables(() => {
+	//       tensorMemory();
+	//     });
+	//   }
+	//   disposeMemory();
 
 	return (
 		<div className="App video-container">
 			<header className="App-header">
-				<Webcam className="video" ref={webcamRef} />
+				<Typography variant="h5" align="center" color="primary">
+					Are you ready to Sign? 👍
+				</Typography>
+				<Webcam
+					className="video"
+					ref={webcamRef}
+					// style={{
+					// 	position: "absolute",
+					// 	marginLeft: "auto",
+					// 	marginRight: "auto",
+					// 	left: 0,
+					// 	right: 0,
+					// 	textAlign: "center",
+					// 	zindex: 9,
+					// 	width: 640,
+					// 	height: 480,
+					// }}
+				/>
+				{/* <canvas
+					ref={canvasRef}
+					style={{
+						position: "absolute",
+						marginLeft: "auto",
+						marginRight: "auto",
+						left: 0,
+						right: 0,
+						textAlign: "center",
+						zindex: 9,
+						width: 640,
+						height: 480,
+					}}
+				/> */}
 			</header>
-      
+			<Typography
+				id="gesture-guess"
+				color="initial"
+				fontWeight="fontWeightBold"
+			>
+				GUESS {guess}
+			</Typography>
 			<div className="prompt-card">
-        <div>
-        <div>
-					{guess !== "" && guess === prompt ? (
-						<ThumbUp color="primary" style={{ fontSize: 100, float: "center" }} />
-					) : (
-						""
-					)}
-				</div>
-      </div>
 				<div className="prompt-box">
 					<div className="prompt-content">
-						<Typography id="gesture-guess" fontWeight="fontWeightBold">
-							GUESS {guess}
-						</Typography>
-						<Typography variant="h2">Prompt: {prompt}</Typography>
+						<p>PROMPT</p>
 					</div>
 				</div>
 			</div>
