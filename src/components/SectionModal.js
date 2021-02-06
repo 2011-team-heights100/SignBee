@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
-import { useAuth } from '../contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
 import {
 	Dialog,

@@ -51,7 +51,6 @@ export default function Routes() {
 							</Route>
 							<Route exact path='/app' component={App} />
 							<Route path='/dashboard'>
-								{/* {<Dashboard />} */}
 								{isLoggedIn ? <Dashboard /> : <Redirect to='/' />}
 							</Route>
 							<Route path='/updateprofile'>

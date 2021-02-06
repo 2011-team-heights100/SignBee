@@ -3,15 +3,13 @@ import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
-import { drawHand } from "../utilities";
+// import { drawHand } from "../utilities";
 
 import Handsigns from "../handsigns";
-import { dispose } from '@tensorflow/tfjs';
 import { Typography, Box } from "@material-ui/core";
 
 function App() {
   const webcamRef = useRef(null);
-//   const canvasRef = useRef(null);
   const [guess, setGuess] = useState("");
 
   //have a loading screen while the model loads
