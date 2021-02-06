@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import SectionModal from './SectionModal';
 
-
 function HoneyComb ({name}) {
 	const [showModal, setShowModal] = useState(false)
 

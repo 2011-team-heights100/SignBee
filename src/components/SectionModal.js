@@ -6,9 +6,9 @@ import {
 	DialogTitle,
 	List,
 	ListItem,
-   ListItemText,
+	ListItemText,
 	Button,
-	 Typography
+	Typography,
 } from "@material-ui/core";
 
 export default function SectionModal({name, show}) {
@@ -22,7 +22,7 @@ export default function SectionModal({name, show}) {
 	}, []);
 
 	if (dbUser) {
-		let progress = dbUser.progress[name]
+		let progress = dbUser.progress[name];
 		for (let key in progress) {
 			if (progress[key] === true) levelsCompleted++;
 		};
@@ -36,15 +36,15 @@ export default function SectionModal({name, show}) {
 	return (
 		<Dialog open={show}>
 			<DialogTitle>
-				<Typography variant='h2'>{name}</Typography>
+				<Typography variant="h2">{name}</Typography>
 			</DialogTitle>
 			<List>
 				<ListItem>
-					<ListItemText primary='Lives' />
+					<ListItemText primary="Lives" />
 				</ListItem>
 				<ListItem>
-					<ListItemText primary='Levels' />
-					<ListItemText primary={levelsCompleted + '/3'} />
+					<ListItemText primary="Levels" />
+					<ListItemText primary={levelsCompleted + "/3"} />
 				</ListItem>
 			</List>
 			<Button onClick={() => handleClick()}>Begin</Button>
