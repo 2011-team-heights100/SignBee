@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
-import { useAuth } from '../contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
 import {
 	Dialog,
@@ -12,20 +11,26 @@ import {
 	 Typography
 } from "@material-ui/core";
 
-export default function SectionModal({name, rounds, show}) {
-	const { dbUser, getDbUser } = useUser();
+export default function SectionModal({name, show}) {
+	const { dbUser, getDbUser, levels, getLevels, setCurrentLevel } = useUser();
 	const history = useHistory();
 	let levelsCompleted = 0;
 
 	useEffect(() => {
 		getDbUser();
-	}, [])
+		getLevels();
+	}, []);
 
 	if (dbUser) {
 		let progress = dbUser.progress[name]
 		for (let key in progress) {
-			if (progress[key] === true) levelsCompleted++
-		}
+			if (progress[key] === true) levelsCompleted++;
+		};
+	};
+
+	function handleClick () {
+		setCurrentLevel(levels[name]);
+		history.push('/app');
 	}
 
 	return (
@@ -42,7 +47,7 @@ export default function SectionModal({name, rounds, show}) {
 					<ListItemText primary={levelsCompleted + '/3'} />
 				</ListItem>
 			</List>
-			<Button onClick={() => history.push('/app')}>Begin</Button>
+			<Button onClick={() => handleClick()}>Begin</Button>
 		</Dialog>
 	);
 }

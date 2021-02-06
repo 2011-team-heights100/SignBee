@@ -1,20 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react'
 import 'firebase/firestore'
-import firebase from 'firebase/app';
 import { db } from '../firebase'
-import { useAuth } from './AuthContext'
 import { auth } from '../firebase'
 
-const UserContext = React.createContext()
+const UserContext = React.createContext();
 
 export function useUser () {
-  return useContext(UserContext)
-}
+  return useContext(UserContext);
+};
 
 export function UserProvider ({ children }) {
 	const [dbUser, setDbUser] = useState('');
 	const isLoggedIn = auth.currentUser;
-	const [levels, setLevels] = useState({})
+	const [levels, setLevels] = useState({});
+	const [currentLevel, setCurrentLevel] = useState({});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -49,7 +48,6 @@ export function UserProvider ({ children }) {
     const getLevels = {};
 		sectionsRef.get().then((snapshot) => {
 			snapshot.docs.forEach((doc) => {
-        // console.log(doc.data());
         const section = doc.data()
         getLevels[section.name] = section.levels
       });
@@ -57,25 +55,15 @@ export function UserProvider ({ children }) {
 		});
   }
 
-  // function getUserProgress () {
-  //   const userRef = db.collection('Users');
-  //   const userProgress = {}
-  //   userRef.where(firebase.firestore.FieldPath.documentId(), '==', isLoggedIn.uid).get().then((snapshot) => {
-  //     snapshot.docs.forEach((doc) => {
-  //       console.log(doc.data())
-  //     })
-  //   })
-  //   console.log('dbuser', dbUser)
-  // }
-
-	// console.log('user context', dbUser)
 	const value = {
 		dbUser,
 		getDbUser,
     setDbUser,
     getLevels,
-    levels,
-    // getUserProgress
-	};
+		levels,
+		setCurrentLevel,
+		currentLevel
+  };
+
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

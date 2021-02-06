@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SectionModal from './SectionModal';
 
 
-function HoneyComb ({name, rounds}) {
+function HoneyComb ({name}) {
 	const [showModal, setShowModal] = useState(false)
 
   const handleClick = (e) => {
@@ -11,7 +11,7 @@ function HoneyComb ({name, rounds}) {
   }
 
   return (
-    <div className='hexagon hexagon-with-border warning' onClick={handleClick}>
+		<div className='hexagon hexagon-with-border warning' onClick={handleClick}>
 			<div className='hexagon-shape'>
 				<div className='hexagon-shape-inner'>
 					<div className='hexagon-shape-inner-2'></div>
@@ -24,7 +24,7 @@ function HoneyComb ({name, rounds}) {
 			</div>
 			<div className='hexagon-content'>
 				<div className='content-title'>{name}</div>
-				<SectionModal name={name} rounds={rounds} show={showModal} />
+				<SectionModal show={showModal} name={name} />
 			</div>
 		</div>
 	);
