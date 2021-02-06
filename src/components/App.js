@@ -17,6 +17,7 @@ function App() {
 	const [points, setPoints] = useState(0);
 	const [promptArr, setPromptArr] = useState(importedLetters);
 	const [prompt, setPrompt] = useState("");
+	// const [thumb, setThumb] = useState("");
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -85,37 +86,16 @@ function App() {
 					(a, b) => b.confidence - a.confidence
 				);
 
-				// the following code is a sample function we might use to delay a user getting an answer wrong.
-				// const prompt = {
-				//    q: "a",
-				//    answer: Handsigns.aSign,
-				//    next:
-				// }
-
-				// const moveOn = async (correctAnswer, userGesture) => {
-				//    await delay(5000)
-				//    if (correctAnswer === userGesture) {
-				//       prompt.next
-				//    }
-				// }
-				// moveOn(prompt.answer, estimated[0])
-
-				// console.log("gesture:", estimated[0]);
-
-				//the line below logs the amount of tensors that are stored in our environment when the app runs. We need to clean those up periodically
-
 				if (estimated[0]) setGuess(estimated[0].name);
-
-				// tf.dispose(hand); <---cleanup method. But it doesn't work...yet
 			}
 			console.log("Num of tensors:", tf.memory().numTensors);
+			console.log(points);
 		}
 	};
 
-  //display the prompt every 5 seconds
+	//display the prompt every 5 seconds
 	const displayPrompt = () => {
 		let i = 0;
-		// const interval =
 		setInterval(async () => {
 			await setPrompt(promptArr[i++]);
 		}, 5000);
@@ -123,7 +103,7 @@ function App() {
 
 	useEffect(() => {
 		// setPromptArr(importedLetters);
-		runHandpose();
+		// runHandpose();
 		displayPrompt();
 	}, []);
 
@@ -132,17 +112,18 @@ function App() {
 			<header className="App-header">
 				<Webcam className="video" ref={webcamRef} />
 			</header>
-      
+
 			<div className="prompt-card">
-        <div>
-        <div>
-					{guess !== "" && guess === prompt ? (
-						<ThumbUp color="primary" style={{ fontSize: 100, float: "center" }} />
-					) : (
-						""
-					)}
+				<div id="thumb-containter">
+					<div>
+						{(guess !== "" || prompt !== "") && guess === prompt
+							? (<ThumbUp color="primary" style={{ fontSize: 100 }} />)
+							: ""
+							  // <ThumbDown color="primary" style={{ fontSize: 100 }} />
+						}
+					</div>
+          <Typography variant="h2">{points}</Typography>
 				</div>
-      </div>
 				<div className="prompt-box">
 					<div className="prompt-content">
 						<Typography id="gesture-guess" fontWeight="fontWeightBold">

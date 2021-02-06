@@ -263,3 +263,10 @@ transparent box
 	font-size: 15px;
 	color: black;
 }
+
+#thumb-containter {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  margin-bottom: 10px;
+}
