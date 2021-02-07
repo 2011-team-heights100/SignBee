@@ -13,7 +13,8 @@ export function UserProvider ({ children }) {
 	const [dbUser, setDbUser] = useState('');
 	const isLoggedIn = auth.currentUser;
 	const [levels, setLevels] = useState({});
-	const [currentLevel, setCurrentLevel] = useState({});
+  const [currentLevel, setCurrentLevel] = useState({});
+  // const [points, setPoints] = useState({})
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -55,6 +56,11 @@ export function UserProvider ({ children }) {
 		});
   }
 
+  function setPlayerPoints(pts) {
+    // const player = db.collection(userId)
+    db.collection("Users").doc(isLoggedIn.uid).update({ points: pts });
+  }
+
 	const value = {
 		dbUser,
 		getDbUser,
@@ -62,7 +68,8 @@ export function UserProvider ({ children }) {
     getLevels,
 		levels,
 		setCurrentLevel,
-		currentLevel
+    currentLevel,
+    setPlayerPoints
   };
 
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
