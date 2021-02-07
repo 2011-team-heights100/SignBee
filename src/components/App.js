@@ -8,22 +8,32 @@ import Handsigns from "../handsigns";
 import { Typography } from "@material-ui/core";
 import { ThumbUp, ThumbDown } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
+import { wobble } from "react-animations";
+import styled, { keyframes } from "styled-components";
 // import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+
+const dummyPrompts = ["A", "B", "C", "D"];
+// currentLevel.easy.prompts
 
 function App({ rounds }) {
 	const webcamRef = useRef(null);
-	const [guess, setGuess] = useState("");
+	const [guess, setGuess] = useState(null);
 	const [points, setPoints] = useState(0);
 	const { currentLevel, dbUser } = useUser();
-	const [promptArr, setPromptArr] = useState(currentLevel.easy.prompts);
+	const [promptArr, setPromptArr] = useState(dummyPrompts);
 	const [prompt, setPrompt] = useState("");
+	const [loading, setLoading] = useState(true);
 	// const [thumb, setThumb] = useState("");
 
-	console.log(currentLevel);
+	const Bounce = styled.div`
+		animation: 6s ${keyframes`${wobble}`} infinite;
+	`;
+	// console.log(currentLevel);
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
-		console.log("loaded!");
+		console.log("handpose loaded!");
+
 		//loop and detect hands
 		//if there's a hand, increase pose detection speed, otherwise, slow it down
 		setInterval(() => {
@@ -99,14 +109,24 @@ function App({ rounds }) {
 	const displayPrompt = () => {
 		let i = 0;
 		setInterval(async () => {
+			// match();
 			await setPrompt(promptArr[i++]);
 		}, 5000);
 	};
 
+	// const match = () => {
+	// 	if (guess !== "" && guess === prompt) {
+	// 		setPoints((prevPoints) => prevPoints + 1);
+	// 	}
+	// };
+
 	useEffect(() => {
-		// setPromptArr(importedLetters);
-		runHandpose();
-		displayPrompt();
+		// runHandpose();
+		setTimeout(() => {
+			setLoading(false);
+			displayPrompt();
+			// match()
+		}, 10000);
 	}, []);
 
 	return (
@@ -114,30 +134,36 @@ function App({ rounds }) {
 			<header className="App-header">
 				<Webcam className="video" ref={webcamRef} />
 			</header>
-
-			<div className="prompt-card">
-				<div id="thumb-containter">
-					<div>
-						{
-							(guess !== "" || prompt !== "") && guess === prompt ? (
+			{loading ? (
+				<div className="loading">
+					<Bounce>
+						<img src={process.env.PUBLIC_URL + "/bee.png"} id="bee" />
+					</Bounce>
+					<br />
+					<Typography variant="h2">Loading...</Typography>
+				</div>
+			) : (
+				<div className="prompt-card">
+					<div id="thumb-containter">
+						<div>
+							{(guess !== "" || prompt !== "") && guess === prompt ? (
 								<ThumbUp color="primary" style={{ fontSize: 100 }} />
 							) : (
 								""
-							)
-							// <ThumbDown color="primary" style={{ fontSize: 100 }} />
-						}
+							)}
+						</div>
+						<Typography variant="h2">{points}</Typography>
 					</div>
-					<Typography variant="h2">{points}</Typography>
-				</div>
-				<div className="prompt-box">
-					<div className="prompt-content">
-						<Typography id="gesture-guess" fontWeight="fontWeightBold">
-							GUESS {guess}
-						</Typography>
-						<Typography variant="h2">Prompt: {prompt}</Typography>
+					<div className="prompt-box">
+						<div className="prompt-content">
+							<Typography id="gesture-guess" fontWeight="fontWeightBold">
+								GUESS {guess}
+							</Typography>
+							<Typography variant="h2">Prompt: {prompt}</Typography>
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }
