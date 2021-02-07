@@ -4,15 +4,14 @@ import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
 import Handsigns from "../handsigns";
-// import { dispose } from "@tensorflow/tfjs";
 import { Typography } from "@material-ui/core";
-import { ThumbUp, ThumbDown } from "@material-ui/icons";
+import { ThumbUp } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble } from "react-animations";
 import styled, { keyframes } from "styled-components";
-// import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
 const dummyPrompts = ["A", "B", "C", "D"];
+const timeLimitForGuess = 10000;
 // currentLevel.easy.prompts
 
 function App({ rounds }) {
@@ -22,8 +21,10 @@ function App({ rounds }) {
   const { currentLevel, dbUser } = useUser();
   const [promptArr, setPromptArr] = useState(dummyPrompts);
   const [prompt, setPrompt] = useState("");
+  const [promptIdx, setPromptIdx] = useState(0);
   const [loading, setLoading] = useState(true);
-  // const [thumb, setThumb] = useState("");
+  const [thumb, setThumb] = useState(false);
+  const [prevTime, setPrevTime] = useState(Date.now() + 2000);
 
   const Bounce = styled.div`
     animation: 6s ${keyframes`${wobble}`} infinite;
@@ -33,11 +34,21 @@ function App({ rounds }) {
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("handpose loaded!");
+    setLoading(false);
+
+    // setInterval(() => {
+    //   detect(net);
+    // }, 500);
 
     //loop and detect hands
     //if there's a hand, increase pose detection speed, otherwise, slow it down
-    setInterval(() => {
-      detect(net);
+    start(net);
+  };
+
+  const start = (net) => {
+    setTimeout(async () => {
+      await detect(net);
+      start(net);
     }, 500);
   };
 
@@ -98,36 +109,56 @@ function App({ rounds }) {
           (a, b) => b.confidence - a.confidence
         );
 
-        if (estimated[0]) setGuess(estimated[0].name);
+        if (estimated[0]) {
+          setGuess(estimated[0].name);
+          // isGuessCorrect(estimated[0].name);
+        }
       }
-      console.log("Num of tensors:", tf.memory().numTensors);
-      // console.log(points);
+      //console.log("Num of tensors:", tf.memory().numTensors);
     }
   };
 
+  useEffect(() => {
+    isGuessCorrect(guess);
+    //when the guess changes and the time changes
+  }, [guess, prevTime]);
+
   //display the prompt every 5 seconds
-  const displayPrompt = () => {
-    let i = 0;
-    setInterval(async () => {
-      // match();
-      await setPrompt(promptArr[i++]);
-    }, 5000);
+  //const displayPrompt = () => {
+  // let i = 0;
+  // setInterval(async () => {
+  //   //console.log("promptArr", promptArr);
+  //   //console.log("promptArr[0]", promptArr && promptArr[0]);
+  //   setPrompt(promptArr[0]);
+  // }, 7000);
+  //};
+
+  const isGuessCorrect = (guess) => {
+    const currTime = Date.now();
+    // check has it been under 7 seconds
+    // user has exceeded time limit
+    const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
+    if (!isWithinTimeLimit) {
+      setThumb(false);
+      setPromptIdx(promptIdx + 1);
+      setPrevTime(currTime);
+    } else if (isWithinTimeLimit && guess === dummyPrompts[promptIdx]) {
+      setThumb(true);
+      setPoints(points + 1);
+      setPromptIdx(promptIdx + 1); // make random index betwen \dumm\y prompts
+      setPrevTime(currTime);
+    }
   };
 
-  // const match = () => {
-  // 	if (guess !== "" && guess === prompt) {
-  // 		setPoints((prevPoints) => prevPoints + 1);
-  // 	}
-  // };
-
   useEffect(() => {
-    // runHandpose();
-    setTimeout(() => {
-      setLoading(false);
-      displayPrompt();
-      // match()
-    }, 10000);
+    runHandpose();
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 10000);
   }, []);
+
+  const currPrompt = dummyPrompts[promptIdx];
+  //console.log("prompt outside", prompt);
 
   return (
     <div className="App video-container">
@@ -146,7 +177,12 @@ function App({ rounds }) {
         <div className="prompt-card">
           <div id="thumb-containter">
             <div>
-              {(guess !== "" || prompt !== "") && guess === prompt ? (
+              {/* {(guess !== "" || prompt !== "") && guess === prompt ? (
+                <ThumbUp color="primary" style={{ fontSize: 100 }} />
+              ) : (
+                ""
+              )} */}
+              {thumb ? (
                 <ThumbUp color="primary" style={{ fontSize: 100 }} />
               ) : (
                 ""
@@ -159,7 +195,7 @@ function App({ rounds }) {
               <Typography id="gesture-guess" fontWeight="fontWeightBold">
                 GUESS {guess}
               </Typography>
-              <Typography variant="h2">Prompt: {prompt}</Typography>
+              <Typography variant="h2">Prompt: {currPrompt}</Typography>
             </div>
           </div>
         </div>
