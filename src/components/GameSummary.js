@@ -12,10 +12,13 @@ export default function GameSummary(props) {
 		getDbUser,
 		getLevels,
 		levels,
+		currentLevel,
 		setCurrentLevel,
 		setPlayerPoints,
-  } = useUser();
-  const [totalPts, setTotalPts] = useState()
+		updateProgress,
+		difficulty,
+	} = useUser();
+	const [totalPts, setTotalPts] = useState();
 
 	useEffect(() => {
 		getDbUser();
@@ -25,20 +28,15 @@ export default function GameSummary(props) {
 	const addPoints = async () => {
 		let userPoints = await dbUser.points;
 		let newTotal = userPoints + props.points;
-    await setPlayerPoints(newTotal);
-    await setTotalPts(newTotal)
-  };
-  console.log("dbUser:", dbUser);
+		await setPlayerPoints(newTotal);
+		await setTotalPts(newTotal);
+		if (props.points === props.maxPts) {
+			await updateProgress(currentLevel.name, difficulty);
+		}
+	};
+	console.log("dbUser:", dbUser);
 
-  dbUser && addPoints();
-	
-	// console.log("levels:", levels);
-  // console.log("currentLevel:", props.currentLevel);
-  
-	// function handleClick() {
-	// 	setCurrentLevel(levels[name]);
-	// 	history.push("/app");
-	// }
+	dbUser && addPoints();
 
 	return (
 		<div className="game-summary-container">
@@ -49,7 +47,7 @@ export default function GameSummary(props) {
 				<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
 				<br />
 				<Button onClick={() => history.push("/")}>Next</Button>
-				<Button variant="outlined" onClick={() => history.push("/")}>
+				<Button variant="outlined" onClick={() => history.push("/app")}>
 					Play Again
 				</Button>
 				<Button variant="outlined" onClick={() => history.push("/dashboard")}>

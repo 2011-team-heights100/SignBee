@@ -14,51 +14,25 @@ const Bounce = styled.div`
 	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
 
-const dummyPrompts = ["A", "B", "C", "D"];
+// const dummyPrompts = ["A", "B", "C", "D"];
 // currentLevel.easy.prompts
 let memo = {};
 
 function App({ rounds }) {
 	const webcamRef = useRef(null);
-	const { currentLevel, dbUser } = useUser();
+	const { currentLevel, dbUser, difficulty } = useUser();
 	const [guess, setGuess] = useState(null);
-	// const [difficulty, setDifficulty] = useState(null);
-	const [promptArr, setPromptArr] = useState(dummyPrompts);
+	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
-
-	// console.log("currentLevel", currentLevel);
-	// console.log("dbUser", dbUser);
-
-	// const defineDifficulty = () => {
-	// 	if (
-	// 		!dbUser.progress[currentLevel].easy &&
-	// 		!dbUser.progress[currentLevel].medium &&
-	// 		!dbUser.progress[currentLevel].medium
-	// 	) {
-	// 		setDifficulty("easy");
-	// 	// } else if (
-	// 	// 	dbUser.progress.currentLevel.easy &&
-	// 	// 	!dbUser.progress.currentLevel.medium &&
-	// 	// 	!dbUser.progress.currentLevel.medium
-	// 	// ) {
-	// 	// 	setDifficulty("mdium");
-	// 	// } else if (
-	// 	// 	dbUser.progress.currentLevel.easy &&
-	// 	// 	dbUser.progress.currentLevel.medium &&
-	// 	// 	!dbUser.progress.currentLevel.medium
-	// 	// ) {
-	// 	// 	setDifficulty("hard");
-	// 	}
-	// };
+	const maxPts = promptArr.length;
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
 		console.log("handpose loaded!");
 
 		//loop and detect hands
-		//if there's a hand, increase pose detection speed, otherwise, slow it down
 		setInterval(() => {
 			detect(net);
 		}, 500);
@@ -139,10 +113,8 @@ function App({ rounds }) {
 			}
 		}, 5000);
 	};
-	console.log("gameState", gameState);
 
 	useEffect(() => {
-		// defineDifficulty()
 		runHandpose();
 		setTimeout(() => {
 			setLoading(false);
@@ -155,7 +127,7 @@ function App({ rounds }) {
 	}
 
 	let totalPts = Object.keys(memo).length;
-
+  
 	return gameState ? (
 		<div className="App video-container">
 			<header className="App-header">
@@ -197,7 +169,7 @@ function App({ rounds }) {
 			)}
 		</div>
 	) : (
-		<GameSummary points={totalPts} currentLevel={currentLevel} />
+		<GameSummary points={totalPts} maxPts={maxPts} />
 	);
 }
 

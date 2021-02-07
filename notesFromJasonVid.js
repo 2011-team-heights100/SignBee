@@ -467,3 +467,9 @@ export default App;
 
 (guess !== "" || prompt !== "") && guess === prompt
 
+
+currentLevel:
+{easy: {prompts: Array(4), hints: Array(4)}
+hard: {answers: Array(4), prompts: Array(4)}
+medium: {prompts: Array(4)}}
+

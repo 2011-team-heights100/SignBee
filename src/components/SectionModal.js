@@ -11,8 +11,15 @@ import {
 } from "@material-ui/core";
 
 export default function SectionModal({name, show}) {
-  const { dbUser, getDbUser, levels, getLevels, currentLevel, setCurrentLevel } = useUser();
-  const [difficulty, setDifficulty] = useState(null);
+  const {
+		dbUser,
+		getDbUser,
+		levels,
+		getLevels,
+		currentLevel,
+		setCurrentLevel,
+		defineDifficulty
+	} = useUser();
 	const history = useHistory();
 	let levelsCompleted = 0;
 
@@ -28,34 +35,13 @@ export default function SectionModal({name, show}) {
 			if (progress[key] === true) levelsCompleted++;
 		};
   };
-  
-  const defineDifficulty = (currentLevelName) => {
-		if (
-			!dbUser.progress.currentLevelName.easy &&
-			!dbUser.progress.currentLevelName.medium &&
-			!dbUser.progress.currentLevelName.medium
-		) {
-			setDifficulty("easy");
-		} else if (
-			dbUser.progress.currentLevelName.easy &&
-			!dbUser.progress.currentLevelName.medium &&
-			!dbUser.progress.currentLevelName.medium
-		) {
-			setDifficulty("mdium");
-		} else if (
-			dbUser.progress.currentLevelName.easy &&
-			dbUser.progress.currentLevelName.medium &&
-			!dbUser.progress.currentLevelName.medium
-		) {
-			setDifficulty("hard");
-		}
-	};
+
 
 	async function handleClick () {
     await defineDifficulty(name)
     await setCurrentLevel(levels[name]);
     console.log("currentLevel", currentLevel)
-    console.log("difficulty", difficulty);
+    // console.log("difficulty", difficulty);
 		history.push("/app");
 	}
 
