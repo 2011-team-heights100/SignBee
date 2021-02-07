@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Button, Typography, TextField } from "@material-ui/core";
+import { Button, Typography, TextField, Link } from "@material-ui/core";
 import { useUser } from '../contexts/UserContext';
 
 export default function UpdateProfile() {
@@ -57,59 +57,62 @@ export default function UpdateProfile() {
 			});
 	}
 
-	return currentUser && (
-		<>
-			<div className="centerme">
-				<div>SignBee Logo</div>
-				<br />
-				<br />
-				<div className="formdiv">
-					<Typography variant="h2">UPDATE</Typography>
-					{error && <div>{error}</div>}
-					<form className="veritcalform" onSubmit={handleSubmit}>
-						<TextField
-							type="text"
-							label="First Name"
-							inputRef={firstNameRef}
-							defaultValue={dbUser.firstName}
-						/>
-						<TextField
-							type="text"
-							label="Last Name"
-							inputRef={lastNameRef}
-							defaultValue={dbUser.lastName}
-						/>
-						<TextField
-							required
-							type="email"
-							// label="Email"
-							inputRef={emailRef}
-							defaultValue={currentUser.email}
-						/>
-						<TextField
-							type="password"
-							// label="Password"
-							inputRef={passwordRef}
-							placeholder="Leave blank to keep the same"
-						/>
-						<TextField
-							type="password"
-							// label="Confirm Password"
-							inputRef={passwordConfirmRef}
-							placeholder="Leave blank to keep the same"
-						/>
+	return (
+		currentUser && (
+			<>
+				<div className="centerme">
+					<div>SignBee Logo</div>
+					<br />
+					<br />
+					<div className="formdiv">
+						<Typography variant="h2">UPDATE</Typography>
+						{error && <div>{error}</div>}
+						<form onSubmit={handleSubmit}>
+							<TextField
+								type="text"
+								label="First Name"
+								inputRef={firstNameRef}
+								defaultValue={dbUser.firstName}
+							/>
+							<TextField
+								type="text"
+								label="Last Name"
+								inputRef={lastNameRef}
+								defaultValue={dbUser.lastName}
+							/>
+							<TextField
+								required
+								type="email"
+								// label="Email"
+								inputRef={emailRef}
+								defaultValue={currentUser.email}
+							/>
+							<TextField
+								type="password"
+								// label="Password"
+								inputRef={passwordRef}
+								placeholder="Leave blank to keep the same"
+							/>
+							<TextField
+								type="password"
+								// label="Confirm Password"
+								inputRef={passwordConfirmRef}
+								placeholder="Leave blank to keep the same"
+							/>
+							<Link to="/resetpassword">Reset Password</Link>
+							<Button type="submit" disabled={loading}>
+								Update Profile
+							</Button>
+						</form>
 						<Button
-							type="submit"
-							disabled={loading}
+							variant="outlined"
+							onClick={() => history.push("/dashboard")}
 						>
-							Update Profile
+							Back
 						</Button>
-					</form>
-					<Button variant="outlined" onClick={() => history.push("/dashboard")}>
-						Back
-					</Button>
+					</div>
 				</div>
-			</div>
-		</>
-	)
+			</>
+		)
+	);
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import {Button, Typography} from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 
 function LandingPage() {
@@ -11,14 +11,12 @@ function LandingPage() {
 			<br />
 			<div className="landingbody">
 				<Link className="aboutlink" to="/about">
-					{" "}
-					<h2>SIGNBEE</h2>
+					<Typography variant="h2">SIGNBEE</Typography>
 				</Link>
 				<br />
 				<br />
 				<Button onClick={() => history.push("/signin")}>Sign In </Button>
 				<Button variant="outlined" onClick={() => history.push("/signup")}>
-					{" "}
 					Create Account
 				</Button>
 			</div>

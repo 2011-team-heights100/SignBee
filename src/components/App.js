@@ -3,59 +3,36 @@ import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
-import { drawHand } from "../utilities";
-
 import Handsigns from "../handsigns";
-import { dispose } from "@tensorflow/tfjs";
+// import { dispose } from "@tensorflow/tfjs";
 import { Typography } from "@material-ui/core";
-import PlayLevel from "./PlayLevel";
+import { ThumbUp, ThumbDown } from "@material-ui/icons";
+import { useUser } from "../contexts/UserContext";
+import { wobble } from "react-animations";
+import styled, { keyframes } from "styled-components";
+// import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
-//import Prompt from "./Prompt";
+const dummyPrompts = ["A", "B", "C", "D"];
+// currentLevel.easy.prompts
 
-const lettersFromDatabase = ["A", "B", "C", "D"];
-
-function App() {
-  let hand = 0;
+function App({ rounds }) {
   const webcamRef = useRef(null);
-  //   const canvasRef = useRef(null);
-  const [guess, setGuess] = useState("");
-  const [timer, setTimer] = useState(10);
-  const [game, setGame] = useState("");
-  const [promptArray, setPromptArray] = useState([]);
-  const [prompt, setPrompt] = useState("A");
-  //const [feedback, setFeedback] = useState(null); //import into public file
-  const [nextPrompt, setNextPrompt] = useState(true);
+  const [guess, setGuess] = useState(null);
   const [points, setPoints] = useState(0);
-  const [isRightOrWrong, setRightOrWrong] = useState("");
+  const { currentLevel, dbUser } = useUser();
+  const [promptArr, setPromptArr] = useState(dummyPrompts);
+  const [prompt, setPrompt] = useState("");
+  const [loading, setLoading] = useState(true);
+  // const [thumb, setThumb] = useState("");
 
-  // useEffect(() => {
-  //   setPromptArray(lettersFromDatabase);
-  // }, []);
-
-  //dummy data
-  // lettersFromDatabase.forEach((char, i) => {
-  //   //console.log(this.state);
-  //   //console.log(el);
-  //   setTimeout(() => {
-  //     console.log(char);
-  //   }, 5000 * (i + 1));
-  // });
-
-  //have a loading screen while the model loads
-  //store the model in indexedDB
-
-  // initially set your prompt
-  const changePrompt = () => {
-    //randomly generate A B C D
-    let randomNum = Math.floor(Math.random() * (3 - 0 + 1) + 0);
-    setPrompt(lettersFromDatabase[randomNum]);
-  };
+  const Bounce = styled.div`
+    animation: 6s ${keyframes`${wobble}`} infinite;
+  `;
+  // console.log(currentLevel);
 
   const runHandpose = async () => {
     const net = await handpose.load();
-    console.log("loaded!");
-
-    changePrompt();
+    console.log("handpose loaded!");
 
     //loop and detect hands
     //if there's a hand, increase pose detection speed, otherwise, slow it down
@@ -63,6 +40,7 @@ function App() {
       detect(net);
     }, 500);
   };
+
   const detect = async (net) => {
     //check if data is available
     if (
@@ -80,7 +58,8 @@ function App() {
       video.height = videoHeight;
 
       //made detections
-      hand = await net.estimateHands(video);
+      const hand = await net.estimateHands(video);
+      // console.log(hand);
 
       if (hand.length > 0) {
         const GE = new fp.GestureEstimator([
@@ -113,26 +92,6 @@ function App() {
           Handsigns.zSign,
         ]);
 
-        // let i = 0;
-        // let interval = setInterval(() => {
-        //   setPrompt(promptArray[i]);
-        //   i++;
-        //   if (i === promptArray.length) {
-        //     clearInterval(interval);
-        //   }
-        // }, 5000);
-
-        //dummy data
-        // lettersFromDatabase.map((char, i) => {
-        //   //console.log(this.state);
-        //   //console.log();
-        //   setPrompt(char);
-        //   console.log("state", prompt);
-        //   // setInterval(() => {
-        //   //   //console.log(char);
-        //   // }, 5000 * (i + 1));
-        // });
-
         const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
 
         let estimated = estimatedGestures.gestures.sort(
@@ -140,63 +99,71 @@ function App() {
         );
 
         if (estimated[0]) setGuess(estimated[0].name);
-
-        // hand detected and made a guess, now we have to check if guess is right
-        isGuessCorrect();
       }
-      //console.log("Num of tensors:", tf.memory().numTensors);
+      console.log("Num of tensors:", tf.memory().numTensors);
+      // console.log(points);
     }
   };
 
-  // function that compares your guess with the prompt
-  const isGuessCorrect = () => {
-    if (guess === prompt) {
-      setRightOrWrong("Correct");
-      //set timer here that lasts for 3 seconds that says yay correct! onto the next prompt or you earned a point
-      changePrompt();
-    } else if (guess !== prompt) {
-      setRightOrWrong("Try Again!");
-    }
+  //display the prompt every 5 seconds
+  const displayPrompt = () => {
+    let i = 0;
+    setInterval(async () => {
+      // match();
+      await setPrompt(promptArr[i++]);
+    }, 5000);
   };
 
-  runHandpose();
+  // const match = () => {
+  // 	if (guess !== "" && guess === prompt) {
+  // 		setPoints((prevPoints) => prevPoints + 1);
+  // 	}
+  // };
 
-  // function timerFunc() {
-  //   if (timer > 0) {
-  //     setTimeout(() => setTimer(timer - 1), 500);
-  //     console.log("this is the timer", timer);
-  //   }
-  // }
-  //timerFunc();
-  //useEffect(() => {
-  //}, []);
+  useEffect(() => {
+    // runHandpose();
+    setTimeout(() => {
+      setLoading(false);
+      displayPrompt();
+      // match()
+    }, 10000);
+  }, []);
 
   return (
     <div className="App video-container">
       <header className="App-header">
-        {/* <Typography variant="h5" align="center" color="primary">
-          Are you ready to Sign? 👍
-        </Typography> */}
         <Webcam className="video" ref={webcamRef} />
       </header>
-      <div>
-        <Typography id="gesture-guess" color="initial">
-          GUESS {guess}
-        </Typography>
-        {/* <div>{timer}</div> */}
+      {loading ? (
+        <div className="loading">
+          <Bounce>
+            <img src={process.env.PUBLIC_URL + "/bee.png"} id="bee" />
+          </Bounce>
+          <br />
+          <Typography variant="h2">Loading...</Typography>
+        </div>
+      ) : (
         <div className="prompt-card">
+          <div id="thumb-containter">
+            <div>
+              {(guess !== "" || prompt !== "") && guess === prompt ? (
+                <ThumbUp color="primary" style={{ fontSize: 100 }} />
+              ) : (
+                ""
+              )}
+            </div>
+            <Typography variant="h2">{points}</Typography>
+          </div>
           <div className="prompt-box">
             <div className="prompt-content">
-              {/* <Prompt /> */}
-              <h4>{prompt}</h4>
+              <Typography id="gesture-guess" fontWeight="fontWeightBold">
+                GUESS {guess}
+              </Typography>
+              <Typography variant="h2">Prompt: {prompt}</Typography>
             </div>
           </div>
         </div>
-      </div>
-      <Typography id="gesture-guess" color="initial">
-        IS GUESS CORRECT: {isRightOrWrong}
-      </Typography>
-      {/* <div>Wait up!.. Loading</div> */}
+      )}
     </div>
   );
 }
