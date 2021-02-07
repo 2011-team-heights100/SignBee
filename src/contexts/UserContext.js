@@ -65,19 +65,19 @@ export function UserProvider({ children }) {
 		if (
 			!dbUser.progress[currentLevelName].easy &&
 			!dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].medium
+			!dbUser.progress[currentLevelName].hard
 		) {
 			setDifficulty("easy");
 		} else if (
 			dbUser.progress[currentLevelName].easy &&
 			!dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].medium
+			!dbUser.progress[currentLevelName].hard
 		) {
 			setDifficulty("medium");
 		} else if (
 			dbUser.progress[currentLevelName].easy &&
 			dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].medium
+			!dbUser.progress[currentLevelName].hard
 		) {
 			setDifficulty("hard");
 		}

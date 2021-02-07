@@ -26,7 +26,9 @@ function App({ rounds }) {
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
-	const maxPts = promptArr.length;
+  const maxPts = promptArr.length;
+  
+  console.log("difficulty", difficulty)
 
 	const runHandpose = async () => {
 		const net = await handpose.load();

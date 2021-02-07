@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useUser } from '../contexts/UserContext';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useUser } from "../contexts/UserContext";
+import { useHistory } from "react-router-dom";
 import {
 	Dialog,
 	List,
@@ -10,44 +10,49 @@ import {
 	Typography,
 } from "@material-ui/core";
 
-export default function SectionModal({name, show}) {
-  const {
+export default function SectionModal({ name, show }) {
+	const {
 		dbUser,
 		getDbUser,
 		levels,
 		getLevels,
 		currentLevel,
 		setCurrentLevel,
-		defineDifficulty
+		defineDifficulty,
+		difficulty,
 	} = useUser();
 	const history = useHistory();
 	let levelsCompleted = 0;
 
 	useEffect(() => {
 		getDbUser();
-    getLevels();
-    // defineDifficulty();
+		getLevels();
 	}, []);
 
 	if (dbUser) {
 		let progress = dbUser.progress[name];
 		for (let key in progress) {
 			if (progress[key] === true) levelsCompleted++;
-		};
-  };
+		}
+	}
 
-
-	async function handleClick () {
-    await defineDifficulty(name)
-    await setCurrentLevel(levels[name]);
-    console.log("currentLevel", currentLevel)
-    // console.log("difficulty", difficulty);
-		history.push("/app");
+	async function handleClick() {
+		await setCurrentLevel(levels[name]);
+    await defineDifficulty(name);
+    //not recognizing difficulty right away
+		if (difficulty === "hard") {
+			history.push("/gameplaytext");
+		} else {
+			history.push("/app");
+		}
+		console.log("difficulty in SM", difficulty);
 	}
 
 	return (
 		<Dialog open={show}>
-				<Typography variant="h2" align="center">{name}</Typography>
+			<Typography variant="h2" align="center">
+				{name}
+			</Typography>
 			<List>
 				<ListItem>
 					<ListItemText primary="Lives" />
