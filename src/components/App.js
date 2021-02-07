@@ -4,33 +4,54 @@ import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
 import Handsigns from "../handsigns";
-// import { dispose } from "@tensorflow/tfjs";
 import { Typography } from "@material-ui/core";
-import { ThumbUp, ThumbDown } from "@material-ui/icons";
+import { ThumbUp } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble } from "react-animations";
 import styled, { keyframes } from "styled-components";
-import GameSummary from "./GameSummary"
-// import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import GameSummary from "./GameSummary";
 const Bounce = styled.div`
 	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
 
 const dummyPrompts = ["A", "B", "C", "D"];
 // currentLevel.easy.prompts
+let memo = {};
 
 function App({ rounds }) {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser } = useUser();
 	const [guess, setGuess] = useState(null);
-	const [points, setPoints] = useState(0);
+	// const [difficulty, setDifficulty] = useState(null);
 	const [promptArr, setPromptArr] = useState(dummyPrompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
-	// const [thumb, setThumb] = useState("");
 
-	// console.log(currentLevel);
+	// console.log("currentLevel", currentLevel);
+	// console.log("dbUser", dbUser);
+
+	// const defineDifficulty = () => {
+	// 	if (
+	// 		!dbUser.progress[currentLevel].easy &&
+	// 		!dbUser.progress[currentLevel].medium &&
+	// 		!dbUser.progress[currentLevel].medium
+	// 	) {
+	// 		setDifficulty("easy");
+	// 	// } else if (
+	// 	// 	dbUser.progress.currentLevel.easy &&
+	// 	// 	!dbUser.progress.currentLevel.medium &&
+	// 	// 	!dbUser.progress.currentLevel.medium
+	// 	// ) {
+	// 	// 	setDifficulty("mdium");
+	// 	// } else if (
+	// 	// 	dbUser.progress.currentLevel.easy &&
+	// 	// 	dbUser.progress.currentLevel.medium &&
+	// 	// 	!dbUser.progress.currentLevel.medium
+	// 	// ) {
+	// 	// 	setDifficulty("hard");
+	// 	}
+	// };
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -59,7 +80,7 @@ function App({ rounds }) {
 			video.width = videoWidth;
 			video.height = videoHeight;
 
-			//made detections
+			//make detections
 			const hand = await net.estimateHands(video);
 			// console.log(hand);
 
@@ -103,14 +124,12 @@ function App({ rounds }) {
 				if (estimated[0]) setGuess(estimated[0].name);
 			}
 			console.log("Num of tensors:", tf.memory().numTensors);
-			// console.log(points);
 		}
 	};
 
 	//display the prompt every 5 seconds
 	const displayPrompt = () => {
 		let i = 0;
-
 		const interval = setInterval(async () => {
 			await setPrompt(promptArr[i++]);
 			if (i > promptArr.length) {
@@ -120,21 +139,22 @@ function App({ rounds }) {
 			}
 		}, 5000);
 	};
-	console.log(gameState);
-	// const match = () => {
-	// 	if (guess !== "" && guess === prompt) {
-	// 		setPoints((prevPoints) => prevPoints + 1);
-	// 	}
-	// };
+	console.log("gameState", gameState);
 
 	useEffect(() => {
-		// runHandpose();
+		// defineDifficulty()
+		runHandpose();
 		setTimeout(() => {
 			setLoading(false);
 			displayPrompt();
-			// match()
 		}, 10000);
 	}, []);
+
+	if ((guess !== "" || prompt !== "") && guess === prompt) {
+		memo[guess] = true;
+	}
+
+	let totalPts = Object.keys(memo).length;
 
 	return gameState ? (
 		<div className="App video-container">
@@ -144,7 +164,11 @@ function App({ rounds }) {
 			{loading ? (
 				<div className="loading">
 					<Bounce>
-						<img src={process.env.PUBLIC_URL + "/bee.png"} id="bee" />
+						<img
+							src={process.env.PUBLIC_URL + "/bee.png"}
+							id="bee"
+							alt="loadingBee"
+						/>
 					</Bounce>
 					<br />
 					<Typography variant="h2">Loading...</Typography>
@@ -159,7 +183,7 @@ function App({ rounds }) {
 								""
 							)}
 						</div>
-						<Typography variant="h2">{points}</Typography>
+						<Typography variant="h2">{totalPts}</Typography>
 					</div>
 					<div className="prompt-box">
 						<div className="prompt-content">
@@ -172,7 +196,9 @@ function App({ rounds }) {
 				</div>
 			)}
 		</div>
-	) : (<GameSummary points={points} currentLevel={currentLevel}/>)
+	) : (
+		<GameSummary points={totalPts} currentLevel={currentLevel} />
+	);
 }
 
 export default App;

@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Typography } from "@material-ui/core";
 import GradeIcon from "@material-ui/icons/Grade";
+import { useUser } from "../contexts/UserContext";
 
 export default function GameSummary(props) {
 	document.body.style = "background: #F6A400;";
   const history = useHistory();
+  const { dbUser, getDbUser, getLevels, levels, setCurrentLevel } = useUser();
+
+  useEffect(() => {
+		getDbUser();
+		getLevels();
+  }, []);
+  
+  let userPoints = dbUser.points
+  let newTotal = userPoints + props.points
+
+  console.log("dbUser:", dbUser)
+  console.log("levels:", levels);
+  console.log("currentLevel:", props.currentLevel);
   
 	// function handleClick() {
 	// 	setCurrentLevel(levels[name]);
