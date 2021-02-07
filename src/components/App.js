@@ -10,24 +10,26 @@ import { ThumbUp, ThumbDown } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble } from "react-animations";
 import styled, { keyframes } from "styled-components";
+import GameSummary from "./GameSummary"
 // import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+const Bounce = styled.div`
+	animation: 6s ${keyframes`${wobble}`} infinite;
+`;
 
 const dummyPrompts = ["A", "B", "C", "D"];
 // currentLevel.easy.prompts
 
 function App({ rounds }) {
 	const webcamRef = useRef(null);
+	const { currentLevel, dbUser } = useUser();
 	const [guess, setGuess] = useState(null);
 	const [points, setPoints] = useState(0);
-	const { currentLevel, dbUser } = useUser();
 	const [promptArr, setPromptArr] = useState(dummyPrompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
+	const [gameState, setGameState] = useState(true);
 	// const [thumb, setThumb] = useState("");
 
-	const Bounce = styled.div`
-		animation: 6s ${keyframes`${wobble}`} infinite;
-	`;
 	// console.log(currentLevel);
 
 	const runHandpose = async () => {
@@ -108,12 +110,17 @@ function App({ rounds }) {
 	//display the prompt every 5 seconds
 	const displayPrompt = () => {
 		let i = 0;
-		setInterval(async () => {
-			// match();
+
+		const interval = setInterval(async () => {
 			await setPrompt(promptArr[i++]);
+			if (i > promptArr.length) {
+				clearInterval(interval);
+				setGameState(false);
+				console.log("game ended", gameState);
+			}
 		}, 5000);
 	};
-
+	console.log(gameState);
 	// const match = () => {
 	// 	if (guess !== "" && guess === prompt) {
 	// 		setPoints((prevPoints) => prevPoints + 1);
@@ -129,7 +136,7 @@ function App({ rounds }) {
 		}, 10000);
 	}, []);
 
-	return (
+	return gameState ? (
 		<div className="App video-container">
 			<header className="App-header">
 				<Webcam className="video" ref={webcamRef} />
@@ -165,7 +172,7 @@ function App({ rounds }) {
 				</div>
 			)}
 		</div>
-	);
+	) : (<GameSummary points={points} currentLevel={currentLevel}/>)
 }
 
 export default App;
