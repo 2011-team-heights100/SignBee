@@ -18,7 +18,7 @@ import {
 
 export default function ProfileSummary ({show, setModalShow}) {
 	const history = useHistory();
-	const { dbUser } = useUser();
+	const { dbUser,  } = useUser();
 	const { signout } = useAuth()
 	const [open, setOpen] = useState(false);
 
@@ -29,7 +29,18 @@ export default function ProfileSummary ({show, setModalShow}) {
 	const handleClickAway = () => {
 		setModalShow(false)
 		setOpen(false);
-	};
+  };
+  
+  //user.progress = 
+  let progress = 0
+  let totalProgress = 0
+
+  for(let section in dbUser.progress){
+    for (let level in dbUser.progress[section]) {
+			totalProgress++;
+			if (dbUser.progress[section][level]) progress++;
+		}
+  }
 
 	return (
 		<Dialog
@@ -37,11 +48,16 @@ export default function ProfileSummary ({show, setModalShow}) {
 			onBackdropClick={handleClickAway}
 			closeAfterTransition={true}
 		>
-			<DialogTitle>Hey there, {dbUser && dbUser.firstName}!</DialogTitle>
+			<DialogTitle>
+				Hey there, {dbUser && dbUser.firstName}!
+			</DialogTitle>
 			<div className="center-modal">
-				<Typography>LIVES</Typography>
-				<Typography>LEVEL</Typography>
-				<Typography>STREAK</Typography>
+				<Typography variant="h2">STATS</Typography>
+				<Typography variant="h5">
+					PROGRESS: {`${progress}/${totalProgress}`}
+				</Typography>
+				<Typography variant="h5">TOTAL POINTS: {dbUser.points}</Typography>
+				{/* <Typography variant="h5">STREAK</Typography> */}
 			</div>
 
 			<List>
@@ -49,7 +65,7 @@ export default function ProfileSummary ({show, setModalShow}) {
 					button
 					onClick={() => {
 						setOpen(false);
-						setModalShow(false)
+						setModalShow(false);
 						history.push("/updateprofile");
 					}}
 				>
@@ -63,9 +79,9 @@ export default function ProfileSummary ({show, setModalShow}) {
 				<ListItem
 					button
 					onClick={() => {
-						setOpen(false)
+						setOpen(false);
 						setModalShow(false);
-						signout()
+						signout();
 					}}
 				>
 					<ListItemAvatar>

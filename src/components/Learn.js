@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -17,16 +17,14 @@ const BounceUp = styled.div`
 	animation: 1s ${keyframes`${bounceInUp}`};
 `;
 
-let memo = {};
-
-function App() {
+function Learn() {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser, difficulty } = useUser();
-	console.log("difficulty", difficulty);
-	console.log("current level", currentLevel);
+	// console.log("difficulty", difficulty);
+	// console.log("current level", currentLevel);
 
 	const [guess, setGuess] = useState(null);
-	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
+	const [promptArr, setPromptArr] = useState(currentLevel.prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
@@ -105,6 +103,8 @@ function App() {
 		}
 	};
 
+//prompt = {letter: "A", picture: "link"}
+
 	//display the prompt every 5 seconds
 	const displayPrompt = () => {
 		let i = 0;
@@ -123,15 +123,15 @@ function App() {
 		setTimeout(() => {
 			setLoading(false);
 			displayPrompt();
-    }, 10000);
-    return () => {
-      memo = {}
-    }
+		}, 10000);
+		return () => {
+			memo = {};
+		};
 	}, []);
 
-	if ((guess !== "" || prompt !== "") && guess === prompt) {
-		memo[guess] = true;
-	}
+	// if ((guess !== "" || prompt !== "") && guess === prompt) {
+	// 	memo[guess] = true;
+	// }
 
 	let totalPts = Object.keys(memo).length;
 
@@ -156,7 +156,10 @@ function App() {
 				<div className="game-container">
 					<div id="points-container">
 						<div id="score">
-							<Typography variant="h2" style={{ fontSize: 40, textAlign: "center" }}>
+							<Typography
+								variant="h2"
+								style={{ fontSize: 40, textAlign: "center" }}
+							>
 								{totalPts}
 							</Typography>
 						</div>
@@ -192,4 +195,4 @@ function App() {
 	);
 }
 
-export default App;
+export default Learn;

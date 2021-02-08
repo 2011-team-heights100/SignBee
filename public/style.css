@@ -97,7 +97,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	min-height: 500px;
+	min-height: 700px;
 }
 
 .row {
@@ -167,10 +167,6 @@ form {
 	/* position: relative; */
 }
 
-.game-summary {
-	
-}
-
 .landingbody {
 	text-align: match-parent;
 }
@@ -230,10 +226,8 @@ transparent box
 
 .prompt-card {
 	width: 80%;
-	/* box-sizing: 0px 0px 1px 1px #ccc; */
 	position: relative;
 	margin: 0px auto;
-	/* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); */
 	bottom: 20%;
 	top: 60%;
 }
@@ -284,4 +278,32 @@ transparent box
 
 #bee {
   width: 120px;
+}
+
+#bee-logo-dash{
+  width: 120px;
+}
+
+#points-container{
+  align-content: center;
+}
+
+#score-star,
+#score{
+position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  height: 150px;
+  width: 150px;
+}
+
+#score{
+z-index: 10;
+padding: 25px
+}
+
+.game-container{
+  width: 100%;
+  height:100%
 }

@@ -23,11 +23,10 @@ export default function Navbar() {
 
 	return (
 		<>
-			<AppBar position='static' color='transparent' elevation={0}>
+			<AppBar position='static' color='transparent' elevation={0} >
 				<Toolbar>
 					<Grid container justify='space-between'>
 						<div></div>
-						<Button onClick={() => history.push('/app')}>START</Button>
 						{currentUser && (
 							<IconButton color='secondary' onClick={handleClick}>
 								<AccountCircle />

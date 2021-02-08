@@ -61,7 +61,13 @@ export default function UpdateProfile() {
 		currentUser && (
 			<>
 				<div className="centerme">
-					<div>SignBee Logo</div>
+					<div>
+						<img
+							src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+							id="bee"
+							alt="beeLogo"
+						/>
+					</div>
 					<br />
 					<br />
 					<div className="formdiv">

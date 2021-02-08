@@ -41,7 +41,13 @@ export default function SignUp() {
 	return (
 		<>
 			<div className="centerme">
-				<div>SignBee Logo</div>
+				<div>
+					<img
+						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+						id="bee"
+						alt="beeLogo"
+					/>
+				</div>
 				<br />
 				<div className="formdiv">
 					<Typography variant="h2">SIGN UP</Typography>

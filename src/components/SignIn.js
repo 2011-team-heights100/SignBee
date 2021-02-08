@@ -30,7 +30,13 @@ export default function SignIn() {
 	return (
 		<>
 			<div className="centerme">
-				<div>SignBee Logo</div>
+				<div>
+					<img
+						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+						id="bee"
+						alt="beeLogo"
+					/>
+				</div>
 				<br />
 				<br />
 				<div className="formdiv">
@@ -55,7 +61,7 @@ export default function SignIn() {
 					<br />
 					<Link to="/signup">Need an Account? Sign Up</Link>
 					<br />
-					<Link>Forgot Password?</Link>
+					<Link to="/resetpassword">Forgot Password?</Link>
 				</div>
 			</div>
 		</>
