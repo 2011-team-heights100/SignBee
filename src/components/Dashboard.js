@@ -3,6 +3,8 @@ import HoneyComb from "./HoneyComb";
 import { useUser } from "../contexts/UserContext";
 
 export default function Dashboard() {
+	document.body.style = "background: #FEF5E4";
+	
 	const { getDbUser } = useUser();
 
 	useEffect(() => {

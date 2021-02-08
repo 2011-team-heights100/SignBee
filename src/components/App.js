@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -9,26 +10,24 @@ import { ThumbUp } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble } from "react-animations";
 import styled, { keyframes } from "styled-components";
-import GameSummary from "./GameSummary";
 const Bounce = styled.div`
 	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
 
-// const dummyPrompts = ["A", "B", "C", "D"];
-// currentLevel.easy.prompts
 let memo = {};
 
-function App({ rounds }) {
+function App() {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser, difficulty } = useUser();
+	console.log("difficulty", difficulty);
+	console.log("current level", currentLevel);
+
 	const [guess, setGuess] = useState(null);
 	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
-  const maxPts = promptArr.length;
-  
-  console.log("difficulty", difficulty)
+	const maxPts = promptArr.length;
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -121,7 +120,10 @@ function App({ rounds }) {
 		setTimeout(() => {
 			setLoading(false);
 			displayPrompt();
-		}, 10000);
+    }, 10000);
+    return () => {
+      memo = {}
+    }
 	}, []);
 
 	if ((guess !== "" || prompt !== "") && guess === prompt) {
@@ -129,7 +131,9 @@ function App({ rounds }) {
 	}
 
 	let totalPts = Object.keys(memo).length;
-  
+
+	// const resetMemo = () => memo = {}
+
 	return gameState ? (
 		<div className="App video-container">
 			<header className="App-header">
@@ -171,7 +175,9 @@ function App({ rounds }) {
 			)}
 		</div>
 	) : (
-		<GameSummary points={totalPts} maxPts={maxPts} />
+		<Redirect
+			to={{ pathname: "/gamesummary", state: { totalPts, maxPts } }}
+		/>
 	);
 }
 
