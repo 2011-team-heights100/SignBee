@@ -22,11 +22,11 @@ let memo = {};
 function App() {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser, difficulty } = useUser();
-	console.log("difficulty", difficulty);
-	console.log("current level", currentLevel);
+	// console.log("difficulty", difficulty);
+	// console.log("current level", currentLevel);
 
 	const [guess, setGuess] = useState(null);
-	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
+	const [promptArr, setPromptArr] = useState(currentLevel.prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
@@ -123,10 +123,10 @@ function App() {
 		setTimeout(() => {
 			setLoading(false);
 			displayPrompt();
-    }, 10000);
-    return () => {
-      memo = {}
-    }
+		}, 10000);
+		return () => {
+			memo = {};
+		};
 	}, []);
 
 	if ((guess !== "" || prompt !== "") && guess === prompt) {
@@ -156,7 +156,10 @@ function App() {
 				<div className="game-container">
 					<div id="points-container">
 						<div id="score">
-							<Typography variant="h2" style={{ fontSize: 40, textAlign: "center" }}>
+							<Typography
+								variant="h2"
+								style={{ fontSize: 40, textAlign: "center" }}
+							>
 								{totalPts}
 							</Typography>
 						</div>

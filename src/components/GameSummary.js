@@ -45,18 +45,18 @@ export default function GameSummary(props) {
 		dbUser && addPoints();
 	}
 
-	// async function handleReplay() {
-  //   await setCurrentLevel(levels[currentLevel.name]);
-  //   await defineDifficulty(currentLevel.name);
-	// 	//not recognizing difficulty right away
-	// 	if (difficulty === "hard") {
-	// 		history.push({
-	// 			pathname: "/gameplaytext"
-	// 		});
-	// 	} else {
-	// 		history.push("/app");
-	// 	}
-	// }
+	async function handleReplay() {
+		await setCurrentLevel(levels[currentLevel.name]);
+		await defineDifficulty(currentLevel.name);
+		//not recognizing difficulty right away
+		if (difficulty === "hard") {
+			history.push({
+				pathname: "/gameplaytext",
+			});
+		} else {
+			history.push("/app");
+		}
+	}
 
 	return (
 		<div className="game-summary-container">
@@ -66,7 +66,9 @@ export default function GameSummary(props) {
 				<Typography>Total Points: {totalPts}</Typography>
 				<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
 				<br />
-				<Button onClick={() => history.push("/")}>Next</Button>
+				{props.location.state.totalPts >= props.location.state.maxPts && (
+					<Button onClick={handleReplay}>Next</Button>
+				)}
 				<Button variant="outlined" onClick={() => history.push("/app")}>
 					Play Again
 				</Button>
