@@ -17,7 +17,7 @@ const BounceUp = styled.div`
 	animation: 1s ${keyframes`${bounceInUp}`};
 `;
 
-function App() {
+function Learn() {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser, difficulty } = useUser();
 	// console.log("difficulty", difficulty);
@@ -195,4 +195,4 @@ function App() {
 	);
 }
 
-export default App;
+export default Learn;
