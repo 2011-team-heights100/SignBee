@@ -61,7 +61,7 @@ export default function SignIn() {
 					<br />
 					<Link to="/signup">Need an Account? Sign Up</Link>
 					<br />
-					<Link>Forgot Password?</Link>
+					<Link to="/resetpassword">Forgot Password?</Link>
 				</div>
 			</div>
 		</>

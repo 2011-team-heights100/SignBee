@@ -27,6 +27,7 @@ export default function GameSummary(props) {
 	useEffect(() => {
 		getDbUser();
 		getLevels();
+		return () => (counter = 0);
 	}, []);
 
 	const addPoints = async () => {
@@ -62,8 +63,10 @@ export default function GameSummary(props) {
 		<div className="game-summary-container">
 			<div className="game-summary">
 				<Typography variant="h2">Well Done!</Typography>
-				<Typography>Your Score: {props.location.state.totalPts}</Typography>
-				<Typography>Total Points: {totalPts}</Typography>
+				<Typography variant="h5">
+					Your Score: {props.location.state.totalPts}
+				</Typography>
+				<Typography variant="h5">Total Points: {dbUser.points}</Typography>
 				<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
 				<br />
 				{props.location.state.totalPts >= props.location.state.maxPts && (

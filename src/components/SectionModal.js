@@ -54,11 +54,11 @@ export default function SectionModal({ name, show }) {
 				{name}
 			</Typography>
 			<List>
-				<ListItem>
+				{/* <ListItem>
 					<ListItemText primary="Lives" />
-				</ListItem>
+				</ListItem> */}
 				<ListItem>
-					<ListItemText primary="Levels" />
+					<ListItemText primary="LEVELS COMPLETED: " />
 					<ListItemText primary={levelsCompleted + "/3"} />
 				</ListItem>
 			</List>

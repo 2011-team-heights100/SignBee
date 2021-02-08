@@ -22,9 +22,9 @@ export function AuthProvider({ children }) {
 		return auth.signInWithEmailAndPassword(email, password);
 	}
 
-	function signout() {
-		setDbUser(null);
-		history.push("/");
+	async function signout() {
+    await history.push("/");
+    // setDbUser(null);
 		return auth.signOut();
 	}
 

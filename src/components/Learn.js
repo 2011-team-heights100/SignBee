@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -16,8 +16,6 @@ const Wobble = styled.div`
 const BounceUp = styled.div`
 	animation: 1s ${keyframes`${bounceInUp}`};
 `;
-
-let memo = {};
 
 function App() {
 	const webcamRef = useRef(null);
@@ -105,6 +103,8 @@ function App() {
 		}
 	};
 
+//prompt = {letter: "A", picture: "link"}
+
 	//display the prompt every 5 seconds
 	const displayPrompt = () => {
 		let i = 0;
@@ -129,9 +129,9 @@ function App() {
 		};
 	}, []);
 
-	if ((guess !== "" || prompt !== "") && guess === prompt) {
-		memo[guess] = true;
-	}
+	// if ((guess !== "" || prompt !== "") && guess === prompt) {
+	// 	memo[guess] = true;
+	// }
 
 	let totalPts = Object.keys(memo).length;
 
