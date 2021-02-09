@@ -93,7 +93,7 @@ function App() {
 					Handsigns.zSign,
 				]);
 
-				const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
+				const estimatedGestures = await GE.estimate(hand[0].landmarks, 6);
 
 				let estimated = estimatedGestures.gestures.sort(
 					(a, b) => b.confidence - a.confidence

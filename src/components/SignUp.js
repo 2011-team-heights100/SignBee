@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 export default function SignUp() {
 	const emailRef = useRef();
@@ -30,10 +31,12 @@ export default function SignUp() {
 				firstNameRef.current.value,
 				lastNameRef.current.value
 			);
-			history.push("/dashboard");
 		} catch (error) {
 			setError(`${error.message}`);
 			console.log(error);
+		}
+		if (!error.length) {
+			history.push("/dashboard"); //doesn't work for me (Julia)
 		}
 		setLoading(false);
 	}
@@ -51,7 +54,7 @@ export default function SignUp() {
 				<br />
 				<div className="formdiv">
 					<Typography variant="h2">SIGN UP</Typography>
-					{error && <div>{error}</div>}
+					{error && <Alert severity="error">{error}</Alert>}
 					<form className="veritcalform" onSubmit={handleSubmit}>
 						<TextField type="text" label="First Name" inputRef={firstNameRef} />
 						<TextField type="text" label="Last Name" inputRef={lastNameRef} />

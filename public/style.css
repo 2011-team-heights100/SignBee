@@ -1,9 +1,7 @@
 body {
-	/* position: relative;
-  display: flex; */
 	background-color: #fef5e4;
-	/* width: 100%;
-  align-content: center; */
+	/* width: 100%; */
+	/* align-content: center; */
 }
 
 .hexagon {
@@ -61,6 +59,8 @@ body {
 	-o-transform: rotate(-30deg) skewX(30deg) scale(0.46);
 	transform: rotate(-30deg) skewX(30deg) scale(0.48);
 }
+
+/* content panel - no action*/
 .hexagon.hexagon-with-border
 	.hexagon-shape.content-panel:first-child
 	.hexagon-shape-inner:before,
@@ -68,6 +68,16 @@ body {
 	.hexagon-shape.content-panel
 	.hexagon-shape-inner-2 {
 	background: #fef5e4;
+}
+
+/* content panel - some action*/
+.hexagon.hexagon-with-border
+	.hexagon-shape.content-panel-some-action:first-child
+	.hexagon-shape-inner:before,
+.hexagon.hexagon-with-border
+	.hexagon-shape.content-panel-some-action
+	.hexagon-shape-inner-2 {
+	background: #fbdb9e;
 }
 
 .hexagon .hexagon-content {
@@ -97,7 +107,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	min-height: 700px;
+  min-height: 800px;
 }
 
 .row {
@@ -151,7 +161,7 @@ form {
 
 .game-summary-container {
 	overflow: hidden;
-  display: flex;
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	border-radius: 10%;
@@ -159,11 +169,11 @@ form {
 	align-content: center;
 	/* align-self: center; */
 	padding: 30px;
-  margin: 10px;
-  margin-top: 20%;
-  background-color: #ffffff;
-  opacity: 70%;
-  max-width: 600px;
+	margin: 10px;
+	margin-top: 20%;
+	background-color: #ffffff;
+	opacity: 70%;
+	max-width: 600px;
 	/* position: relative; */
 }
 
@@ -259,51 +269,51 @@ transparent box
 }
 
 #thumb-containter {
-  display: flex;
-  justify-content: center;
-  height: 100px;
-  margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	height: 100px;
+	margin-bottom: 10px;
 }
 
-.loading{
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  top: 40%;
-  height: 300px;
-  margin-bottom: 10px;
+.loading {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	top: 40%;
+	height: 300px;
+	margin-bottom: 10px;
 }
 
 #bee {
-  width: 120px;
+	width: 120px;
 }
 
-#bee-logo-dash{
-  width: 120px;
+#bee-logo-dash {
+	width: 120px;
 }
 
-#points-container{
-  align-content: center;
+#points-container {
+	align-content: center;
 }
 
 #score-star,
-#score{
-position: absolute;
-  top: 0;
-  left: 0;
-  text-align: center;
-  height: 150px;
-  width: 150px;
+#score {
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-align: center;
+	height: 150px;
+	width: 150px;
 }
 
-#score{
-z-index: 10;
-padding: 25px
+#score {
+	z-index: 10;
+	padding: 25px;
 }
 
-.game-container{
-  width: 100%;
-  height:100%
+.game-container {
+	width: 100%;
+	height: 100%;
 }

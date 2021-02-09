@@ -37,7 +37,7 @@ export default createMuiTheme({
 		MuiDialog: {
 			paper: {
 				borderRadius: 20,
-				opacity: "70%",
+				opacity: "80%",
 				padding: 15,
 			},
 		},

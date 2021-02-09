@@ -45,7 +45,6 @@ export default function SectionModal({ name, show }) {
 		} else {
 			history.push("/app");
 		}
-		console.log("difficulty in SM", difficulty);
 	}
 
 	return (
