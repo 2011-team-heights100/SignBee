@@ -31,7 +31,6 @@ export default function ProfileSummary ({show, setModalShow}) {
 		setOpen(false);
   };
   
-  //user.progress = 
   let progress = 0
   let totalProgress = 0
 
@@ -43,6 +42,7 @@ export default function ProfileSummary ({show, setModalShow}) {
   }
 
 	return (
+    <>
 		<Dialog
 			open={open}
 			onBackdropClick={handleClickAway}
@@ -93,5 +93,6 @@ export default function ProfileSummary ({show, setModalShow}) {
 				</ListItem>
 			</List>
 		</Dialog>
+    </>
 	);
 }

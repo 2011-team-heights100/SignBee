@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
@@ -46,7 +46,7 @@ const dummyPrompts = [
 	"Y",
 	"Z",
 ];
-// currentLevel.prompts;
+
 const timeLimitForGuess = 10000;
 
 function shuffle(a) {
@@ -57,22 +57,26 @@ function shuffle(a) {
 	return a;
 }
 
-shuffle(dummyPrompts);
-
 //add a memo that collects all the player's correct guesses and gives them a summary at the end
 
 function Learn() {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser } = useUser();
 	const [guess, setGuess] = useState(null);
-	const [promptArr, setPromptArr] = useState(dummyPrompts);
+	const [promptArr, setPromptArr] = useState(["A"]);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
 	const [prevTime, setPrevTime] = useState(Date.now() + 2000);
 	const [promptIdx, setPromptIdx] = useState(0);
-  const [thumb, setThumb] = useState(false);
-  const history = useHistory()
+	const [thumb, setThumb] = useState(false);
+	const history = useHistory();
+
+console.log("currentLevel", currentLevel);
+
+	const shufflePrompts = useCallback(() => {
+    // setPromptArr(shuffle(currentLevel.prompts))
+	});
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -167,22 +171,23 @@ function Learn() {
 		if (!isWithinTimeLimit) {
 			setThumb(false);
 			setPromptIdx(promptIdx + 1);
-			setPrevTime(currTime);
-		} else if (isWithinTimeLimit && guess === dummyPrompts[promptIdx]) {
+      setPrevTime(currTime);
+      setPrompt(promptArr[promptIdx])
+		} else if (isWithinTimeLimit && guess === prompt.letter) {
 			setThumb(true);
 			setPromptIdx(promptIdx + 1); // make random index betwen \dumm\y prompts
-			setPrevTime(currTime);
+      setPrevTime(currTime);
+      setPrompt(promptArr[promptIdx]);
 		}
 	};
 
 	useEffect(() => {
-		runHandpose();
+    runHandpose();
+    shufflePrompts()
 		setTimeout(() => {
 			setLoading(false);
 		}, 5000);
-	}, []);
-
-	const currPrompt = dummyPrompts[promptIdx];
+	}, [shufflePrompts]);
 
 	return gameState ? (
 		<div className="App video-container">
@@ -206,7 +211,8 @@ function Learn() {
 					<div id="points-container">
 						<div id="exit">
 							{" "}
-							<HighlightOff color="primary"
+							<HighlightOff
+								color="primary"
 								onClick={() => history.push("/dashboard")}
 							></HighlightOff>
 						</div>
@@ -226,8 +232,8 @@ function Learn() {
 								<Typography id="gesture-guess" fontWeight="fontWeightBold">
 									YOUR GUESS {guess}
 								</Typography>
-								<Typography variant="h2">Prompt: {currPrompt}</Typography>
-								{/* <img src={prompt.picture} alt={prompt.letter}/> */}
+								<Typography variant="h2">{prompt.letter}</Typography>
+								<img src={prompt.picture} alt={prompt.letter}/>
 							</div>
 						</div>
 					</div>

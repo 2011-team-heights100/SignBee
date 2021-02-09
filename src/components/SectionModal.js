@@ -27,6 +27,7 @@ export default function SectionModal({ name, show }) {
 	useEffect(() => {
 		getDbUser();
 		getLevels();
+		// return console.log("unmounted");
 	}, []);
 
 	if (dbUser) {
@@ -38,12 +39,17 @@ export default function SectionModal({ name, show }) {
 
 	async function handleClick() {
 		await setCurrentLevel(levels[name]);
-    await defineDifficulty(name);
-    //not recognizing difficulty right away
-		if (difficulty === "hard") {
-			history.push("/gameplaytext");
+		console.log("currentLevel", currentLevel);
+		if (name !== "LEARN") {
+			await defineDifficulty(name);
+			//not recognizing difficulty right away
+			if (difficulty === "hard") {
+				history.push("/gameplaytext");
+			} else {
+				history.push("/app");
+			}
 		} else {
-			history.push("/app");
+			history.push("/learn");
 		}
 	}
 
