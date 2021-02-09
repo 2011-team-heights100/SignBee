@@ -3,6 +3,8 @@ import HoneyComb from "./HoneyComb";
 import { useUser } from "../contexts/UserContext";
 
 export default function Dashboard() {
+  document.body.style = "background: #FEF5E4";
+
   const { getDbUser } = useUser();
 
   useEffect(() => {
@@ -26,6 +28,14 @@ export default function Dashboard() {
       <div className="row">
         <HoneyComb name="UVW" />
         <HoneyComb name="XYZ" />
+      </div>
+      <div className="row">
+        <img
+          src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+          id="bee-logo-dash"
+          alt="beeLogo"
+        />
+        ;
       </div>
     </div>
   );

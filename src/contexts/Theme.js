@@ -17,6 +17,10 @@ export default createMuiTheme({
 			fontFamily: "Changa One",
 			marginBottom: 20,
 		},
+		h5: {
+			// fontFamily: "Changa One",
+			fontWeight: "bold",
+		},
 	},
 	overrides: {
 		MuiButton: {
@@ -37,6 +41,11 @@ export default createMuiTheme({
 				padding: 15,
 			},
 		},
+		// MuiDialogTitle: {
+		// 	root: {
+		// 		fontWeight: "bold",
+		// 	},
+		// },
 		MuiPaper: {
 			root: {
 				opacity: fade("#FFFFFF", 0.7),
