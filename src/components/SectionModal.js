@@ -37,7 +37,7 @@ export default function SectionModal({ name, show }) {
 		}
   }
   
-  console.log("levels", levels)
+  // console.log("levels", levels)
 
 	async function handleClick() {
     await setCurrentLevel(levels[name]);
@@ -45,9 +45,10 @@ export default function SectionModal({ name, show }) {
     console.log("currentLevel", currentLevel);
     
 		if (name !== "LEARN") {
-			await defineDifficulty(name);
+      await defineDifficulty(name);
+      console.log("difficulty", difficulty)
 			//not recognizing difficulty right away
-			if (difficulty === "hard") {
+			if (difficulty === "text") {
 				history.push("/gameplaytext");
 			} else {
 				history.push("/app");
@@ -68,7 +69,7 @@ export default function SectionModal({ name, show }) {
 				</ListItem> */}
 				<ListItem>
 					<ListItemText primary="LEVELS COMPLETED: " />
-					<ListItemText primary={levelsCompleted + "/3"} />
+					<ListItemText primary={levelsCompleted + "/4"} />
 				</ListItem>
 			</List>
 			<Button onClick={() => handleClick()}>Begin</Button>

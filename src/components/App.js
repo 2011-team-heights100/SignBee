@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -21,17 +21,32 @@ let memo = {};
 
 function App() {
 	const webcamRef = useRef(null);
-	const { currentLevel, dbUser, difficulty } = useUser();
-	console.log("difficulty", difficulty);
-	console.log("current level", currentLevel);
+	const { currentLevel, difficulty } = useUser();
+	// console.log("difficulty", difficulty);
+	// console.log("current level", currentLevel);
 	const [guess, setGuess] = useState(null);
-	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
+	const [promptArr] = useState(currentLevel[difficulty].prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
-  const [gameState, setGameState] = useState(true);
-  // const [hint, setHint] = useState("");
+	const [gameState, setGameState] = useState(true);
+	// const [hint, setHint] = useState("");
 
 	const maxPts = promptArr.length;
+
+	let accuracy = 6;
+
+	if (difficulty === "easy") {
+		accuracy = 6;
+		//display hints
+	} else if (difficulty === "medium") {
+		accuracy = 7.5;
+		//hide hints
+	} else if (difficulty === "hard") {
+    accuracy = 9;
+    // shuffle
+  }
+  
+  console.log("accuracy", accuracy)
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
@@ -94,7 +109,10 @@ function App() {
 					Handsigns.zSign,
 				]);
 
-				const estimatedGestures = await GE.estimate(hand[0].landmarks, 6);
+				const estimatedGestures = await GE.estimate(
+					hand[0].landmarks,
+					accuracy
+				);
 
 				let estimated = estimatedGestures.gestures.sort(
 					(a, b) => b.confidence - a.confidence
@@ -124,10 +142,10 @@ function App() {
 		setTimeout(() => {
 			setLoading(false);
 			displayPrompt();
-    }, 10000);
-    return () => {
-      memo = {}
-    }
+		}, 10000);
+		return () => {
+			memo = {};
+		};
 	}, []);
 
 	if ((guess !== "" || prompt !== "") && guess === prompt) {
@@ -157,7 +175,10 @@ function App() {
 				<div className="game-container">
 					<div id="points-container">
 						<div id="score">
-							<Typography variant="h2" style={{ fontSize: 40, textAlign: "center" }}>
+							<Typography
+								variant="h2"
+								style={{ fontSize: 40, textAlign: "center" }}
+							>
 								{totalPts}
 							</Typography>
 						</div>

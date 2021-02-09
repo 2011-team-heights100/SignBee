@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import HoneyComb from "./HoneyComb";
 import { useUser } from "../contexts/UserContext";
 import { HelpSharp } from "@material-ui/icons";
-import { slideInUp, shake, pulse } from "react-animations";
+import { slideInUp, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
 
 const Slide = styled.div`
@@ -17,17 +16,10 @@ const Shake = styled.div`
 export default function Dashboard() {
 	document.body.style = "background: #FEF5E4";
 
-	const { levels, getDbUser, setCurrentLevel } = useUser();
-  // const history = useHistory();
-  
-	// // const handleClick = async (e) => {
-	// // 	e.preventDefault();
-  // //   await setCurrentLevel(levels.LEARN);
-  // //   history.push("/learn")
-	// // };
+	const { getDbUser } = useUser();
 
 	useEffect(() => {
-    getDbUser();
+		getDbUser();
 	}, []);
 
 	return (

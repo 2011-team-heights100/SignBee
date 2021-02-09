@@ -51,11 +51,11 @@ export function UserProvider({ children }) {
 		sectionsRef.get().then((snapshot) => {
 			snapshot.docs.forEach((doc) => {
 				const section = doc.data();
-				if (section.name === 'LEARN') {
+				if (section.name === "LEARN") {
 					getLevels[section.name] = section.prompts;
 				} else {
-          getLevels[section.name] = section.levels;
-        }
+					getLevels[section.name] = section.levels;
+				}
 			});
 			setLevels(getLevels);
 		});
@@ -69,21 +69,31 @@ export function UserProvider({ children }) {
 		if (
 			!dbUser.progress[currentLevelName].easy &&
 			!dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].hard
+			!dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
 		) {
 			setDifficulty("easy");
 		} else if (
 			dbUser.progress[currentLevelName].easy &&
 			!dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].hard
+			!dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
 		) {
 			setDifficulty("medium");
 		} else if (
 			dbUser.progress[currentLevelName].easy &&
 			dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].hard
+			!dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
 		) {
 			setDifficulty("hard");
+		} else if (
+			dbUser.progress[currentLevelName].easy &&
+			dbUser.progress[currentLevelName].medium &&
+			dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
+		) {
+			setDifficulty("text");
 		}
 	};
 
