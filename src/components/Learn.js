@@ -63,7 +63,7 @@ function Learn() {
 	const webcamRef = useRef(null);
 	const { currentLevel, dbUser } = useUser();
 	const [guess, setGuess] = useState(null);
-	const [promptArr, setPromptArr] = useState(["A"]);
+	const [promptArr, setPromptArr] = useState([]);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
@@ -75,7 +75,7 @@ function Learn() {
 console.log("currentLevel", currentLevel);
 
 	const shufflePrompts = useCallback(() => {
-    // setPromptArr(shuffle(currentLevel.prompts))
+    setPromptArr(shuffle(currentLevel))
 	});
 
 	const runHandpose = async () => {
@@ -175,7 +175,7 @@ console.log("currentLevel", currentLevel);
       setPrompt(promptArr[promptIdx])
 		} else if (isWithinTimeLimit && guess === prompt.letter) {
 			setThumb(true);
-			setPromptIdx(promptIdx + 1); // make random index betwen \dumm\y prompts
+			setPromptIdx(promptIdx + 1);
       setPrevTime(currTime);
       setPrompt(promptArr[promptIdx]);
 		}
@@ -187,7 +187,7 @@ console.log("currentLevel", currentLevel);
 		setTimeout(() => {
 			setLoading(false);
 		}, 5000);
-	}, [shufflePrompts]);
+	}, []);
 
 	return gameState ? (
 		<div className="App video-container">
@@ -232,8 +232,8 @@ console.log("currentLevel", currentLevel);
 								<Typography id="gesture-guess" fontWeight="fontWeightBold">
 									YOUR GUESS {guess}
 								</Typography>
-								<Typography variant="h2">{prompt.letter}</Typography>
-								<img src={prompt.picture} alt={prompt.letter}/>
+								<Typography variant="h2"> {prompt.letter}</Typography>
+								<img id="prompt-img" src={prompt.picture} alt={prompt.letter}/>
 							</div>
 						</div>
 					</div>

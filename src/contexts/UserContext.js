@@ -53,9 +53,9 @@ export function UserProvider({ children }) {
 				const section = doc.data();
 				if (section.name === 'LEARN') {
 					getLevels[section.name] = section.prompts;
-				}
-				getLevels[section.name] = section.levels;
-
+				} else {
+          getLevels[section.name] = section.levels;
+        }
 			});
 			setLevels(getLevels);
 		});

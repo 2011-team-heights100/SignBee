@@ -35,11 +35,15 @@ export default function SectionModal({ name, show }) {
 		for (let key in progress) {
 			if (progress[key] === true) levelsCompleted++;
 		}
-	}
+  }
+  
+  console.log("levels", levels)
 
 	async function handleClick() {
-		await setCurrentLevel(levels[name]);
-		console.log("currentLevel", currentLevel);
+    await setCurrentLevel(levels[name]);
+    
+    console.log("currentLevel", currentLevel);
+    
 		if (name !== "LEARN") {
 			await defineDifficulty(name);
 			//not recognizing difficulty right away

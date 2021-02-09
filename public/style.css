@@ -326,8 +326,12 @@ transparent box
 }
 
 #info {
-  position: absolute;
-  right: 0;
-  margin: 20px;
+	position: absolute;
+	right: 0;
+	margin: 20px;
 	width: 50px;
+}
+
+#prompt-img {
+	height: 150px;
 }
