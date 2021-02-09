@@ -24,12 +24,13 @@ function App() {
 	const { currentLevel, dbUser, difficulty } = useUser();
 	console.log("difficulty", difficulty);
 	console.log("current level", currentLevel);
-
 	const [guess, setGuess] = useState(null);
 	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
-	const [gameState, setGameState] = useState(true);
+  const [gameState, setGameState] = useState(true);
+  // const [hint, setHint] = useState("");
+
 	const maxPts = promptArr.length;
 
 	const runHandpose = async () => {

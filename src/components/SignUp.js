@@ -30,13 +30,11 @@ export default function SignUp() {
 				passwordRef.current.value,
 				firstNameRef.current.value,
 				lastNameRef.current.value
-			);
-		} catch (error) {
-			setError(`${error.message}`);
-			console.log(error);
-		}
-		if (!error.length) {
-			history.push("/dashboard"); //doesn't work for me (Julia)
+      );
+      history.push("/dashboard");
+		} catch (err) {
+			await setError(`${err.message}`);
+			console.log("Error in catch block", err);
 		}
 		setLoading(false);
 	}
@@ -73,7 +71,7 @@ export default function SignUp() {
 							Sign Up
 						</Button>
 					</form>
-					<Button variant="outlined" onClick={() => history.push("/")}>
+					<Button variant="outlined" onClick={() => history.goBack()}>
 						Back
 					</Button>
 				</div>

@@ -85,9 +85,6 @@ export function AuthProvider({ children }) {
 						);
 					});
 			})
-			.catch((error) => {
-				console.log("Something went wrong with sign up:", error);
-			});
 	}
 
 	function updateUser(firstName, lastName) {

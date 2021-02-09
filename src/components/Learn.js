@@ -1,15 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
 import Handsigns from "../handsigns";
 import { Typography } from "@material-ui/core";
-import { ThumbUp, Grade } from "@material-ui/icons";
+import { ThumbUp, HighlightOff } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble, bounceInUp } from "react-animations";
 import styled, { keyframes } from "styled-components";
+
 const Wobble = styled.div`
 	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
@@ -17,26 +18,74 @@ const BounceUp = styled.div`
 	animation: 1s ${keyframes`${bounceInUp}`};
 `;
 
-function App() {
-	const webcamRef = useRef(null);
-	const { currentLevel, dbUser, difficulty } = useUser();
-	// console.log("difficulty", difficulty);
-	// console.log("current level", currentLevel);
+const dummyPrompts = [
+	"A",
+	"B",
+	"C",
+	"D",
+	"E",
+	"F",
+	"G",
+	"H",
+	"I",
+	"J",
+	"K",
+	"L",
+	"M",
+	"N",
+	"O",
+	"P",
+	"Q",
+	"R",
+	"S",
+	"T",
+	"U",
+	"V",
+	"W",
+	"X",
+	"Y",
+	"Z",
+];
+// currentLevel.prompts;
+const timeLimitForGuess = 10000;
 
+function shuffle(a) {
+	for (let i = a.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[a[i], a[j]] = [a[j], a[i]];
+	}
+	return a;
+}
+
+shuffle(dummyPrompts);
+
+//add a memo that collects all the player's correct guesses and gives them a summary at the end
+
+function Learn() {
+	const webcamRef = useRef(null);
+	const { currentLevel, dbUser } = useUser();
 	const [guess, setGuess] = useState(null);
-	const [promptArr, setPromptArr] = useState(currentLevel.prompts);
+	const [promptArr, setPromptArr] = useState(dummyPrompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
-	const maxPts = promptArr.length;
+	const [prevTime, setPrevTime] = useState(Date.now() + 2000);
+	const [promptIdx, setPromptIdx] = useState(0);
+  const [thumb, setThumb] = useState(false);
+  const history = useHistory()
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
 		console.log("handpose loaded!");
 
 		//loop and detect hands
-		setInterval(() => {
-			detect(net);
+		start(net);
+	};
+
+	const start = (net) => {
+		setTimeout(async () => {
+			await detect(net);
+			start(net);
 		}, 500);
 	};
 
@@ -103,37 +152,37 @@ function App() {
 		}
 	};
 
-//prompt = {letter: "A", picture: "link"}
+	//prompt = {letter: "A", picture: "link"}
 
-	//display the prompt every 5 seconds
-	const displayPrompt = () => {
-		let i = 0;
-		const interval = setInterval(async () => {
-			await setPrompt(promptArr[i++]);
-			if (i > promptArr.length) {
-				clearInterval(interval);
-				setGameState(false);
-				console.log("game ended", gameState);
-			}
-		}, 5000);
+	useEffect(() => {
+		isGuessCorrect(guess);
+		//when the guess changes and the time changes
+	}, [guess, prevTime]);
+
+	const isGuessCorrect = (guess) => {
+		const currTime = Date.now();
+		// check has it been under 7 seconds
+		// user has exceeded time limit
+		const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
+		if (!isWithinTimeLimit) {
+			setThumb(false);
+			setPromptIdx(promptIdx + 1);
+			setPrevTime(currTime);
+		} else if (isWithinTimeLimit && guess === dummyPrompts[promptIdx]) {
+			setThumb(true);
+			setPromptIdx(promptIdx + 1); // make random index betwen \dumm\y prompts
+			setPrevTime(currTime);
+		}
 	};
 
 	useEffect(() => {
 		runHandpose();
 		setTimeout(() => {
 			setLoading(false);
-			displayPrompt();
-		}, 10000);
-		return () => {
-			memo = {};
-		};
+		}, 5000);
 	}, []);
 
-	// if ((guess !== "" || prompt !== "") && guess === prompt) {
-	// 	memo[guess] = true;
-	// }
-
-	let totalPts = Object.keys(memo).length;
+	const currPrompt = dummyPrompts[promptIdx];
 
 	return gameState ? (
 		<div className="App video-container">
@@ -155,35 +204,30 @@ function App() {
 			) : (
 				<div className="game-container">
 					<div id="points-container">
-						<div id="score">
-							<Typography
-								variant="h2"
-								style={{ fontSize: 40, textAlign: "center" }}
-							>
-								{totalPts}
-							</Typography>
-						</div>
-						<div id="score-star">
-							<Grade color="primary" style={{ fontSize: 100 }}></Grade>
+						<div id="exit">
+							{" "}
+							<HighlightOff color="primary"
+								onClick={() => history.push("/dashboard")}
+							></HighlightOff>
 						</div>
 					</div>
 					<div className="prompt-card">
 						<div id="thumb-containter">
 							<div>
-								{(guess !== "" || prompt !== "") && guess === prompt && (
+								{thumb && (
 									<BounceUp>
 										<ThumbUp color="primary" style={{ fontSize: 100 }} />
 									</BounceUp>
 								)}
 							</div>
-							{/* <Typography variant="h2">{totalPts}</Typography> */}
 						</div>
 						<div className="prompt-box">
 							<div className="prompt-content">
 								<Typography id="gesture-guess" fontWeight="fontWeightBold">
 									YOUR GUESS {guess}
 								</Typography>
-								<Typography variant="h2">Prompt: {prompt}</Typography>
+								<Typography variant="h2">Prompt: {currPrompt}</Typography>
+								{/* <img src={prompt.picture} alt={prompt.letter}/> */}
 							</div>
 						</div>
 					</div>
@@ -191,8 +235,8 @@ function App() {
 			)}
 		</div>
 	) : (
-		<Redirect to={{ pathname: "/gamesummary", state: { totalPts, maxPts } }} />
+		<Redirect to={{ pathname: "/dashboard" }} />
 	);
 }
 
-export default App;
+export default Learn;
