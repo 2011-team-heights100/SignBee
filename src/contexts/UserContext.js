@@ -51,7 +51,11 @@ export function UserProvider({ children }) {
 		sectionsRef.get().then((snapshot) => {
 			snapshot.docs.forEach((doc) => {
 				const section = doc.data();
+				if (section.name === 'LEARN') {
+					getLevels[section.name] = section.prompts;
+				}
 				getLevels[section.name] = section.levels;
+
 			});
 			setLevels(getLevels);
 		});
