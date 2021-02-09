@@ -35,27 +35,33 @@ export default function SectionModal({ name, show }) {
 		for (let key in progress) {
 			if (progress[key] === true) levelsCompleted++;
 		}
-  }
-  
-  // console.log("levels", levels)
+	}
+
+	// console.log("levels", levels)
+	// console.log("progress", dbUser.progress);
 
 	async function handleClick() {
-    await setCurrentLevel(levels[name]);
+		await setCurrentLevel(levels[name]);
+		// console.log("currentLevel", currentLevel);
+    // console.log("name", name);
     
-    console.log("currentLevel", currentLevel);
-    
-		if (name !== "LEARN") {
-      await defineDifficulty(name);
-      console.log("difficulty", difficulty)
-			//not recognizing difficulty right away
-			if (difficulty === "text") {
+		if (name === "LEARN") {
+			history.push("/learn");
+		} else {
+			await defineDifficulty(name);
+			if (
+				dbUser.progress[name].easy &&
+				dbUser.progress[name].medium &&
+				dbUser.progress[name].hard &&
+				!dbUser.progress[name].text
+			) {
 				history.push("/gameplaytext");
 			} else {
 				history.push("/app");
 			}
-		} else {
-			history.push("/learn");
 		}
+
+		console.log("difficulty", difficulty);
 	}
 
 	return (

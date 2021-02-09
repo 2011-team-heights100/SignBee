@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -20,8 +20,9 @@ const BounceUp = styled.div`
 let memo = {};
 
 function App() {
+  const history = useHistory();
+  const { currentLevel, difficulty } = useUser();
 	const webcamRef = useRef(null);
-	const { currentLevel, difficulty } = useUser();
 	// console.log("difficulty", difficulty);
 	// console.log("current level", currentLevel);
 	const [guess, setGuess] = useState(null);
@@ -42,11 +43,11 @@ function App() {
 		accuracy = 7.5;
 		//hide hints
 	} else if (difficulty === "hard") {
-    accuracy = 9;
-    // shuffle
-  }
-  
-  console.log("accuracy", accuracy)
+		accuracy = 9;
+		// shuffle
+	}
+
+	console.log("accuracy", accuracy);
 
 	const runHandpose = async () => {
 		const net = await handpose.load();

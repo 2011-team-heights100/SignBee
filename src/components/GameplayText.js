@@ -20,7 +20,7 @@ export default function GameplayText() {
 	const history = useHistory();
 	const { currentLevel, difficulty } = useUser();
 	const [gameState, setGameState] = useState(true);
-  const [promptArr] = useState(currentLevel[difficulty]);
+  const [promptArr] = useState(currentLevel.text);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
   const [guess, setGuess] = useState(null);
