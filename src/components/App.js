@@ -9,8 +9,7 @@ import { Typography } from "@material-ui/core";
 import {
 	ThumbUp,
 	Grade,
-	HelpSharp,
-	SettingsPhoneTwoTone,
+	HelpSharp
 } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble, bounceInUp, pulse } from "react-animations";
@@ -27,6 +26,14 @@ const Pulse = styled.div`
 
 let memo = {};
 
+function shuffle(a) {
+	for (let i = a.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[a[i], a[j]] = [a[j], a[i]];
+	}
+	return a;
+}
+
 function App() {
 	const history = useHistory();
 	const { currentLevel, difficulty } = useUser();
@@ -34,7 +41,7 @@ function App() {
 	// console.log("difficulty", difficulty);
 	// console.log("current level", currentLevel);
 	const [guess, setGuess] = useState(null);
-	const [promptArr] = useState(currentLevel[difficulty].prompts);
+	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
@@ -49,11 +56,11 @@ function App() {
 		accuracy = 6;
 		//display hints
 	} else if (difficulty === "medium") {
-		accuracy = 7.5;
+		accuracy = 7;
 		//hide hints
 	} else if (difficulty === "hard") {
-		accuracy = 9;
-		// shuffle
+		accuracy = 7.5;
+		// setPromptArr(shuffle(promptArr))
 	}
 
 	console.log("accuracy", accuracy);
