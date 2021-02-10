@@ -6,9 +6,14 @@ import * as fp from "fingerpose";
 import Webcam from "react-webcam";
 import Handsigns from "../handsigns";
 import { Typography } from "@material-ui/core";
-import { ThumbUp, Grade } from "@material-ui/icons";
+import {
+	ThumbUp,
+	Grade,
+	HelpSharp,
+	SettingsPhoneTwoTone,
+} from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
-import { wobble, bounceInUp } from "react-animations";
+import { wobble, bounceInUp, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
 const Wobble = styled.div`
 	animation: 6s ${keyframes`${wobble}`} infinite;
@@ -16,12 +21,15 @@ const Wobble = styled.div`
 const BounceUp = styled.div`
 	animation: 1s ${keyframes`${bounceInUp}`};
 `;
+const Pulse = styled.div`
+	animation: 2s ${keyframes`${pulse}`} infinite;
+`;
 
 let memo = {};
 
 function App() {
-  const history = useHistory();
-  const { currentLevel, difficulty } = useUser();
+	const history = useHistory();
+	const { currentLevel, difficulty } = useUser();
 	const webcamRef = useRef(null);
 	// console.log("difficulty", difficulty);
 	// console.log("current level", currentLevel);
@@ -30,7 +38,8 @@ function App() {
 	const [prompt, setPrompt] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [gameState, setGameState] = useState(true);
-	// const [hint, setHint] = useState("");
+	const [hint, setHint] = useState("");
+	let showHint = false;
 
 	const maxPts = promptArr.length;
 
@@ -130,13 +139,18 @@ function App() {
 		let i = 0;
 		const interval = setInterval(async () => {
 			await setPrompt(promptArr[i++]);
+			if (difficulty === "easy") {
+        await setHint(currentLevel.easy.hints[i]);
+			}
 			if (i > promptArr.length) {
 				clearInterval(interval);
 				setGameState(false);
 				console.log("game ended", gameState);
 			}
 		}, 5000);
-	};
+  };
+  
+  console.log("hint", hint);
 
 	useEffect(() => {
 		runHandpose();
@@ -196,7 +210,24 @@ function App() {
 									</BounceUp>
 								)}
 							</div>
-							{/* <Typography variant="h2">{totalPts}</Typography> */}
+							{showHint && (
+								<div>
+									<BounceUp>
+										<img src={hint} alt={prompt} />
+									</BounceUp>
+								</div>
+							)}
+							{difficulty === "easy" && (
+								<div id="hint">
+									<Pulse>
+										<HelpSharp
+											color="secondary"
+											style={{ fontSize: 40 }}
+											onClick={() => (showHint = true)}
+										></HelpSharp>
+									</Pulse>
+								</div>
+							)}
 						</div>
 						<div className="prompt-box">
 							<div className="prompt-content">

@@ -332,6 +332,15 @@ transparent box
 	width: 50px;
 }
 
+#hint {
+	position: absolute;
+	right: 0;
+  margin: 10px;
+  margin-bottom: 80px;
+  margin-right: 0;
+	width: 50px;
+}
+
 #prompt-img-letter {
 	display: flex;
 	flex-direction: row;
