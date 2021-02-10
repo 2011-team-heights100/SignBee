@@ -18,6 +18,7 @@ const BounceUp = styled.div`
 	animation: 1s ${keyframes`${bounceInUp}`};
 `;
 
+
 const dummyPrompts = [
 	"A",
 	"B",
@@ -255,7 +256,3 @@ console.log("currentLevel", currentLevel);
 
 export default Learn;
 
-// prompt.picture
-// {
-// 	prompt.letter;
-// }
