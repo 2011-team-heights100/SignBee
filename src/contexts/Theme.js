@@ -53,9 +53,12 @@ export default createMuiTheme({
 		},
 		MuiTextField: {
 			root: {
-				padding: 7,
-				height: 50,
-			},
+        padding: 7,
+        height: 50,
+      },
+      label: {
+        marginTop: 5,
+      }
 		},
 	},
 	props: {
@@ -64,7 +67,8 @@ export default createMuiTheme({
 			color: "primary",
 		},
 		MuiTextField: {
-			variant: "outlined",
+      variant: "outlined",
+      size: "small"
 		},
 	},
 });
