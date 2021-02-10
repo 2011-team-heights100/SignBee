@@ -62,7 +62,15 @@ export default function GameSummary(props) {
 	return (
 		<div className="game-summary-container">
 			<div className="game-summary">
-				<Typography variant="h2">Well Done!</Typography>
+				{props.location.state.totalPts === 0 && (
+					<Typography variant="h2">Oh boy...</Typography>
+				)}
+				{props.location.state.totalPts === props.location.state.maxPts && (
+					<Typography variant="h2">Well Done!</Typography>
+				)}
+				{props.location.state.totalPts < props.location.state.maxPts && (
+					<Typography variant="h2">Try Again</Typography>
+				)}
 				<Typography variant="h5">
 					Your Score: {props.location.state.totalPts}
 				</Typography>

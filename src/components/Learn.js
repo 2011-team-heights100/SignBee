@@ -1,35 +1,88 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { Redirect, useHistory } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
 import Handsigns from "../handsigns";
 import { Typography } from "@material-ui/core";
-import { ThumbUp } from "@material-ui/icons";
+import { ThumbUp, HighlightOff } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 //import { wobble } from "react-animations";
 import styled, { keyframes } from "styled-components";
 
-const dummyPrompts = ["A", "B", "C", "D"];
+const Wobble = styled.div`
+  animation: 6s ${keyframes`${wobble}`} infinite;
+`;
+const BounceUp = styled.div`
+  animation: 1s ${keyframes`${bounceInUp}`};
+`;
+
+const dummyPrompts = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+
 const timeLimitForGuess = 10000;
-// currentLevel.easy.prompts
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+//add a memo that collects all the player's correct guesses and gives them a summary at the end
 
 function Learn() {
   const webcamRef = useRef(null);
-  const [guess, setGuess] = useState(null);
-  const [points, setPoints] = useState(0);
   const { currentLevel, dbUser } = useUser();
-  const [promptArr, setPromptArr] = useState(dummyPrompts);
+  const [guess, setGuess] = useState(null);
+  const [promptArr, setPromptArr] = useState([]);
   const [prompt, setPrompt] = useState("");
-  const [promptIdx, setPromptIdx] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [thumb, setThumb] = useState(false);
+  const [gameState, setGameState] = useState(true);
   const [prevTime, setPrevTime] = useState(Date.now() + 2000);
+  const [promptIdx, setPromptIdx] = useState(0);
+  const [thumb, setThumb] = useState(false);
+  const history = useHistory();
+
+  console.log("currentLevel", currentLevel);
+
+  const shufflePrompts = useCallback(() => {
+    setPromptArr(shuffle(currentLevel));
+  });
 
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("handpose loaded!");
-    setLoading(false);
+
+    //loop and detect hands
     start(net);
   };
 
@@ -56,7 +109,7 @@ function Learn() {
       video.width = videoWidth;
       video.height = videoHeight;
 
-      //made detections
+      //make detections
       const hand = await net.estimateHands(video);
       // console.log(hand);
 
@@ -97,14 +150,13 @@ function Learn() {
           (a, b) => b.confidence - a.confidence
         );
 
-        if (estimated[0]) {
-          setGuess(estimated[0].name);
-          // isGuessCorrect(estimated[0].name);
-        }
+        if (estimated[0]) setGuess(estimated[0].name);
       }
-      //console.log("Num of tensors:", tf.memory().numTensors);
+      console.log("Num of tensors:", tf.memory().numTensors);
     }
   };
+
+  //prompt = {letter: "A", picture: "link"}
 
   useEffect(() => {
     isGuessCorrect(guess);
@@ -120,61 +172,84 @@ function Learn() {
       setThumb(false);
       setPromptIdx(promptIdx + 1);
       setPrevTime(currTime);
-    } else if (isWithinTimeLimit && guess === dummyPrompts[promptIdx]) {
+      setPrompt(promptArr[promptIdx]);
+    } else if (isWithinTimeLimit && guess === prompt.letter) {
       setThumb(true);
-      setPoints(points + 1);
-      setPromptIdx(promptIdx + 1); // make random index betwen \dumm\y prompts
+      setPromptIdx(promptIdx + 1);
       setPrevTime(currTime);
+      setPrompt(promptArr[promptIdx]);
     }
   };
 
   useEffect(() => {
     runHandpose();
+    shufflePrompts();
+    setTimeout(() => {
+      setLoading(false);
+    }, 10000);
   }, []);
 
-  const currPrompt = dummyPrompts[promptIdx];
-
-  return (
+  return gameState ? (
     <div className="App video-container">
       <header className="App-header">
         <Webcam className="video" ref={webcamRef} />
       </header>
       {loading ? (
         <div className="loading">
-          <Bounce>
-            <img src={process.env.PUBLIC_URL + "/bee.png"} id="bee" />
-          </Bounce>
+          <Wobble>
+            <img
+              src={process.env.PUBLIC_URL + "/bee.png"}
+              id="bee"
+              alt="loadingBee"
+            />
+          </Wobble>
           <br />
           <Typography variant="h2">Loading...</Typography>
         </div>
       ) : (
-        <div className="prompt-card">
-          <div id="thumb-containter">
-            <div>
-              {/* {(guess !== "" || prompt !== "") && guess === prompt ? (
-                <ThumbUp color="primary" style={{ fontSize: 100 }} />
-              ) : (
-                ""
-              )} */}
-              {thumb ? (
-                <ThumbUp color="primary" style={{ fontSize: 100 }} />
-              ) : (
-                ""
-              )}
+        <div className="game-container">
+          <div id="points-container">
+            <div id="exit">
+              {" "}
+              <HighlightOff
+                color="primary"
+                onClick={() => history.push("/dashboard")}
+              ></HighlightOff>
             </div>
-            <Typography variant="h2">{points}</Typography>
           </div>
-          <div className="prompt-box">
-            <div className="prompt-content">
-              <Typography id="gesture-guess" fontWeight="fontWeightBold">
-                GUESS {guess}
-              </Typography>
-              <Typography variant="h2">Prompt: {currPrompt}</Typography>
+          <div className="prompt-card-learn">
+            <div id="thumb-containter">
+              <div>
+                {thumb && (
+                  <BounceUp>
+                    <ThumbUp color="primary" style={{ fontSize: 100 }} />
+                  </BounceUp>
+                )}
+              </div>
+            </div>
+            <div className="prompt-box-learn">
+              <div className="prompt-content-learn">
+                <Typography id="gesture-guess" style={{ fontWeight: "bold" }}>
+                  YOUR GUESS: {guess}
+                </Typography>
+                <div id="prompt-img-letter">
+                  <Typography variant="h2" style={{ fontSize: 100 }}>
+                    {prompt.letter}
+                  </Typography>
+                  <img
+                    id="prompt-img"
+                    src={prompt.picture}
+                    alt={prompt.letter}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
     </div>
+  ) : (
+    <Redirect to={{ pathname: "/dashboard" }} />
   );
 }
 
