@@ -42,57 +42,63 @@ export default function ProfileSummary ({show, setModalShow}) {
   }
 
 	return (
-    <>
-		<Dialog
-			open={open}
-			onBackdropClick={handleClickAway}
-			closeAfterTransition={true}
-		>
-			<DialogTitle>
-				Hey there, {dbUser && dbUser.firstName}!
-			</DialogTitle>
-			<div className="center-modal">
-				<Typography variant="h2">STATS</Typography>
-				<Typography variant="h5">
-					PROGRESS: {`${progress}/${totalProgress}`}
-				</Typography>
-				<Typography variant="h5">TOTAL POINTS: {dbUser.points}</Typography>
-				{/* <Typography variant="h5">STREAK</Typography> */}
-			</div>
+		<>
+			<Dialog
+				open={open}
+				onBackdropClick={handleClickAway}
+				closeAfterTransition={true}
+			>
+				<DialogTitle align="center">
+					Hey there, {dbUser && dbUser.firstName}!
+				</DialogTitle>
+				<div className="center-modal">
+					<Typography variant="h2">STATS</Typography>
+					<Typography variant="h5">LEVELS COMPLETE</Typography>
+					<Typography
+						variant="h4"
+						color="primary"
+					>{`${progress} / ${totalProgress}`}</Typography>
+					<br />
+					<Typography variant="h5">TOTAL POINTS</Typography>
+					<Typography variant="h4" color="primary">
+						{dbUser.points}
+					</Typography>
+					{/* <Typography variant="h5">STREAK</Typography> */}
+				</div>
 
-			<List>
-				<ListItem
-					button
-					onClick={() => {
-						setOpen(false);
-						setModalShow(false);
-						history.push("/updateprofile");
-					}}
-				>
-					<ListItemAvatar>
-						<Avatar>
-							<PersonOutlineIcon color="secondary" />
-						</Avatar>
-					</ListItemAvatar>
-					<ListItemText primary="Edit Account Info" />
-				</ListItem>
-				<ListItem
-					button
-					onClick={() => {
-						setOpen(false);
-						setModalShow(false);
-						signout();
-					}}
-				>
-					<ListItemAvatar>
-						<Avatar>
-							<IndeterminateCheckBoxIcon color="secondary" />
-						</Avatar>
-					</ListItemAvatar>
-					<ListItemText primary="Sign Out" />
-				</ListItem>
-			</List>
-		</Dialog>
-    </>
+				<List>
+					<ListItem
+						button
+						onClick={() => {
+							setOpen(false);
+							setModalShow(false);
+							history.push("/updateprofile");
+						}}
+					>
+						<ListItemAvatar>
+							<Avatar>
+								<PersonOutlineIcon color="secondary" />
+							</Avatar>
+						</ListItemAvatar>
+						<ListItemText primary="Edit Account Info" />
+					</ListItem>
+					<ListItem
+						button
+						onClick={() => {
+							setOpen(false);
+							setModalShow(false);
+							signout();
+						}}
+					>
+						<ListItemAvatar>
+							<Avatar>
+								<IndeterminateCheckBoxIcon color="secondary" />
+							</Avatar>
+						</ListItemAvatar>
+						<ListItemText primary="Sign Out" />
+					</ListItem>
+				</List>
+			</Dialog>
+		</>
 	);
 }

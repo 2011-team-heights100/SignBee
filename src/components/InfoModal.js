@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
 	Dialog,
 	List,
-	ListItem,
-	ListItemText,
 	Typography,
 } from "@material-ui/core";
 
@@ -17,15 +15,14 @@ export default function InfoModal({ show }) {
   const handleClickAway = () => {
 		setOpen(false);
 	};
-	
 
 	return (
 		<Dialog open={open} onBackdropClick={handleClickAway}>
 			<Typography variant="h2" align="center">
 				INFO
 			</Typography>
-			<List>
-				<Typography variant="h5">Get Started</Typography>
+			<List align="center">
+				<Typography variant="h5">GET STARTED</Typography>
 				<Typography variant="h6">
 					Learn American Sign Language letters through the "LEARN" section.
 				</Typography>
@@ -36,7 +33,8 @@ export default function InfoModal({ show }) {
 				</Typography>
 				<br />
 				<Typography variant="h6">
-					Difficulty will increase with each level, and you will not be able to move on to the next level until you get all the gestures correctly.
+					Difficulty will increase with each level, and you will not be able to
+					move on to the next level until you get all the gestures correctly.
 				</Typography>
 			</List>
 		</Dialog>
