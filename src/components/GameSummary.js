@@ -69,7 +69,7 @@ export default function GameSummary(props) {
 					<Typography variant="h2">Well Done!</Typography>
 				)}
 				{props.location.state.totalPts < props.location.state.maxPts && (
-					<Typography variant="h2">Try Again</Typography>
+					<Typography variant="h2">Try Again!</Typography>
 				)}
 				<Typography variant="h5">
 					Your Score: {props.location.state.totalPts}

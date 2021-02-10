@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-import { Button, Typography, TextField } from "@material-ui/core";
+import { Button, Typography, TextField, FormControl } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 export default function SignIn() {
@@ -31,7 +31,7 @@ export default function SignIn() {
 	return (
 		<>
 			<div className="centerme">
-				<div>
+				<div className="logo-container">
 					<img
 						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
 						id="bee"
@@ -44,7 +44,7 @@ export default function SignIn() {
 					<Typography variant="h2">SIGN IN</Typography>
 					{error && <Alert severity="error">{error}</Alert>}
 
-					<form onSubmit={handleSubmit}>
+					<FormControl>
 						<TextField type="email" label="Email" inputRef={emailRef} />
 						<TextField
 							type="password"
@@ -52,13 +52,11 @@ export default function SignIn() {
 							inputRef={passwordRef}
 						/>
 						<br />
-						<Button type="submit" disabled={loading}>
+						<Button type="submit" disabled={loading} onClick={handleSubmit}>
 							Sign In
 						</Button>
-					</form>
-					{/* <Button variant="outlined" onClick={() => history.push("/")}>
-						Back
-					</Button> */}
+						<br />
+					</FormControl>
 					<br />
 					<Link to="/signup">Need an Account? Sign Up</Link>
 					<br />

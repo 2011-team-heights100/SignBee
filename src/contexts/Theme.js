@@ -1,4 +1,5 @@
 import { createMuiTheme, fade } from "@material-ui/core/styles";
+import { denseBincount } from "@tensorflow/tfjs";
 
 export default createMuiTheme({
 	palette: {
@@ -41,23 +42,14 @@ export default createMuiTheme({
 				padding: 15,
 			},
 		},
-		// MuiDialogTitle: {
-		// 	root: {
-		// 		fontWeight: "bold",
-		// 	},
-		// },
 		MuiPaper: {
 			root: {
 				opacity: fade("#FFFFFF", 0.7),
 			},
 		},
-		MuiTextField: {
-			root: {
-        padding: 7,
-        height: 50,
-      },
-      label: {
-        marginTop: 5,
+		MuiFormControl: {
+      root: {
+        margin: "normal",
       }
 		},
 	},
@@ -67,8 +59,9 @@ export default createMuiTheme({
 			color: "primary",
 		},
 		MuiTextField: {
-      variant: "outlined",
-      size: "small"
+			variant: "outlined",
+			size: "small",
+			margin: "dense",
 		},
 	},
 });
