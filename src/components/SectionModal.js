@@ -22,30 +22,48 @@ export default function SectionModal({ name, show }) {
 		difficulty,
 	} = useUser();
 	const history = useHistory();
-	let levelsCompleted = 0;
+  let levelsCompleted = 0;
+  let totalLevels = 0
 
 	useEffect(() => {
 		getDbUser();
 		getLevels();
+		// return console.log("unmounted");
 	}, []);
 
 	if (dbUser) {
 		let progress = dbUser.progress[name];
 		for (let key in progress) {
+      totalLevels++
 			if (progress[key] === true) levelsCompleted++;
 		}
 	}
 
+	// console.log("levels", levels)
+	// console.log("progress", dbUser.progress);
+
 	async function handleClick() {
 		await setCurrentLevel(levels[name]);
-    await defineDifficulty(name);
-    //not recognizing difficulty right away
-		if (difficulty === "hard") {
-			history.push("/gameplaytext");
+		// console.log("currentLevel", currentLevel);
+    // console.log("name", name);
+    
+		if (name === "LEARN") {
+			history.push("/learn");
 		} else {
-			history.push("/app");
+			await defineDifficulty(name);
+			if (
+				dbUser.progress[name].easy &&
+				dbUser.progress[name].medium &&
+				dbUser.progress[name].hard &&
+				!dbUser.progress[name].text
+			) {
+				history.push("/gameplaytext");
+			} else {
+				history.push("/app");
+			}
 		}
-		console.log("difficulty in SM", difficulty);
+
+		console.log("difficulty", difficulty);
 	}
 
 	return (
@@ -59,7 +77,7 @@ export default function SectionModal({ name, show }) {
 				</ListItem> */}
 				<ListItem>
 					<ListItemText primary="LEVELS COMPLETED: " />
-					<ListItemText primary={levelsCompleted + "/3"} />
+					<ListItemText primary={` ${levelsCompleted} / ${totalLevels}` } />
 				</ListItem>
 			</List>
 			<Button onClick={() => handleClick()}>Begin</Button>

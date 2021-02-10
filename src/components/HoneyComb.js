@@ -1,33 +1,61 @@
-import React, { useState } from 'react';
-import SectionModal from './SectionModal';
+import React, { useState, useEffect } from "react";
+import SectionModal from "./SectionModal";
+import { useUser } from "../contexts/UserContext";
 
-function HoneyComb ({name}) {
-	const [showModal, setShowModal] = useState(false)
+function HoneyComb({ name }) {
+	const { dbUser, getDbUser } = useUser();
+	const [showModal, setShowModal] = useState(false);
 
-  const handleClick = (e) => {
-      e.preventDefault();
-			setShowModal(!showModal);
-  }
+	useEffect(() => {
+		return getDbUser();
+	}, []);
 
-  return (
-		<div className='hexagon hexagon-with-border warning' onClick={handleClick}>
-			<div className='hexagon-shape'>
-				<div className='hexagon-shape-inner'>
-					<div className='hexagon-shape-inner-2'></div>
+	let percent;
+
+	if (dbUser) {
+		let progress = dbUser.progress[name];
+		let levelsCompleted = 0;
+		if (progress !== undefined) {
+			let totalLevels = Object.keys(progress).length;
+			for (let key in progress) {
+				if (progress[key] === true) levelsCompleted++;
+			}
+			percent = Number(levelsCompleted / totalLevels);
+		}
+	}
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		setShowModal(!showModal);
+	};
+
+	return (
+		<div className="hexagon hexagon-with-border warning" onClick={handleClick}>
+			<div className="hexagon-shape">
+				<div className="hexagon-shape-inner">
+					<div className="hexagon-shape-inner-2"></div>
 				</div>
 			</div>
-			<div className='hexagon-shape content-panel'>
-				<div className='hexagon-shape-inner'>
-					<div className='hexagon-shape-inner-2'></div>
+			{percent < 1 && (
+				<div className="hexagon-shape content-panel">
+					<div className="hexagon-shape-inner">
+						<div className="hexagon-shape-inner-2"></div>
+					</div>
 				</div>
-			</div>
-			<div className='hexagon-content'>
-				<div className='content-title'>{name}</div>
-				<SectionModal show={showModal} name={name} />
+			)}
+			{percent > 0 && (
+				<div className="hexagon-shape content-panel-some-action">
+					<div className="hexagon-shape-inner">
+						<div className="hexagon-shape-inner-2"></div>
+					</div>
+				</div>
+			)}
+			<div className="hexagon-content">
+				<div className="content-title">{name}</div>
+          <SectionModal show={showModal} name={name} />
 			</div>
 		</div>
 	);
 }
 
-export default HoneyComb
-
+export default HoneyComb;

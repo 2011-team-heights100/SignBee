@@ -89,19 +89,19 @@ export default function UpdateProfile() {
 							<TextField
 								required
 								type="email"
-								// label="Email"
+								label="Email"
 								inputRef={emailRef}
 								defaultValue={currentUser.email}
 							/>
 							<TextField
 								type="password"
-								// label="Password"
+								label="Password"
 								inputRef={passwordRef}
 								placeholder="Leave blank to keep the same"
 							/>
 							<TextField
 								type="password"
-								// label="Confirm Password"
+								label="Confirm Password"
 								inputRef={passwordConfirmRef}
 								placeholder="Leave blank to keep the same"
 							/>

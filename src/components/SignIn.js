@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 export default function SignIn() {
 	const emailRef = useRef();
@@ -41,7 +42,7 @@ export default function SignIn() {
 				<br />
 				<div className="formdiv">
 					<Typography variant="h2">SIGN IN</Typography>
-					{error && <div>{error}</div>}
+					{error && <Alert severity="error">{error}</Alert>}
 
 					<form onSubmit={handleSubmit}>
 						<TextField type="email" label="Email" inputRef={emailRef} />

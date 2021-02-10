@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Button, Typography, TextField } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 export default function SignUp() {
 	const emailRef = useRef();
@@ -29,11 +30,11 @@ export default function SignUp() {
 				passwordRef.current.value,
 				firstNameRef.current.value,
 				lastNameRef.current.value
-			);
-			history.push("/dashboard");
-		} catch (error) {
-			setError(`${error.message}`);
-			console.log(error);
+      );
+      history.push("/dashboard");
+		} catch (err) {
+			await setError(`${err.message}`);
+			console.log("Error in catch block", err);
 		}
 		setLoading(false);
 	}
@@ -51,7 +52,7 @@ export default function SignUp() {
 				<br />
 				<div className="formdiv">
 					<Typography variant="h2">SIGN UP</Typography>
-					{error && <div>{error}</div>}
+					{error && <Alert severity="error">{error}</Alert>}
 					<form className="veritcalform" onSubmit={handleSubmit}>
 						<TextField type="text" label="First Name" inputRef={firstNameRef} />
 						<TextField type="text" label="Last Name" inputRef={lastNameRef} />
@@ -70,7 +71,7 @@ export default function SignUp() {
 							Sign Up
 						</Button>
 					</form>
-					<Button variant="outlined" onClick={() => history.push("/")}>
+					<Button variant="outlined" onClick={() => history.goBack()}>
 						Back
 					</Button>
 				</div>

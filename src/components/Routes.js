@@ -22,6 +22,7 @@ import About from "./About";
 import GameSummary from "./GameSummary"
 import GameplayText from "./GameplayText";
 import ResetPassword from "./ResetPassword"
+import Learn from "./Learn";
 
 export default function Routes() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,26 +41,27 @@ export default function Routes() {
 					<AuthProvider>
 						<Navbar />
 						<Switch>
-							<Route exact path='/'>
-								{isLoggedIn ? <Redirect to='/dashboard' /> : <LandingPage />}
+							<Route exact path="/">
+								{isLoggedIn ? <Redirect to="/dashboard" /> : <LandingPage />}
 							</Route>
-							<Route path='/signup'>
-								{isLoggedIn ? <Redirect to='/dashboard' /> : <SignUp />}
+							<Route path="/signup">
+								{isLoggedIn ? <Redirect to="/dashboard" /> : <SignUp />}
 							</Route>
-							<Route path='/signin'>
-								{isLoggedIn ? <Redirect to='/dashboard' /> : <SignIn />}
+							<Route path="/signin">
+								{isLoggedIn ? <Redirect to="/dashboard" /> : <SignIn />}
 							</Route>
-							<Route exact path='/app' component={App} />
-							<Route path='/dashboard'>
-								{isLoggedIn ? <Dashboard /> : <Redirect to='/' />}
+							<Route exact path="/app" component={App} />
+							<Route path="/dashboard">
+								{isLoggedIn ? <Dashboard /> : <Redirect to="/" />}
 							</Route>
-							<Route path='/updateprofile'>
-								{isLoggedIn ? <UpdateProfile /> : <Redirect to='/signin' />}
+							<Route path="/updateprofile">
+								{isLoggedIn ? <UpdateProfile /> : <Redirect to="/signin" />}
 							</Route>
-							<Route path='/about' component={About} />
+							<Route path="/about" component={About} />
 							<Route path="/gamesummary" component={GameSummary} />
 							<Route path="/gameplaytext" component={GameplayText} />
 							<Route path="/resetpassword" component={ResetPassword} />
+							<Route path="/learn" component={Learn} />
 						</Switch>
 					</AuthProvider>
 				</UserProvider>

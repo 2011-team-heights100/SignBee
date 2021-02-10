@@ -51,7 +51,11 @@ export function UserProvider({ children }) {
 		sectionsRef.get().then((snapshot) => {
 			snapshot.docs.forEach((doc) => {
 				const section = doc.data();
-				getLevels[section.name] = section.levels;
+				if (section.name === "LEARN") {
+					getLevels[section.name] = section.prompts;
+				} else {
+					getLevels[section.name] = section.levels;
+				}
 			});
 			setLevels(getLevels);
 		});
@@ -61,26 +65,36 @@ export function UserProvider({ children }) {
 		db.collection("Users").doc(isLoggedIn.uid).update({ points: pts });
 	}
 
-	const defineDifficulty = (currentLevelName) => {
+	const defineDifficulty = async (currentLevelName) => {
 		if (
 			!dbUser.progress[currentLevelName].easy &&
 			!dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].hard
+			!dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
 		) {
-			setDifficulty("easy");
+			await setDifficulty("easy");
 		} else if (
 			dbUser.progress[currentLevelName].easy &&
 			!dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].hard
+			!dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
 		) {
-			setDifficulty("medium");
+			await setDifficulty("medium");
 		} else if (
 			dbUser.progress[currentLevelName].easy &&
 			dbUser.progress[currentLevelName].medium &&
-			!dbUser.progress[currentLevelName].hard
+			!dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
 		) {
-			setDifficulty("hard");
-		}
+			await setDifficulty("hard");
+		} else if (
+			dbUser.progress[currentLevelName].easy &&
+			dbUser.progress[currentLevelName].medium &&
+			dbUser.progress[currentLevelName].hard &&
+			!dbUser.progress[currentLevelName].text
+		) {
+			await setDifficulty("text");
+    }
 	};
 
 	const updateProgress = (levelName, difficulty) => {

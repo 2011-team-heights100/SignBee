@@ -37,7 +37,7 @@ export default createMuiTheme({
 		MuiDialog: {
 			paper: {
 				borderRadius: 20,
-				opacity: "70%",
+				opacity: "80%",
 				padding: 15,
 			},
 		},
@@ -53,9 +53,12 @@ export default createMuiTheme({
 		},
 		MuiTextField: {
 			root: {
-				padding: 7,
-				height: 50,
-			},
+        padding: 7,
+        height: 50,
+      },
+      label: {
+        marginTop: 5,
+      }
 		},
 	},
 	props: {
@@ -64,7 +67,8 @@ export default createMuiTheme({
 			color: "primary",
 		},
 		MuiTextField: {
-			variant: "outlined",
+      variant: "outlined",
+      size: "small"
 		},
 	},
 });
