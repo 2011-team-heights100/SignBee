@@ -6,7 +6,7 @@ function LandingPage() {
 	const history = useHistory();
 	return (
 		<div className="centerme">
-			<div>
+			<div className="logo-container">
 				<img
 					src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
 					id="bee"

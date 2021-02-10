@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Button, Typography, TextField } from "@material-ui/core";
+import { Button, Typography, TextField, FormControl } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 export default function SignUp() {
@@ -30,8 +30,8 @@ export default function SignUp() {
 				passwordRef.current.value,
 				firstNameRef.current.value,
 				lastNameRef.current.value
-      );
-      history.push("/dashboard");
+			);
+			history.push("/dashboard");
 		} catch (err) {
 			await setError(`${err.message}`);
 			console.log("Error in catch block", err);
@@ -42,7 +42,7 @@ export default function SignUp() {
 	return (
 		<>
 			<div className="centerme">
-				<div>
+				<div className="logo-container">
 					<img
 						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
 						id="bee"
@@ -53,7 +53,7 @@ export default function SignUp() {
 				<div className="formdiv">
 					<Typography variant="h2">SIGN UP</Typography>
 					{error && <Alert severity="error">{error}</Alert>}
-					<form className="veritcalform" onSubmit={handleSubmit}>
+					<FormControl onSubmit={handleSubmit}>
 						<TextField type="text" label="First Name" inputRef={firstNameRef} />
 						<TextField type="text" label="Last Name" inputRef={lastNameRef} />
 						<TextField type="email" label="Email" inputRef={emailRef} />
@@ -70,10 +70,10 @@ export default function SignUp() {
 						<Button type="submit" disabled={loading}>
 							Sign Up
 						</Button>
-					</form>
-					<Button variant="outlined" onClick={() => history.goBack()}>
-						Back
-					</Button>
+						<Button variant="outlined" onClick={() => history.goBack()}>
+							Back
+						</Button>
+					</FormControl>
 				</div>
 			</div>
 		</>

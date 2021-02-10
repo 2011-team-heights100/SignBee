@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Button, Typography, TextField, Link } from "@material-ui/core";
+import { Button, Typography, TextField, Link, FormControl } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import { useUser } from '../contexts/UserContext';
 
 export default function UpdateProfile() {
@@ -61,19 +62,18 @@ export default function UpdateProfile() {
 		currentUser && (
 			<>
 				<div className="centerme">
-					<div>
+					<div className="logo-container">
 						<img
 							src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
 							id="bee"
 							alt="beeLogo"
 						/>
 					</div>
-					<br />
-					<br />
 					<div className="formdiv">
+						<br />
 						<Typography variant="h2">UPDATE</Typography>
-						{error && <div>{error}</div>}
-						<form onSubmit={handleSubmit}>
+						{error && <Alert severity="error">{error}</Alert>}
+						<FormControl margin="normal" onSubmit={handleSubmit}>
 							<TextField
 								type="text"
 								label="First Name"
@@ -97,25 +97,25 @@ export default function UpdateProfile() {
 								type="password"
 								label="Password"
 								inputRef={passwordRef}
-								placeholder="Leave blank to keep the same"
+								placeholder="Leave blank to keep the same password"
 							/>
 							<TextField
 								type="password"
 								label="Confirm Password"
 								inputRef={passwordConfirmRef}
-								placeholder="Leave blank to keep the same"
+								placeholder="Leave blank to keep the same password"
 							/>
 							<Link to="/resetpassword">Reset Password</Link>
 							<Button type="submit" disabled={loading}>
 								Update Profile
 							</Button>
-						</form>
-						<Button
-							variant="outlined"
-							onClick={() => history.push("/dashboard")}
-						>
-							Back
-						</Button>
+							<Button
+								variant="outlined"
+								onClick={() => history.push("/dashboard")}
+							>
+								Back
+							</Button>
+						</FormControl>
 					</div>
 				</div>
 			</>
