@@ -15,10 +15,10 @@ import { useUser } from "../contexts/UserContext";
 import { wobble, bounceInUp, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
 const Wobble = styled.div`
-	animation: 6s ${keyframes`${wobble}`} infinite;
+  animation: 6s ${keyframes`${wobble}`} infinite;
 `;
 const BounceUp = styled.div`
-	animation: 1s ${keyframes`${bounceInUp}`};
+  animation: 1s ${keyframes`${bounceInUp}`};
 `;
 const Pulse = styled.div`
 	animation: 2s ${keyframes`${pulse}`} infinite;
