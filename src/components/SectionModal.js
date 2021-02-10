@@ -22,7 +22,8 @@ export default function SectionModal({ name, show }) {
 		difficulty,
 	} = useUser();
 	const history = useHistory();
-	let levelsCompleted = 0;
+  let levelsCompleted = 0;
+  let totalLevels = 0
 
 	useEffect(() => {
 		getDbUser();
@@ -33,6 +34,7 @@ export default function SectionModal({ name, show }) {
 	if (dbUser) {
 		let progress = dbUser.progress[name];
 		for (let key in progress) {
+      totalLevels++
 			if (progress[key] === true) levelsCompleted++;
 		}
 	}
@@ -75,7 +77,7 @@ export default function SectionModal({ name, show }) {
 				</ListItem> */}
 				<ListItem>
 					<ListItemText primary="LEVELS COMPLETED: " />
-					<ListItemText primary={levelsCompleted + "/4"} />
+					<ListItemText primary={` ${levelsCompleted} / ${totalLevels}` } />
 				</ListItem>
 			</List>
 			<Button onClick={() => handleClick()}>Begin</Button>

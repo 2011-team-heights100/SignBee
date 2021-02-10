@@ -261,12 +261,12 @@ transparent box
 	font-family: "Gill Sans";
 }
 
-.prompt-content p {
+/* .prompt-content p {
 	margin: 0;
 	padding: 0;
 	font-size: 15px;
 	color: black;
-}
+} */
 
 #thumb-containter {
 	display: flex;
@@ -332,6 +332,50 @@ transparent box
 	width: 50px;
 }
 
+#prompt-img-letter {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 30px;
+}
+
 #prompt-img {
-	height: 150px;
+	position: absolute;
+	height: 250px;
+	left: 20%;
+	top: 25%;
+	size: auto;
+}
+
+.prompt-card-learn {
+	width: 80%;
+	position: relative;
+	margin: 0px auto;
+	bottom: 20%;
+	top: 60%;
+}
+
+.prompt-box-learn {
+	display: flex;
+	flex-direction: row;
+	align-content: space-between;
+	width: 100%;
+	min-height: 130px;
+	padding: 20px;
+	background: #ffffff;
+	opacity: 60%;
+	border-radius: 10px;
+}
+
+.prompt-content-learn {
+	display: flex;
+	flex-direction: column;
+	height: inherit;
+	/* position: fixed; */
+	/* width: 90%; */
+	/* top: 30px;
+	left: 20px;
+	color: black;
+	font-size: 30px;
+	font-family: "Gill Sans"; */
 }

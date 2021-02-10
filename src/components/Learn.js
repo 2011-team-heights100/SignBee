@@ -186,7 +186,7 @@ console.log("currentLevel", currentLevel);
     shufflePrompts()
 		setTimeout(() => {
 			setLoading(false);
-		}, 5000);
+		}, 10000);
 	}, []);
 
 	return gameState ? (
@@ -217,7 +217,7 @@ console.log("currentLevel", currentLevel);
 							></HighlightOff>
 						</div>
 					</div>
-					<div className="prompt-card">
+					<div className="prompt-card-learn">
 						<div id="thumb-containter">
 							<div>
 								{thumb && (
@@ -227,13 +227,21 @@ console.log("currentLevel", currentLevel);
 								)}
 							</div>
 						</div>
-						<div className="prompt-box">
-							<div className="prompt-content">
-								<Typography id="gesture-guess" fontWeight="fontWeightBold">
-									YOUR GUESS {guess}
+						<div className="prompt-box-learn">
+							<div className="prompt-content-learn">
+								<Typography id="gesture-guess" style={{ fontWeight: "bold" }}>
+									YOUR GUESS: {guess}
 								</Typography>
-								<Typography variant="h2"> {prompt.letter}</Typography>
-								<img id="prompt-img" src={prompt.picture} alt={prompt.letter}/>
+								<div id="prompt-img-letter">
+									<Typography variant="h2" style={{ fontSize: 100 }}>
+										{prompt.letter}
+									</Typography>
+									<img
+										id="prompt-img"
+										src={prompt.picture}
+										alt={prompt.letter}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -246,3 +254,8 @@ console.log("currentLevel", currentLevel);
 }
 
 export default Learn;
+
+// prompt.picture
+// {
+// 	prompt.letter;
+// }
