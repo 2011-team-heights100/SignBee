@@ -45,15 +45,15 @@ export default function ResetPassword() {
 					<Typography variant="h2">RESET</Typography>
 					{error && <Alert severity="error">{error}</Alert>}
 					{message && <Alert severity="success">{message}</Alert>}
-					<FormControl onSubmit={handleSubmit}>
+					<FormControl>
 						<TextField type="email" label="Email" inputRef={emailRef} />
 						<br />
-						<Button type="submit" disabled={loading}>
+						<Button type="submit" disabled={loading} onClick={handleSubmit}>
 							Send Email
 						</Button>
-            <Button variant="outlined" onClick={() => history.push("/signin")}>
-						Back
-					</Button>
+						<Button variant="outlined" onClick={() => history.push("/signin")}>
+							Back
+						</Button>
 					</FormControl>
 					<br />
 					<Link to="/signup">Need an Account? Sign Up</Link>

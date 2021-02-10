@@ -22,8 +22,8 @@ export default function SectionModal({ name, show }) {
 		difficulty,
 	} = useUser();
 	const history = useHistory();
-  let levelsCompleted = 0;
-  let totalLevels = 0
+	let levelsCompleted = 0;
+	let totalLevels = 0;
 
 	useEffect(() => {
 		getDbUser();
@@ -34,7 +34,7 @@ export default function SectionModal({ name, show }) {
 	if (dbUser) {
 		let progress = dbUser.progress[name];
 		for (let key in progress) {
-      totalLevels++
+			totalLevels++;
 			if (progress[key] === true) levelsCompleted++;
 		}
 	}
@@ -45,8 +45,8 @@ export default function SectionModal({ name, show }) {
 	async function handleClick() {
 		await setCurrentLevel(levels[name]);
 		// console.log("currentLevel", currentLevel);
-    // console.log("name", name);
-    
+		// console.log("name", name);
+
 		if (name === "LEARN") {
 			history.push("/learn");
 		} else {
@@ -71,14 +71,17 @@ export default function SectionModal({ name, show }) {
 			<Typography variant="h2" align="center">
 				{name}
 			</Typography>
-			<List>
-				{/* <ListItem>
-					<ListItemText primary="Lives" />
-				</ListItem> */}
-				<ListItem>
-					<ListItemText primary="LEVELS COMPLETED: " />
-					<ListItemText primary={` ${levelsCompleted} / ${totalLevels}` } />
-				</ListItem>
+			<List align="center">
+				{name !== "LEARN" && (
+					<>
+						<Typography variant="h5">LEVELS COMPLETE</Typography>
+						<br />
+						<Typography variant="h3" color="primary">
+							{` ${levelsCompleted} / ${totalLevels}`}
+						</Typography>
+					</>
+				)}
+				{name === "LEARN" && <Typography variant="h6">Learn as long as you like! This section is untimed, and you don't receive points.</Typography>}
 			</List>
 			<Button onClick={() => handleClick()}>Begin</Button>
 		</Dialog>

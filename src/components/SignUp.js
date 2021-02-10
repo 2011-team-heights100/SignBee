@@ -53,7 +53,7 @@ export default function SignUp() {
 				<div className="formdiv">
 					<Typography variant="h2">SIGN UP</Typography>
 					{error && <Alert severity="error">{error}</Alert>}
-					<FormControl onSubmit={handleSubmit}>
+					<FormControl>
 						<TextField type="text" label="First Name" inputRef={firstNameRef} />
 						<TextField type="text" label="Last Name" inputRef={lastNameRef} />
 						<TextField type="email" label="Email" inputRef={emailRef} />
@@ -67,7 +67,7 @@ export default function SignUp() {
 							label="Confirm Password"
 							inputRef={passwordConfirmRef}
 						/>
-						<Button type="submit" disabled={loading}>
+						<Button type="submit" disabled={loading} onClick={handleSubmit}>
 							Sign Up
 						</Button>
 						<Button variant="outlined" onClick={() => history.goBack()}>

@@ -44,7 +44,7 @@ export default function SignIn() {
 					<Typography variant="h2">SIGN IN</Typography>
 					{error && <Alert severity="error">{error}</Alert>}
 
-					<FormControl onSubmit={handleSubmit}>
+					<FormControl>
 						<TextField type="email" label="Email" inputRef={emailRef} />
 						<TextField
 							type="password"
@@ -52,7 +52,7 @@ export default function SignIn() {
 							inputRef={passwordRef}
 						/>
 						<br />
-						<Button type="submit" disabled={loading}>
+						<Button type="submit" disabled={loading} onClick={handleSubmit}>
 							Sign In
 						</Button>
 						<br />

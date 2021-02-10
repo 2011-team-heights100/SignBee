@@ -73,7 +73,7 @@ export default function UpdateProfile() {
 						<br />
 						<Typography variant="h2">UPDATE</Typography>
 						{error && <Alert severity="error">{error}</Alert>}
-						<FormControl margin="normal" onSubmit={handleSubmit}>
+						<FormControl margin="normal">
 							<TextField
 								type="text"
 								label="First Name"
@@ -106,7 +106,7 @@ export default function UpdateProfile() {
 								placeholder="Leave blank to keep the same password"
 							/>
 							<Link to="/resetpassword">Reset Password</Link>
-							<Button type="submit" disabled={loading}>
+							<Button type="submit" disabled={loading} onClick={handleSubmit}>
 								Update Profile
 							</Button>
 							<Button
