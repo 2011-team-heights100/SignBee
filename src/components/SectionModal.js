@@ -2,38 +2,34 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 import {
-  Dialog,
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-  Typography,
+	Dialog,
+	List,
+	Button,
+	Typography,
 } from "@material-ui/core";
 
 export default function SectionModal({ name, show }) {
-  const {
-    dbUser,
-    getDbUser,
-    levels,
-    getLevels,
-    currentLevel,
-    setCurrentLevel,
-    setDifficulty,
-    defineDifficulty,
-    difficulty,
-  } = useUser();
-  const history = useHistory();
-  const [difficultyOverride, setDifficultyOverride] = useState(false);
+	const {
+		dbUser,
+		getDbUser,
+		levels,
+		getLevels,
+		currentLevel,
+		setCurrentLevel,
+		setDifficulty,
+		defineDifficulty,
+		difficulty,
+	} = useUser();
+	const history = useHistory();
+	const [difficultyOverride, setDifficultyOverride] = useState(false);
   const [displayChosen, setDisplayChosen] = useState("");
+	let levelsCompleted = 0;
+	let totalLevels = 0;
 
-  let levelsCompleted = 0;
-  let totalLevels = 0;
-
-  useEffect(() => {
-    getDbUser();
-    getLevels();
-    // return console.log("unmounted");
-  }, []);
+	useEffect(() => {
+		getDbUser();
+		getLevels();
+	}, []);
 
   if (dbUser) {
     let progress = dbUser.progress[name];
@@ -77,6 +73,7 @@ export default function SectionModal({ name, show }) {
 		if (name === "LEARN") {
 			history.push("/learn");
 		} else {
+
 			// if (!difficultyOverride){
 			await defineDifficulty(name);
 		// }
@@ -92,10 +89,7 @@ export default function SectionModal({ name, show }) {
 			}
 		}
 
-		console.log("difficulty", difficulty);
 	}
-
-
 
   if (name === "LEARN") {
     return (

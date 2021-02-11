@@ -7,10 +7,10 @@ import { wobble, bounceInUp } from "react-animations";
 import styled, { keyframes } from "styled-components";
 
 const Wobble = styled.div`
-  animation: 6s ${keyframes`${wobble}`} infinite;
+	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
 const BounceUp = styled.div`
-  animation: 1s ${keyframes`${bounceInUp}`};
+	animation: 1s ${keyframes`${bounceInUp}`};
 `;
 
 const timeLimitForGuess = 5000;
@@ -36,7 +36,8 @@ export default function GameplayText() {
   const [points, setPoints] = useState(0);
   const [thumb, setThumb] = useState(false);
 
-  const guessRef = useRef();
+
+	const guessRef = useRef();
 
 	const shufflePrompts = useCallback(() => {
     setPromptArr(shuffle(promptArr));
@@ -72,61 +73,65 @@ console.log("gameplaytext", currentLevel)
       setTimeout(() => setThumb(false), 1000);
     }
 
-    if (promptIdx === promptArr.length - 1) {
-      setGameState(false);
-    } else {
-      guessRef.current.value = "";
-    }
-  };
+		if (promptIdx === promptArr.length - 1) {
+			setGameState(false);
+		} else {
+			guessRef.current.value = "";
+		}
+	};
 
-  const handleClick = async (e) => {
-    await isGuessCorrect(guessRef.current.value.toUpperCase().trim());
-  };
+	const handleClick = async (e) => {
+		await isGuessCorrect(guessRef.current.value.toUpperCase().trim());
+	};
 
-  return gameState ? (
-    <div className="game-summary-container">
-      <div className="game-summary">
-        <div id="points-container">
-          <div id="score">
-            <Typography
-              variant="h2"
-              style={{ fontSize: 40, textAlign: "center" }}
-            >
-              {points}
-            </Typography>
-          </div>
-          <div id="score-star">
-            <Grade color="primary" style={{ fontSize: 100 }}></Grade>
-          </div>
-        </div>
-        <div id="thumb-container">
-          <div>
-            {thumb && (
-              <BounceUp>
-                <ThumbUp color="primary" style={{ fontsize: 100 }} />
-              </BounceUp>
-            )}
-          </div>
-        </div>
-        <div>
-          <img
-					height= "200px"
-            src={promptArr[promptIdx].picture}
-            alt={promptArr[promptIdx].letter}
-          />
-        </div>
-        <br />
-        <TextField
-          type="text"
-          label="Your Answer"
-          // style={{ borderRadius: "50%" }}
-          inputRef={guessRef}
-					onKeyDown={(e)=>{if(e.key === 'Enter') handleClick()}}
-        ></TextField>
-        <Button onClick={handleClick}>Submit</Button>
-      </div>
-    </div>
-  ) : (
-    <Redirect to={{ pathname: "/gamesummary", state: {totalPts:points, maxPts} }} />
-  );
+	return gameState ? (
+		<div className="game-summary-container">
+			<div className="game-summary">
+				<div id="points-container">
+					<div id="score">
+						<Typography
+							variant="h2"
+							style={{ fontSize: 40, textAlign: "center" }}
+						>
+							{points}
+						</Typography>
+					</div>
+					<div id="score-star">
+						<Grade color="primary" style={{ fontSize: 100 }}></Grade>
+					</div>
+				</div>
+				<div id="thumb-container">
+					<div>
+						{thumb && (
+							<BounceUp>
+								<ThumbUp color="primary" style={{ fontsize: 100 }} />
+							</BounceUp>
+						)}
+					</div>
+				</div>
+				<div>
+					<img
+						height="200px"
+						src={promptArr[promptIdx].picture}
+						alt={promptArr[promptIdx].letter}
+					/>
+				</div>
+				<br />
+				<TextField
+					type="text"
+					label="Your Answer"
+					// style={{ borderRadius: "50%" }}
+					inputRef={guessRef}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") handleClick();
+					}}
+				></TextField>
+				<Button onClick={handleClick}>Submit</Button>
+			</div>
+		</div>
+	) : (
+		<Redirect
+			to={{ pathname: "/gamesummary", state: { totalPts: points, maxPts } }}
+		/>
+	);
 }

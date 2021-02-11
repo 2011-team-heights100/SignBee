@@ -355,11 +355,10 @@ transparent box
 }
 
 #prompt-img {
-	position: absolute;
-	height: 250px;
-	left: 20%;
-	top: 25%;
-	size: auto;
+  position: relative;
+  /* height: 250px; */
+  width: 250px;
+  z-index: -1;
 }
 
 .prompt-card-learn {
@@ -385,7 +384,6 @@ transparent box
 .prompt-content-learn {
 	display: flex;
 	flex-direction: column;
-	height: inherit;
 	/* position: fixed; */
 	/* width: 90%; */
 	/* top: 30px;
