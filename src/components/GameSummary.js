@@ -86,6 +86,12 @@ export default function GameSummary(props) {
     }
   }
 
+  const allLevelsComplete =
+		dbUser.progress[currentLevel.name].easy &&
+		dbUser.progress[currentLevel.name].medium &&
+		dbUser.progress[currentLevel.name].hard &&
+		dbUser.progress[currentLevel.name].text;
+
   return (
     <div className="game-summary-container">
       <div className="game-summary">
@@ -109,7 +115,7 @@ export default function GameSummary(props) {
         <Typography variant="h5">Total Points: {dbUser.points}</Typography>
         <GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
         <br />
-        {props.location.state.totalPts === props.location.state.maxPts && (
+        {(props.location.state.totalPts === props.location.state.maxPts && !allLevelsComplete) && (
           <Button onClick={handlePlayNext}>Next</Button>
         )}
 

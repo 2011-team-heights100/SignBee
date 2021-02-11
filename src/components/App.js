@@ -45,7 +45,7 @@ function App() {
 
 	const defineGameLevel = useCallback(() => {
     getDbUser()
-    
+
 		if (difficulty === "easy") {
 			setAccuracy(6.5);
 			//display hints
@@ -166,6 +166,7 @@ function App() {
 			displayPrompt();
 		}, 10000);
 		return () => {
+      runHandpose()
 			memo = {};
 		};
 	}, []);

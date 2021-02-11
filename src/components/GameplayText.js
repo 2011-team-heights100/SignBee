@@ -31,7 +31,7 @@ export default function GameplayText() {
   const [promptArr, setPromptArr] = useState(currentLevel.text);
   const [promptIdx, setPromptIdx] = useState(0);
   // const [prompt, setPrompt] = useState(promptArr[promptIdx]);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [prevTime, setPrevTime] = useState(Date.now() + 2000);
   const [points, setPoints] = useState(0);
   const [thumb, setThumb] = useState(false);
@@ -45,9 +45,9 @@ export default function GameplayText() {
 
   useEffect(() => {
     shufflePrompts();
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 10000);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }, []);
 
   const maxPts = promptArr.length;
@@ -85,7 +85,20 @@ export default function GameplayText() {
 
 	return gameState ? (
 		<div className="game-summary-container">
-			<div>
+      {loading ? (
+				<div className="loading">
+					<Wobble>
+						<img
+							src={process.env.PUBLIC_URL + "/bee.png"}
+							id="bee"
+							alt="loadingBee"
+						/>
+					</Wobble>
+					<br />
+					<Typography variant="h2">Loading...</Typography>
+				</div>
+			) :
+			(<div>
 				<div id="points-container">
 					<div id="score">
 						<Typography
@@ -129,8 +142,8 @@ export default function GameplayText() {
 					></TextField>
 					<Button onClick={handleClick}>Submit</Button>
 				</div>
-			</div>
-		</div>
+			</div>)}
+    </div>
 	) : (
 		<Redirect
 			to={{ pathname: "/gamesummary", state: { totalPts: points, maxPts } }}

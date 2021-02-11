@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { auth } from "../firebase";
 import "firebase/firestore";
 import firebase from "firebase/app";
-import { useUser } from "./UserContext";
+// import { useUser } from "./UserContext";
 
 const AuthContext = React.createContext();
 
@@ -14,7 +14,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-	const { setDbUser } = useUser();
+	// const { setDbUser } = useUser();
 
 	const history = useHistory();
 
