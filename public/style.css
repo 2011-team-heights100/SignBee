@@ -120,17 +120,18 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	border-radius: 10%;
+	align-items: center;
+	min-height: 800px;
+	/* border-radius: 10%; */
 	text-align: center;
-  align-content: center;
-  justify-items: center;
-	align-self: center;
-	padding: 30px;
-	margin: 10px;
-	max-width: 600px;
-	position: relative;
-	/* left: 25%; */
-	top: 5vh;
+	align-content: center;
+	justify-items: center;
+	/* align-self: center; */
+	/* padding: 30px; */
+	/* margin: 10px; */
+	/* max-width: 600px; */
+	/* position: relative; */
+	/* top: 5vh; */
 }
 
 .center-modal {
@@ -149,14 +150,15 @@ body {
 form {
 	display: flex;
 	flex-direction: column;
-  align-items: center;
+	align-items: center;
 }
 
 .formdiv {
 	border-radius: 10%;
 	background-color: #ffffff;
 	opacity: 70%;
-	padding: 20px;
+  padding: 20px;
+  min-width: 70%;
 }
 
 .game-summary-container {
@@ -176,11 +178,11 @@ form {
 }
 
 .text-submit-container {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+	text-align: center;
 }
 
 .landingbody {
@@ -223,7 +225,7 @@ transparent box
 */
 
 * {
-  align-content: center;
+	align-content: center;
 	padding: 0px;
 	margin: 0px;
 	bottom: 0;
@@ -255,7 +257,7 @@ transparent box
 	padding: 20px;
 	background: #ffffff;
 	opacity: 60%;
-  border-radius: 10px;
+	border-radius: 10px;
 }
 
 .prompt-content {
@@ -270,8 +272,8 @@ transparent box
 
 #thumb-containter {
 	display: flex;
-  justify-content: center;
-  text-align: center;
+	justify-content: center;
+	text-align: center;
 	height: 150px;
 	/* margin-bottom: 10px; */
 }
@@ -288,17 +290,17 @@ transparent box
 }
 
 #bee {
-  width: 120px;
+	width: 120px;
 }
 
-.logo-container{
-  overflow: visible;
-  margin-bottom: -25px;
+.logo-container {
+	overflow: visible;
+	margin-bottom: -25px;
 }
 
 #bee-logo-dash {
-  width: 120px;
-  z-index: -1;
+	width: 120px;
+	z-index: -1;
 }
 
 #points-container {
@@ -342,15 +344,15 @@ transparent box
 #hint-button {
 	position: absolute;
 	right: 0;
-  margin: 10px;
-  margin-bottom: 80px;
-  margin-right: 0;
-  width: 50px;
-  z-index: 5;
+	margin: 10px;
+	margin-bottom: 80px;
+	margin-right: 0;
+	width: 50px;
+	z-index: 5;
 }
 
 #hint {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 #prompt-img-letter {
@@ -360,10 +362,10 @@ transparent box
 }
 
 #prompt-img {
-  position: absolute;
-  width: 300px;
-  z-index: -1;
-  /* margin-right: 20px; */
+	position: absolute;
+	width: 300px;
+	z-index: -1;
+	/* margin-right: 20px; */
 }
 
 .prompt-card-learn {
@@ -383,8 +385,8 @@ transparent box
 	padding: 20px;
 	background: #ffffff;
 	opacity: 60%;
-  border-radius: 10px;
-  justify-content: center;
+	border-radius: 10px;
+	justify-content: center;
 }
 
 .prompt-content-learn {
@@ -401,8 +403,8 @@ transparent box
 
 #thumb-containter-learn {
 	display: flex;
-  justify-content: center;
-  text-align: center;
+	justify-content: center;
+	text-align: center;
 	height: 100px;
 	margin-bottom: 10px;
 }

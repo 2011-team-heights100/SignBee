@@ -25,11 +25,17 @@ export default function GameSummary(props) {
   const [totalPts, setTotalPts] = useState();
 
   useEffect(() => {
-    getDbUser();
+    getDbUser()
+  }, [])
+
+  useEffect(() => {
+    // getDbUser();
     getLevels();
     return () => (counter = 0);
   }, []);
+
   console.log("gameplaysummary", currentLevel);
+
   const addPoints = async () => {
     counter++;
     if (
@@ -56,13 +62,18 @@ export default function GameSummary(props) {
     await setCurrentLevel(levels[currentLevel.name]);
     await defineDifficulty(currentLevel.name);
     //not recognizing difficulty right away
-    if (difficulty === "text") {
-      history.push({
-        pathname: "/gameplaytext",
-      });
-    } else {
-      history.push("/app");
-    }
+    if (
+			dbUser.progress[currentLevel.name].easy &&
+			dbUser.progress[currentLevel.name].medium &&
+			dbUser.progress[currentLevel.name].hard &&
+			!dbUser.progress[currentLevel.name].text
+		) {
+			history.push({
+				pathname: "/gameplaytext",
+			});
+		} else {
+			history.push("/app");
+		}
   }
 
   function handleReplay() {

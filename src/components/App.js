@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
@@ -21,6 +21,7 @@ const Pulse = styled.div`
 `;
 
 let memo = {};
+let hintCounter = 0;
 
 function shuffle(a) {
 	for (let i = a.length - 1; i > 0; i--) {
@@ -31,11 +32,8 @@ function shuffle(a) {
 }
 
 function App() {
-	const history = useHistory();
-	const { currentLevel, difficulty } = useUser();
+	const { currentLevel, difficulty, getDbUser } = useUser();
 	const webcamRef = useRef(null);
-	// console.log("difficulty", difficulty);
-	// console.log("current level", currentLevel);
 	const [guess, setGuess] = useState(null);
 	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
 	const [prompt, setPrompt] = useState("");
@@ -43,10 +41,11 @@ function App() {
 	const [gameState, setGameState] = useState(true);
 	const [hint, setHint] = useState("");
 	const [showHint, setShowHint] = useState(false);
-
 	const [accuracy, setAccuracy] = useState(6);
 
 	const defineGameLevel = useCallback(() => {
+    getDbUser()
+    
 		if (difficulty === "easy") {
 			setAccuracy(6.5);
 			//display hints
@@ -153,7 +152,6 @@ function App() {
 			if (i > promptArr.length) {
 				clearInterval(interval);
 				setGameState(false);
-				// console.log("game ended", gameState);
 			}
 		}, 5000);
 	};
@@ -172,14 +170,12 @@ function App() {
 		};
 	}, []);
 
-	// console.log(promptArr)
-	// console.log("accuracy", accuracy);
-
 	if ((guess !== "" || prompt !== "") && guess === prompt) {
 		memo[guess] = true;
-	}
-
-  let totalPts = Object.keys(memo).length;
+  }
+  
+  let totalPts = Object.keys(memo).length - hintCounter;
+  
   const isAMatch = (guess !== "" || prompt !== "") && guess === prompt;
 
 	return gameState ? (
@@ -245,7 +241,8 @@ function App() {
 											style={{ fontSize: 40 }}
 											onClick={() => {
 												setShowHint(true);
-												console.log("showHint", showHint);
+                        hintCounter++
+                        console.log("hint count: ", hintCounter)
 											}}
 										></HelpSharp>
 									</Pulse>
