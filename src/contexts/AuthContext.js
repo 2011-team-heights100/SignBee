@@ -45,36 +45,43 @@ export function AuthProvider({ children }) {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 							'EFGH': {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 							'IJKL': {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 							'MNOP': {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 							'QRST': {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 							'UVW': {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 							'XYZ': {
 								easy: false,
 								medium: false,
 								hard: false,
+								text: false,
 							},
 						}
 					})

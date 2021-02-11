@@ -13,17 +13,17 @@ const BounceUp = styled.div`
   animation: 1s ${keyframes`${bounceInUp}`};
 `;
 
-let memo = {};
 const timeLimitForGuess = 5000;
 
 export default function GameplayText() {
-  const history = useHistory();
-  const { currentLevel, difficulty } = useUser();
+	document.body.style = "background: #FEF5E4";
+
+  const { currentLevel} = useUser();
   const [gameState, setGameState] = useState(true);
   const [promptArr] = useState(currentLevel.text);
   const [promptIdx, setPromptIdx] = useState(0);
-  const [prompt, setPrompt] = useState(promptArr[promptIdx]);
-  const [loading, setLoading] = useState(true);
+  // const [prompt, setPrompt] = useState(promptArr[promptIdx]);
+  // const [loading, setLoading] = useState(true);
   const [prevTime, setPrevTime] = useState(Date.now() + 2000);
   const [points, setPoints] = useState(0);
   const [thumb, setThumb] = useState(false);
@@ -31,7 +31,7 @@ export default function GameplayText() {
   const guessRef = useRef();
 
   const maxPts = promptArr.length;
-
+console.log("gameplaytext", currentLevel)
   const isGuessCorrect = (guess) => {
     const currTime = Date.now();
     // check has it been under 7 seconds
@@ -63,8 +63,6 @@ export default function GameplayText() {
     await isGuessCorrect(guessRef.current.value.toUpperCase().trim());
   };
 
-  let totalPts = Object.keys(memo).length;
-
   return gameState ? (
     <div className="game-summary-container">
       <div className="game-summary">
@@ -92,6 +90,7 @@ export default function GameplayText() {
         </div>
         <div>
           <img
+					height= "200px"
             src={promptArr[promptIdx].picture}
             alt={promptArr[promptIdx].letter}
           />
@@ -100,13 +99,14 @@ export default function GameplayText() {
         <TextField
           type="text"
           label="Your Answer"
-          style={{ borderRadius: "50%" }}
+          // style={{ borderRadius: "50%" }}
           inputRef={guessRef}
+					onKeyDown={(e)=>{if(e.key === 'Enter') handleClick()}}
         ></TextField>
         <Button onClick={handleClick}>Submit</Button>
       </div>
     </div>
   ) : (
-    <Redirect to={{ pathname: "/gamesummary", state: {} }} />
+    <Redirect to={{ pathname: "/gamesummary", state: {totalPts:points, maxPts} }} />
   );
 }

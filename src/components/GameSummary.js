@@ -7,92 +7,114 @@ import { useUser } from "../contexts/UserContext";
 let counter = 0;
 
 export default function GameSummary(props) {
-	document.body.style = "background: #F6A400;";
+  document.body.style = "background: #F6A400;";
 
-	const history = useHistory();
-	const {
-		dbUser,
-		getDbUser,
-		getLevels,
-		levels,
-		currentLevel,
-		setCurrentLevel,
-		setPlayerPoints,
-		updateProgress,
-		difficulty,
-		defineDifficulty,
-	} = useUser();
-	const [totalPts, setTotalPts] = useState();
+  const history = useHistory();
+  const {
+    dbUser,
+    getDbUser,
+    getLevels,
+    levels,
+    currentLevel,
+    setCurrentLevel,
+    setPlayerPoints,
+    updateProgress,
+    difficulty,
+    defineDifficulty,
+  } = useUser();
+  const [totalPts, setTotalPts] = useState();
 
-	useEffect(() => {
-		getDbUser();
-		getLevels();
-		return () => (counter = 0);
-	}, []);
+  useEffect(() => {
+    getDbUser();
+    getLevels();
+    return () => (counter = 0);
+  }, []);
+  console.log("gameplaysummary", currentLevel);
+  const addPoints = async () => {
+    counter++;
+    if (
+      difficulty === "text" &&
+      props.location.state.maxPts === props.location.state.totalPts
+    ) {
+      props.location.state.totalPts++;
+    }
+    let userPoints = await dbUser.points;
+    let newTotal = userPoints + props.location.state.totalPts;
+    await setPlayerPoints(newTotal);
+    await setTotalPts(newTotal);
+    if (props.location.state.totalPts >= props.location.state.maxPts) {
+      await updateProgress(currentLevel.name, difficulty);
+    }
+  };
+  console.log("dbUser:", dbUser);
 
-	const addPoints = async () => {
-		counter++;
-		let userPoints = await dbUser.points;
-		let newTotal = userPoints + props.location.state.totalPts;
-		await setPlayerPoints(newTotal);
-		await setTotalPts(newTotal);
-		if (props.location.state.totalPts === props.location.state.maxPts) {
-			await updateProgress(currentLevel.name, difficulty);
-		}
-	};
-	console.log("dbUser:", dbUser);
+  if (counter < 2) {
+    dbUser && addPoints();
+  }
 
-	if (counter < 2) {
-		dbUser && addPoints();
-	}
+  async function handlePlayNext() {
+    await setCurrentLevel(levels[currentLevel.name]);
+    await defineDifficulty(currentLevel.name);
+    //not recognizing difficulty right away
+    if (difficulty === "text") {
+      history.push({
+        pathname: "/gameplaytext",
+      });
+    } else {
+      history.push("/app");
+    }
+  }
 
-	async function handleReplay() {
-		await setCurrentLevel(levels[currentLevel.name]);
-		await defineDifficulty(currentLevel.name);
-		//not recognizing difficulty right away
-		if (difficulty === "hard") {
-			history.push({
-				pathname: "/gameplaytext",
-			});
-		} else {
-			history.push("/app");
-		}
-	}
+  function handleReplay() {
+    if (difficulty === "text") {
+      history.push({
+        pathname: "/gameplaytext",
+      });
+    } else {
+      history.push("/app");
+    }
+  }
 
-	return (
-		<div className="game-summary-container">
-			<div className="game-summary">
-				{props.location.state.totalPts === 0 && (
-					<Typography variant="h2">Oh boy...</Typography>
-				)}
-				{props.location.state.totalPts === props.location.state.maxPts && (
-					<Typography variant="h2">Well Done!</Typography>
-				)}
-				{props.location.state.totalPts < props.location.state.maxPts && (
-					<Typography variant="h2">Try Again!</Typography>
-				)}
-				<Typography variant="h5">
-					Your Score: {props.location.state.totalPts}
-				</Typography>
-				<Typography variant="h5">Total Points: {dbUser.points}</Typography>
-				<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
-				<br />
-				{props.location.state.totalPts >= props.location.state.maxPts && (
-					<Button onClick={handleReplay}>Next</Button>
-				)}
-				<Button variant="outlined" onClick={() => history.push("/app")}>
-					Play Again
-				</Button>
-				<Button
-					variant="outlined"
-					onClick={() => {
-						history.push("/dashboard");
-						window.location.reload();
-					}}
-				>
-					Dashboard
-				</Button>
-			</div>
-		</div>
-	);
+  return (
+    <div className="game-summary-container">
+      <div className="game-summary">
+        {props.location.state.totalPts === 0 && (
+          <Typography variant="h2">Oh boy...</Typography>
+        )}
+        {props.location.state.totalPts === props.location.state.maxPts && (
+          <Typography variant="h2">Well Done!</Typography>
+        )}
+        {props.location.state.totalPts < props.location.state.maxPts && (
+          <Typography variant="h2">Try Again!</Typography>
+        )}
+        {props.location.state.totalPts > props.location.state.maxPts && (
+          <>
+					<Typography variant="h2">Section Complete!</Typography>
+					<Typography variant="h6">Enjoy an extra point. You deserve it!</Typography></>
+        )}
+        <Typography variant="h5">
+          Your Score: {props.location.state.totalPts}
+        </Typography>
+        <Typography variant="h5">Total Points: {dbUser.points}</Typography>
+        <GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
+        <br />
+        {props.location.state.totalPts === props.location.state.maxPts && (
+          <Button onClick={handlePlayNext}>Next</Button>
+        )}
+
+        <Button variant="outlined" onClick={handleReplay}>
+          Play Again
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            history.push("/dashboard");
+            window.location.reload();
+          }}
+        >
+          Dashboard
+        </Button>
+      </div>
+    </div>
+  );
 }
