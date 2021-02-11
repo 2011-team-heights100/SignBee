@@ -76,7 +76,7 @@ export default function SectionModal({ name, show }) {
 					<>
 						<Typography variant="h5">LEVELS COMPLETE</Typography>
 						<br />
-						<Typography variant="h3" color="primary">
+						<Typography variant="h2" color="primary">
 							{` ${levelsCompleted} / ${totalLevels}`}
 						</Typography>
 					</>
