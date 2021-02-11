@@ -161,12 +161,12 @@ function App() {
 	console.log("hint", hint);
 
 	useEffect(() => {
-		// runHandpose();
+		runHandpose();
 		defineGameLevel();
 		setTimeout(() => {
 			setLoading(false);
-			// displayPrompt();
-		}, 2000);
+			displayPrompt();
+		}, 10000);
 		return () => {
 			memo = {};
 		};
@@ -179,7 +179,8 @@ function App() {
 		memo[guess] = true;
 	}
 
-	let totalPts = Object.keys(memo).length;
+  let totalPts = Object.keys(memo).length;
+  const isAMatch = (guess !== "" || prompt !== "") && guess === prompt;
 
 	return gameState ? (
 		<div className="App video-container">
@@ -216,22 +217,22 @@ function App() {
 					<div className="prompt-card">
 						<div id="thumb-containter">
 							<div>
-								{(guess !== "" || prompt !== "") && guess === prompt && (
+								{isAMatch && (
 									<BounceUp>
 										<ThumbUp color="primary" style={{ fontSize: 100 }} />
 									</BounceUp>
 								)}
-								{true ? (
-									<div>
-										<BounceUp>
+								{!isAMatch && showHint ? (
+									<BounceUp>
+										<div className="hint-container">
 											<img
 												id="hint"
-												src="https://firebasestorage.googleapis.com/v0/b/signbee-79d6e.appspot.com/o/IHandGesture.png?alt=media&token=099453ef-8355-4fd9-9cca-50d868ffe4ae"
+												src={hint}
 												alt={prompt}
 												height="200px"
 											/>
-										</BounceUp>
-									</div>
+										</div>
+									</BounceUp>
 								) : (
 									""
 								)}

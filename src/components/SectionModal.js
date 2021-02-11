@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 import {
@@ -14,15 +14,11 @@ export default function SectionModal({ name, show }) {
 		getDbUser,
 		levels,
 		getLevels,
-		currentLevel,
 		setCurrentLevel,
 		setDifficulty,
 		defineDifficulty,
-		difficulty,
 	} = useUser();
 	const history = useHistory();
-	const [difficultyOverride, setDifficultyOverride] = useState(false);
-  const [displayChosen, setDisplayChosen] = useState("");
 	let levelsCompleted = 0;
 	let totalLevels = 0;
 
@@ -39,25 +35,9 @@ export default function SectionModal({ name, show }) {
     }
   }
 
-  // console.log("levels", levels)
-  // console.log("progress", dbUser.progress);
-
   const handleButtonClick = (chosenLevel) => (e) => {
     e.preventDefault();
-    // setDifficultyOverride(true);
     setDifficulty(chosenLevel);
-    if (chosenLevel === "easy") {
-      setDisplayChosen("I");
-    }
-    if (chosenLevel === "medium") {
-      setDisplayChosen("II");
-    }
-    if (chosenLevel === "hard") {
-      setDisplayChosen("III");
-    }
-    if (chosenLevel === "text") {
-      setDisplayChosen("IV");
-    }
     handleClick(chosenLevel)
   };
 
@@ -73,10 +53,8 @@ export default function SectionModal({ name, show }) {
 		if (name === "LEARN") {
 			history.push("/learn");
 		} else {
-
-			// if (!difficultyOverride){
-			await defineDifficulty(name);
-		// }
+      await defineDifficulty(name);
+      
 			if (
 				dbUser.progress[name].easy &&
 				dbUser.progress[name].medium &&
@@ -88,7 +66,6 @@ export default function SectionModal({ name, show }) {
 				history.push("/app");
 			}
 		}
-
 	}
 
   if (name === "LEARN") {
@@ -116,10 +93,10 @@ export default function SectionModal({ name, show }) {
         </Typography>
         <List align="center">
           <>
-            <Typography variant="h2" align="center">
-              {" "}
-              level:
-              {displayChosen}
+            <Typography variant="h6" align="center">
+              You are one smart cookie! 
+              <br/>
+              All levels in this section are unlocked. 
             </Typography>
             <Button onClick={handleButtonClick("easy")}>Level I</Button>
             <Button onClick={handleButtonClick("medium")}>Level II</Button>

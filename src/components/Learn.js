@@ -219,7 +219,7 @@ function Learn() {
             </div>
           </div>
           <div className="prompt-card-learn">
-            <div id="thumb-containter">
+            <div id="thumb-containter-learn">
               <div>
                 {thumb && (
                   <BounceUp>

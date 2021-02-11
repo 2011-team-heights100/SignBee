@@ -91,7 +91,7 @@ body {
 
 .hexagon .hexagon-content .content-title {
 	float: center;
-	font-family: "Changa One", cursive;
+	font-family: "Changa One", "Roboto";
 	text-align: center;
 	opacity: 50%;
 	font-size: 24px;
@@ -167,14 +167,20 @@ form {
 	border-radius: 10%;
 	text-align: center;
 	align-content: center;
-	/* align-self: center; */
 	padding: 30px;
 	margin: 10px;
-	margin-top: 20%;
+	margin-top: 30%;
 	background-color: #ffffff;
 	opacity: 70%;
 	max-width: 600px;
-	/* position: relative; */
+}
+
+.text-submit-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .landingbody {
@@ -240,7 +246,7 @@ transparent box
 	position: relative;
 	margin: 0px auto;
 	bottom: 20%;
-	top: 60%;
+	top: 50%;
 }
 
 .prompt-box {
@@ -249,7 +255,7 @@ transparent box
 	padding: 20px;
 	background: #ffffff;
 	opacity: 60%;
-	border-radius: 10px;
+  border-radius: 10px;
 }
 
 .prompt-content {
@@ -262,18 +268,12 @@ transparent box
 	font-family: "Gill Sans";
 }
 
-/* .prompt-content p {
-	margin: 0;
-	padding: 0;
-	font-size: 15px;
-	color: black;
-} */
-
 #thumb-containter {
 	display: flex;
-	justify-content: center;
-	height: 100px;
-	margin-bottom: 10px;
+  justify-content: center;
+  text-align: center;
+	height: 150px;
+	/* margin-bottom: 10px; */
 }
 
 .loading {
@@ -360,9 +360,10 @@ transparent box
 }
 
 #prompt-img {
-  position: relative;
+  position: absolute;
   width: 300px;
   z-index: -1;
+  /* margin-right: 20px; */
 }
 
 .prompt-card-learn {
@@ -370,19 +371,20 @@ transparent box
 	position: relative;
 	margin: 0px auto;
 	bottom: 20%;
-	top: 60%;
+	top: 50%;
 }
 
 .prompt-box-learn {
 	display: flex;
 	flex-direction: row;
-	align-content: space-between;
+	align-content: center;
 	width: 100%;
 	min-height: 130px;
 	padding: 20px;
 	background: #ffffff;
 	opacity: 60%;
-	border-radius: 10px;
+  border-radius: 10px;
+  justify-content: center;
 }
 
 .prompt-content-learn {
@@ -395,4 +397,12 @@ transparent box
 	color: black;
 	font-size: 30px;
 	font-family: "Gill Sans"; */
+}
+
+#thumb-containter-learn {
+	display: flex;
+  justify-content: center;
+  text-align: center;
+	height: 100px;
+	margin-bottom: 10px;
 }

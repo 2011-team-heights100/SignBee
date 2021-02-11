@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { ThumbUp, Grade } from "@material-ui/icons";
@@ -51,7 +51,6 @@ export default function GameplayText() {
   }, []);
 
   const maxPts = promptArr.length;
-console.log("gameplaytext", currentLevel)
 
   const isGuessCorrect = (guess) => {
     const currTime = Date.now();
@@ -63,7 +62,7 @@ console.log("gameplaytext", currentLevel)
       setPromptIdx(promptIdx + 1);
       setPrevTime(currTime);
     } else if (
-      guess === promptArr[promptIdx].letter ||
+      guess === promptArr[promptIdx].letter &&
       promptIdx < promptArr.length
     ) {
       setThumb(true);
@@ -86,7 +85,7 @@ console.log("gameplaytext", currentLevel)
 
 	return gameState ? (
 		<div className="game-summary-container">
-			<div className="game-summary">
+			<div>
 				<div id="points-container">
 					<div id="score">
 						<Typography
@@ -109,24 +108,27 @@ console.log("gameplaytext", currentLevel)
 						)}
 					</div>
 				</div>
-				<div>
-					<img
-						height="200px"
-						src={promptArr[promptIdx].picture}
-						alt={promptArr[promptIdx].letter}
-					/>
+					<div>
+						<img
+							height="200px"
+							src={promptArr[promptIdx].picture}
+							alt={promptArr[promptIdx].letter}
+						/>
+					</div>
+          <div className="text-submit-container">
+					<TextField
+						type="text"
+						label="Your Answer"
+						style={{ width: "8rem", alignSelf: "center" }}
+						InputProps={{ style: { fontSize: 40, textAlign: "center" } }}
+						inputProps={{ style: { fontSize: 40, textAlign: "center" } }}
+						inputRef={guessRef}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") handleClick();
+						}}
+					></TextField>
+					<Button onClick={handleClick}>Submit</Button>
 				</div>
-				<br />
-				<TextField
-					type="text"
-					label="Your Answer"
-					// style={{ borderRadius: "50%" }}
-					inputRef={guessRef}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") handleClick();
-					}}
-				></TextField>
-				<Button onClick={handleClick}>Submit</Button>
 			</div>
 		</div>
 	) : (

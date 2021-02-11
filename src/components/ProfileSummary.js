@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useUser } from '../contexts/UserContext'
+import { useUser } from "../contexts/UserContext";
 
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
@@ -16,30 +16,34 @@ import {
 	Avatar,
 } from "@material-ui/core";
 
-export default function ProfileSummary ({show, setModalShow}) {
+export default function ProfileSummary({ show, setModalShow }) {
 	const history = useHistory();
-	const { dbUser,  } = useUser();
-	const { signout } = useAuth()
+	const { dbUser, getDbUser } = useUser();
+	const { signout } = useAuth();
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
 		setOpen(show);
 	}, [show]);
 
-	const handleClickAway = () => {
-		setModalShow(false)
-		setOpen(false);
-  };
-  
-  let progress = 0
-  let totalProgress = 0
+	useEffect(() => {
+		getDbUser();
+	}, []);
 
-  for(let section in dbUser.progress){
-    for (let level in dbUser.progress[section]) {
+	const handleClickAway = () => {
+		setModalShow(false);
+		setOpen(false);
+	};
+
+	let progress = 0;
+	let totalProgress = 0;
+
+	for (let section in dbUser.progress) {
+		for (let level in dbUser.progress[section]) {
 			totalProgress++;
 			if (dbUser.progress[section][level]) progress++;
 		}
-  }
+	}
 
 	return (
 		<>
