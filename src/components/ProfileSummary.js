@@ -55,12 +55,12 @@ export default function ProfileSummary ({show, setModalShow}) {
 					<Typography variant="h2">STATS</Typography>
 					<Typography variant="h5">LEVELS COMPLETE</Typography>
 					<Typography
-						variant="h4"
+						variant="h2"
 						color="primary"
 					>{`${progress} / ${totalProgress}`}</Typography>
 					<br />
 					<Typography variant="h5">TOTAL POINTS</Typography>
-					<Typography variant="h4" color="primary">
+					<Typography variant="h2" color="primary">
 						{dbUser.points}
 					</Typography>
 					{/* <Typography variant="h5">STREAK</Typography> */}

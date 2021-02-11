@@ -178,6 +178,7 @@ function Learn() {
       setPromptIdx(promptIdx + 1);
       setPrevTime(currTime);
       setPrompt(promptArr[promptIdx]);
+      setTimeout(() => setThumb(false), 1000);
     }
   };
 
