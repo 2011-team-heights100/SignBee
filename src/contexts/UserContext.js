@@ -113,6 +113,7 @@ export function UserProvider({ children }) {
 		currentLevel,
 		setPlayerPoints,
 		difficulty,
+		setDifficulty,
 		defineDifficulty,
 		updateProgress,
 	};

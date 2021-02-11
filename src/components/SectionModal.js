@@ -18,10 +18,12 @@ export default function SectionModal({ name, show }) {
 		getLevels,
 		currentLevel,
 		setCurrentLevel,
+		setDifficulty,
 		defineDifficulty,
 		difficulty,
 	} = useUser();
 	const history = useHistory();
+	const [difficultyOverride, setDifficultyOverride]= useState(false)
 	let levelsCompleted = 0;
 	let totalLevels = 0;
 
@@ -50,7 +52,9 @@ export default function SectionModal({ name, show }) {
 		if (name === "LEARN") {
 			history.push("/learn");
 		} else {
+			if (!difficultyOverride){
 			await defineDifficulty(name);
+		}
 			if (
 				dbUser.progress[name].easy &&
 				dbUser.progress[name].medium &&
@@ -65,6 +69,11 @@ export default function SectionModal({ name, show }) {
 
 		console.log("difficulty", difficulty);
 	}
+	function handleButtonClick (chosenLevel){
+		
+		setDifficultyOverride(true);
+		setDifficulty(chosenLevel)
+	}
 
 	return (
 		<Dialog open={show}>
@@ -73,6 +82,16 @@ export default function SectionModal({ name, show }) {
 			</Typography>
 			<List align="center">
 				{name !== "LEARN" && (
+					true ?
+					<>
+					{/* <Typography variant="h2" align="center">
+				{difficulty}
+			</Typography> */}
+								<Button onClick={()=>handleButtonClick("easy")}>Level I</Button>
+								<Button onClick={()=>handleButtonClick("medium")}>Level II</Button>
+								<Button onClick={()=>handleButtonClick("hard")}>Level III</Button>
+								<Button onClick={()=>handleButtonClick("text")}>Level IV</Button>
+					</>:
 					<>
 						<Typography variant="h5">LEVELS COMPLETE</Typography>
 						<br />
@@ -81,6 +100,7 @@ export default function SectionModal({ name, show }) {
 						</Typography>
 					</>
 				)}
+
 				{name === "LEARN" && <Typography variant="h6">Learn as long as you like! This section is untimed, and you don't receive points.</Typography>}
 			</List>
 			<Button onClick={() => handleClick()}>Begin</Button>
