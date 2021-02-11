@@ -11,251 +11,261 @@ import { useUser } from "../contexts/UserContext";
 import { wobble, bounceInUp, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
 const Wobble = styled.div`
-  animation: 6s ${keyframes`${wobble}`} infinite;
+	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
 const BounceUp = styled.div`
-  animation: 1s ${keyframes`${bounceInUp}`};
+	animation: 1s ${keyframes`${bounceInUp}`};
 `;
 const Pulse = styled.div`
-  animation: 2s ${keyframes`${pulse}`} infinite;
+	animation: 2s ${keyframes`${pulse}`} infinite;
 `;
 
 let memo = {};
 
 function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+	for (let i = a.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[a[i], a[j]] = [a[j], a[i]];
+	}
+	return a;
 }
 
 function App() {
-  const history = useHistory();
-  const { currentLevel, difficulty } = useUser();
-  const webcamRef = useRef(null);
-  // console.log("difficulty", difficulty);
-  // console.log("current level", currentLevel);
-  const [guess, setGuess] = useState(null);
-  const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
-  const [prompt, setPrompt] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [gameState, setGameState] = useState(true);
-  const [hint, setHint] = useState("");
-  let showHint = false;
+	const history = useHistory();
+	const { currentLevel, difficulty } = useUser();
+	const webcamRef = useRef(null);
+	// console.log("difficulty", difficulty);
+	// console.log("current level", currentLevel);
+	const [guess, setGuess] = useState(null);
+	const [promptArr, setPromptArr] = useState(currentLevel[difficulty].prompts);
+	const [prompt, setPrompt] = useState("");
+	const [loading, setLoading] = useState(true);
+	const [gameState, setGameState] = useState(true);
+	const [hint, setHint] = useState("");
+	const [showHint, setShowHint] = useState(false);
 
-  const [accuracy, setAccuracy]= useState(6);
+	const [accuracy, setAccuracy] = useState(6);
 
-  const defineGameLevel = useCallback(() => {
-    if (difficulty === "easy") {
-      setAccuracy(6.5);
-      //display hints
-    } else if (difficulty === "medium") {
-      setAccuracy(7);
-      //hide hints
-    } else if (difficulty === "hard") {
-      setAccuracy(7.5);
-      setPromptArr(shuffle(promptArr));
+	const defineGameLevel = useCallback(() => {
+		if (difficulty === "easy") {
+			setAccuracy(6.5);
+			//display hints
+		} else if (difficulty === "medium") {
+			setAccuracy(7);
+			//hide hints
+		} else if (difficulty === "hard") {
+			setAccuracy(7.5);
+			setPromptArr(shuffle(promptArr));
+		}
+	});
 
-    }
-  });
+	const maxPts = promptArr.length;
 
-  const maxPts = promptArr.length;
+	const runHandpose = async () => {
+		const net = await handpose.load();
+		console.log("handpose loaded!");
 
+		//loop and detect hands
+		setInterval(() => {
+			detect(net);
+		}, 500);
+	};
 
+	const detect = async (net) => {
+		//check if data is available
+		if (
+			typeof webcamRef.current !== "undefined" &&
+			webcamRef.current !== null &&
+			webcamRef.current.video.readyState === 4
+		) {
+			//get video properties
+			const video = webcamRef.current.video;
+			const videoWidth = video.videoWidth;
+			const videoHeight = video.videoHeight;
 
+			// set video h and w
+			video.width = videoWidth;
+			video.height = videoHeight;
 
-  const runHandpose = async () => {
-    const net = await handpose.load();
-    console.log("handpose loaded!");
+			//make detections
+			const hand = await net.estimateHands(video);
+			// console.log(hand);
 
-    //loop and detect hands
-    setInterval(() => {
-      detect(net);
-    }, 500);
-  };
+			if (hand.length > 0) {
+				const GE = new fp.GestureEstimator([
+					fp.Gestures.ThumbsUpGesture,
+					Handsigns.aSign,
+					Handsigns.bSign,
+					Handsigns.cSign,
+					Handsigns.dSign,
+					Handsigns.eSign,
+					Handsigns.fSign,
+					Handsigns.gSign,
+					Handsigns.hSign,
+					Handsigns.iSign,
+					Handsigns.jSign,
+					Handsigns.kSign,
+					Handsigns.lSign,
+					Handsigns.mSign,
+					Handsigns.nSign,
+					Handsigns.oSign,
+					Handsigns.pSign,
+					Handsigns.qSign,
+					Handsigns.rSign,
+					Handsigns.sSign,
+					Handsigns.tSign,
+					Handsigns.uSign,
+					Handsigns.vSign,
+					Handsigns.wSign,
+					Handsigns.xSign,
+					Handsigns.ySign,
+					Handsigns.zSign,
+				]);
 
-  const detect = async (net) => {
-    //check if data is available
-    if (
-      typeof webcamRef.current !== "undefined" &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      //get video properties
-      const video = webcamRef.current.video;
-      const videoWidth = video.videoWidth;
-      const videoHeight = video.videoHeight;
+				const estimatedGestures = await GE.estimate(
+					hand[0].landmarks,
+					accuracy
+				);
 
-      // set video h and w
-      video.width = videoWidth;
-      video.height = videoHeight;
+				let estimated = estimatedGestures.gestures.sort(
+					(a, b) => b.confidence - a.confidence
+				);
 
-      //make detections
-      const hand = await net.estimateHands(video);
-      // console.log(hand);
+				if (estimated[0]) setGuess(estimated[0].name);
+			}
+			console.log("Num of tensors:", tf.memory().numTensors);
+		}
+	};
 
-      if (hand.length > 0) {
-        const GE = new fp.GestureEstimator([
-          fp.Gestures.ThumbsUpGesture,
-          Handsigns.aSign,
-          Handsigns.bSign,
-          Handsigns.cSign,
-          Handsigns.dSign,
-          Handsigns.eSign,
-          Handsigns.fSign,
-          Handsigns.gSign,
-          Handsigns.hSign,
-          Handsigns.iSign,
-          Handsigns.jSign,
-          Handsigns.kSign,
-          Handsigns.lSign,
-          Handsigns.mSign,
-          Handsigns.nSign,
-          Handsigns.oSign,
-          Handsigns.pSign,
-          Handsigns.qSign,
-          Handsigns.rSign,
-          Handsigns.sSign,
-          Handsigns.tSign,
-          Handsigns.uSign,
-          Handsigns.vSign,
-          Handsigns.wSign,
-          Handsigns.xSign,
-          Handsigns.ySign,
-          Handsigns.zSign,
-        ]);
+	//display the prompt every 5 seconds
+	const displayPrompt = () => {
+		let i = 0;
 
-        const estimatedGestures = await GE.estimate(
-          hand[0].landmarks,
-          accuracy
-        );
+		const interval = setInterval(async () => {
+			setShowHint(false);
 
-        let estimated = estimatedGestures.gestures.sort(
-          (a, b) => b.confidence - a.confidence
-        );
+			if (difficulty === "easy") {
+				await setHint(currentLevel.easy.hints[i]);
+			}
 
-        if (estimated[0]) setGuess(estimated[0].name);
-      }
-      console.log("Num of tensors:", tf.memory().numTensors);
-    }
-  };
+			await setPrompt(promptArr[i++]);
 
-  //display the prompt every 5 seconds
-  const displayPrompt = () => {
-    let i = 0;
-    const interval = setInterval(async () => {
-      await setPrompt(promptArr[i++]);
-      if (difficulty === "easy") {
-        await setHint(currentLevel.easy.hints[i]);
-      }
-      if (i > promptArr.length) {
-        clearInterval(interval);
-        setGameState(false);
-        console.log("game ended", gameState);
-      }
-    }, 5000);
-  };
+			if (i > promptArr.length) {
+				clearInterval(interval);
+				setGameState(false);
+				// console.log("game ended", gameState);
+			}
+		}, 5000);
+	};
 
-  console.log("hint", hint);
+	console.log("hint", hint);
 
-  useEffect(() => {
-    // runHandpose();
+	useEffect(() => {
+		// runHandpose();
 		defineGameLevel();
-    setTimeout(() => {
-      setLoading(false);
-      displayPrompt();
-    }, 10000);
-    return () => {
-      memo = {};
-    };
-  }, []);
+		setTimeout(() => {
+			setLoading(false);
+			// displayPrompt();
+		}, 2000);
+		return () => {
+			memo = {};
+		};
+	}, []);
 
-	console.log(promptArr)
-	console.log("accuracy", accuracy);
+	// console.log(promptArr)
+	// console.log("accuracy", accuracy);
 
+	if ((guess !== "" || prompt !== "") && guess === prompt) {
+		memo[guess] = true;
+	}
 
-  if ((guess !== "" || prompt !== "") && guess === prompt) {
-    memo[guess] = true;
-  }
+	let totalPts = Object.keys(memo).length;
 
-  let totalPts = Object.keys(memo).length;
-
-  return gameState ? (
-    <div className="App video-container">
-      <header className="App-header">
-        <Webcam className="video" ref={webcamRef} />
-      </header>
-      {loading ? (
-        <div className="loading">
-          <Wobble>
-            <img
-              src={process.env.PUBLIC_URL + "/bee.png"}
-              id="bee"
-              alt="loadingBee"
-            />
-          </Wobble>
-          <br />
-          <Typography variant="h2">Loading...</Typography>
-        </div>
-      ) : (
-        <div className="game-container">
-          <div id="points-container">
-            <div id="score">
-              <Typography
-                variant="h2"
-                style={{ fontSize: 40, textAlign: "center" }}
-              >
-                {totalPts}
-              </Typography>
-            </div>
-            <div id="score-star">
-              <Grade color="primary" style={{ fontSize: 100 }}></Grade>
-            </div>
-          </div>
-          <div className="prompt-card">
-            <div id="thumb-containter">
-              <div>
-                {(guess !== "" || prompt !== "") && guess === prompt && (
-                  <BounceUp>
-                    <ThumbUp color="primary" style={{ fontSize: 100 }} />
-                  </BounceUp>
-                )}
-              </div>
-              {showHint && (
-                <div>
-                  <BounceUp>
-                    <img src={hint} alt={prompt} />
-                  </BounceUp>
-                </div>
-              )}
-              {difficulty === "easy" && (
-                <div id="hint">
-                  <Pulse>
-                    <HelpSharp
-                      color="secondary"
-                      style={{ fontSize: 40 }}
-                      onClick={() => (showHint = true)}
-                    ></HelpSharp>
-                  </Pulse>
-                </div>
-              )}
-            </div>
-            <div className="prompt-box">
-              <div className="prompt-content">
-                <Typography id="gesture-guess" fontWeight="fontWeightBold">
-                  YOUR GUESS {guess}
-                </Typography>
-                <Typography variant="h2">Prompt: {prompt}</Typography>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  ) : (
-    <Redirect to={{ pathname: "/gamesummary", state: { totalPts, maxPts } }} />
-  );
+	return gameState ? (
+		<div className="App video-container">
+			<header className="App-header">
+				<Webcam className="video" ref={webcamRef} />
+			</header>
+			{loading ? (
+				<div className="loading">
+					<Wobble>
+						<img
+							src={process.env.PUBLIC_URL + "/bee.png"}
+							id="bee"
+							alt="loadingBee"
+						/>
+					</Wobble>
+					<br />
+					<Typography variant="h2">Loading...</Typography>
+				</div>
+			) : (
+				<div className="game-container">
+					<div id="points-container">
+						<div id="score">
+							<Typography
+								variant="h2"
+								style={{ fontSize: 40, textAlign: "center" }}
+							>
+								{totalPts}
+							</Typography>
+						</div>
+						<div id="score-star">
+							<Grade color="primary" style={{ fontSize: 100 }}></Grade>
+						</div>
+					</div>
+					<div className="prompt-card">
+						<div id="thumb-containter">
+							<div>
+								{(guess !== "" || prompt !== "") && guess === prompt && (
+									<BounceUp>
+										<ThumbUp color="primary" style={{ fontSize: 100 }} />
+									</BounceUp>
+								)}
+								{true ? (
+									<div>
+										<BounceUp>
+											<img
+												id="hint"
+												src="https://firebasestorage.googleapis.com/v0/b/signbee-79d6e.appspot.com/o/IHandGesture.png?alt=media&token=099453ef-8355-4fd9-9cca-50d868ffe4ae"
+												alt={prompt}
+												height="200px"
+											/>
+										</BounceUp>
+									</div>
+								) : (
+									""
+								)}
+							</div>
+							{difficulty === "easy" && (
+								<div id="hint-button">
+									<Pulse>
+										<HelpSharp
+											color="secondary"
+											style={{ fontSize: 40 }}
+											onClick={() => {
+												setShowHint(true);
+												console.log("showHint", showHint);
+											}}
+										></HelpSharp>
+									</Pulse>
+								</div>
+							)}
+						</div>
+						<div className="prompt-box">
+							<div className="prompt-content">
+								<Typography id="gesture-guess" fontWeight="fontWeightBold">
+									YOUR GUESS {guess}
+								</Typography>
+								<Typography variant="h2">Prompt: {prompt}</Typography>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+		</div>
+	) : (
+		<Redirect to={{ pathname: "/gamesummary", state: { totalPts, maxPts } }} />
+	);
 }
 
 export default App;

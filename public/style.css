@@ -217,11 +217,12 @@ transparent box
 */
 
 * {
+  align-content: center;
 	padding: 0px;
 	margin: 0px;
 	bottom: 0;
 	box-sizing: border-box;
-	overflow: hidden;
+	overflow: visible;
 }
 
 .prompt-container {
@@ -338,26 +339,29 @@ transparent box
 	width: 50px;
 }
 
-#hint {
+#hint-button {
 	position: absolute;
 	right: 0;
   margin: 10px;
   margin-bottom: 80px;
   margin-right: 0;
-	width: 50px;
+  width: 50px;
+  z-index: 5;
+}
+
+#hint {
+  margin-bottom: 20px;
 }
 
 #prompt-img-letter {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-left: 30px;
 }
 
 #prompt-img {
   position: relative;
-  /* height: 250px; */
-  width: 250px;
+  width: 300px;
   z-index: -1;
 }
 
