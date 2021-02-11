@@ -43,7 +43,7 @@ function HoneyComb({ name }) {
 					</div>
 				</div>
 			)}
-			{percent > 0 && (
+			{percent > 0 && percent < 1 && (
 				<div className="hexagon-shape content-panel-some-action">
 					<div className="hexagon-shape-inner">
 						<div className="hexagon-shape-inner-2"></div>
