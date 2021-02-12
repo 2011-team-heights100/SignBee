@@ -13,10 +13,10 @@ const Tada = styled.div`
 let counter = 0;
 
 export default function GameSummary(props) {
-  document.body.style = "background: #F6A400;";
+	document.body.style = "background: #F6A400;";
 
-  const history = useHistory();
-  const {
+	const history = useHistory();
+	const {
 		dbUser,
 		getDbUser,
 		getLevels,
@@ -30,49 +30,49 @@ export default function GameSummary(props) {
 		updateLastPlayed,
 		updateStreak,
 	} = useUser();
-  // const [totalPts, setTotalPts] = useState();
+	// const [totalPts, setTotalPts] = useState();
 
-  useEffect(() => {
-    getDbUser()
-  }, [])
+	useEffect(() => {
+		getDbUser();
+	}, []);
 
-  useEffect(() => {
-    // getDbUser();
-    updateLastPlayed()
-    updateStreak()
-    getLevels();
-    return () => (counter = 0);
-  }, []);
+	useEffect(() => {
+		// getDbUser();
+		updateLastPlayed();
+		updateStreak();
+		getLevels();
+		return () => (counter = 0);
+	}, []);
 
-  // console.log("gameplaysummary", currentLevel);
+	// console.log("gameplaysummary", currentLevel);
 
-  const addPoints = async () => {
-    counter++;
-    if (
-      difficulty === "text" &&
-      props.location.state.maxPts === props.location.state.totalPts
-    ) {
-      props.location.state.totalPts++;
-    }
-    let userPoints = await dbUser.points;
-    let newTotal = userPoints + props.location.state.totalPts;
-    await setPlayerPoints(newTotal);
-    // await setTotalPts(newTotal);
-    if (props.location.state.totalPts >= props.location.state.maxPts) {
-      await updateProgress(currentLevel.name, difficulty);
-    }
-  };
-  console.log("dbUser:", dbUser);
+	const addPoints = async () => {
+		counter++;
+		if (
+			difficulty === "text" &&
+			props.location.state.maxPts === props.location.state.totalPts
+		) {
+			props.location.state.totalPts++;
+		}
+		let userPoints = await dbUser.points;
+		let newTotal = userPoints + props.location.state.totalPts;
+		await setPlayerPoints(newTotal);
+		// await setTotalPts(newTotal);
+		if (props.location.state.totalPts >= props.location.state.maxPts) {
+			await updateProgress(currentLevel.name, difficulty);
+		}
+	};
+	console.log("dbUser:", dbUser);
 
-  if (counter < 2) {
-    dbUser && addPoints();
-  }
+	if (counter < 2) {
+		dbUser && addPoints();
+	}
 
-  async function handlePlayNext() {
-    await setCurrentLevel(levels[currentLevel.name]);
-    await defineDifficulty(currentLevel.name);
-    //not recognizing difficulty right away
-    if (
+	async function handlePlayNext() {
+		await setCurrentLevel(levels[currentLevel.name]);
+		await defineDifficulty(currentLevel.name);
+		//not recognizing difficulty right away
+		if (
 			dbUser.progress[currentLevel.name].easy &&
 			dbUser.progress[currentLevel.name].medium &&
 			dbUser.progress[currentLevel.name].hard &&
@@ -84,25 +84,25 @@ export default function GameSummary(props) {
 		} else {
 			history.push("/app");
 		}
-  }
+	}
 
-  function handleReplay() {
-    if (difficulty === "text") {
-      history.push({
-        pathname: "/gameplaytext",
-      });
-    } else {
-      history.push("/app");
-    }
-  }
+	function handleReplay() {
+		if (difficulty === "text") {
+			history.push({
+				pathname: "/gameplaytext",
+			});
+		} else {
+			history.push("/app");
+		}
+	}
 
-  const allLevelsComplete =
+	const allLevelsComplete =
 		dbUser.progress[currentLevel.name].easy &&
 		dbUser.progress[currentLevel.name].medium &&
 		dbUser.progress[currentLevel.name].hard &&
 		dbUser.progress[currentLevel.name].text;
 
-  return (
+	return (
 		<div className="game-summary-container">
 			<div className="game-summary">
 				{props.location.state.totalPts === 0 && (
@@ -122,12 +122,28 @@ export default function GameSummary(props) {
 						</Typography>
 					</>
 				)}
-				<Typography variant="h5">
-					Your Score: {props.location.state.totalPts}
+				<br />
+				<Typography variant="h5">Your Score</Typography>
+				<Tada>
+					<div id="points-container-summary">
+						<div id="score-summary">
+							<Typography
+								variant="h2"
+								style={{ fontSize: 42, textAlign: "center", color: "white" }}
+							>
+								{props.location.state.totalPts}
+							</Typography>
+						</div>
+						<div id="score-star-summary">
+							<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
+						</div>
+					</div>
+				</Tada>
+				<Typography variant="h5">Total Points</Typography>
+				<Typography variant="h2" color="primary">
+					{dbUser.points}
 				</Typography>
-				<Typography variant="h5">Total Points: {dbUser.points}</Typography>
-				<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
-				<Typography variant="h5">STREAK</Typography>
+				<Typography variant="h5">Daily Streak</Typography>
 				<Tada>
 					<Typography variant="h2" color="primary">
 						{dbUser.streak}

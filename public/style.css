@@ -323,6 +323,25 @@ transparent box
 	padding: 25px;
 }
 
+#points-container-summary {
+  display: inline-flex;
+	align-content: center;
+}
+
+#score-star-summary,
+#score-summary {
+	position: inherit;
+	text-align: center;
+	width: 150px;
+}
+
+#score-summary {
+	z-index: 10;
+  padding: 25px;
+  margin-right: -150px;
+  margin-top: 3px;
+}
+
 .game-container {
 	width: 100%;
 	height: 100%;
