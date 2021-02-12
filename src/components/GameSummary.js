@@ -3,6 +3,12 @@ import { useHistory } from "react-router-dom";
 import { Button, Typography } from "@material-ui/core";
 import GradeIcon from "@material-ui/icons/Grade";
 import { useUser } from "../contexts/UserContext";
+import { tada } from "react-animations";
+import styled, { keyframes } from "styled-components";
+
+const Tada = styled.div`
+	animation: 900ms ${keyframes`${tada}`};
+`;
 
 let counter = 0;
 
@@ -38,7 +44,7 @@ export default function GameSummary(props) {
     return () => (counter = 0);
   }, []);
 
-  console.log("gameplaysummary", currentLevel);
+  // console.log("gameplaysummary", currentLevel);
 
   const addPoints = async () => {
     counter++;
@@ -97,45 +103,53 @@ export default function GameSummary(props) {
 		dbUser.progress[currentLevel.name].text;
 
   return (
-    <div className="game-summary-container">
-      <div className="game-summary">
-        {props.location.state.totalPts === 0 && (
-          <Typography variant="h2">Oh boy...</Typography>
-        )}
-        {props.location.state.totalPts === props.location.state.maxPts && (
-          <Typography variant="h2">Well Done!</Typography>
-        )}
-        {props.location.state.totalPts < props.location.state.maxPts && (
-          <Typography variant="h2">Try Again!</Typography>
-        )}
-        {props.location.state.totalPts > props.location.state.maxPts && (
-          <>
-					<Typography variant="h2">Section Complete!</Typography>
-					<Typography variant="h6">Enjoy an extra point. You deserve it!</Typography></>
-        )}
-        <Typography variant="h5">
-          Your Score: {props.location.state.totalPts}
-        </Typography>
-        <Typography variant="h5">Total Points: {dbUser.points}</Typography>
-        <GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
-        <br />
-        {(props.location.state.totalPts === props.location.state.maxPts && !allLevelsComplete) && (
-          <Button onClick={handlePlayNext}>Next</Button>
-        )}
+		<div className="game-summary-container">
+			<div className="game-summary">
+				{props.location.state.totalPts === 0 && (
+					<Typography variant="h2">Oh boy...</Typography>
+				)}
+				{props.location.state.totalPts === props.location.state.maxPts && (
+					<Typography variant="h2">Well Done!</Typography>
+				)}
+				{props.location.state.totalPts < props.location.state.maxPts && (
+					<Typography variant="h2">Try Again!</Typography>
+				)}
+				{props.location.state.totalPts > props.location.state.maxPts && (
+					<>
+						<Typography variant="h2">Section Complete!</Typography>
+						<Typography variant="h6">
+							Enjoy an extra point. You deserve it!
+						</Typography>
+					</>
+				)}
+				<Typography variant="h5">
+					Your Score: {props.location.state.totalPts}
+				</Typography>
+				<Typography variant="h5">Total Points: {dbUser.points}</Typography>
+				<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
+				<Typography variant="h5">STREAK</Typography>
+				<Tada>
+					<Typography variant="h2" color="primary">
+						{dbUser.streak}
+					</Typography>
+				</Tada>
+				<br />
+				{props.location.state.totalPts === props.location.state.maxPts &&
+					!allLevelsComplete && <Button onClick={handlePlayNext}>Next</Button>}
 
-        <Button variant="outlined" onClick={handleReplay}>
-          Play Again
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            history.push("/dashboard");
-            window.location.reload();
-          }}
-        >
-          Dashboard
-        </Button>
-      </div>
-    </div>
-  );
+				<Button variant="outlined" onClick={handleReplay}>
+					Play Again
+				</Button>
+				<Button
+					variant="outlined"
+					onClick={() => {
+						history.push("/dashboard");
+						window.location.reload();
+					}}
+				>
+					Dashboard
+				</Button>
+			</div>
+		</div>
+	);
 }

@@ -39,7 +39,10 @@ export function AuthProvider({ children }) {
 					.set({
 						firstName: firstName,
 						lastName: lastName,
-						points: 0,
+            points: 0,
+            streak: 0,
+            lastPlayed: 0,
+            updatedStreak: 0,
 						progress: {
 							'ABCD': {
 								easy: false,

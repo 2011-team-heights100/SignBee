@@ -32,7 +32,8 @@ export default createMuiTheme({
 				marginBottom: 10,
 				marginLeft: 20,
 				marginRight: 20,
-				fontWeight: "bold",
+        fontWeight: "bold",
+        fontSize: 16
 			},
 			containedPrimary: {
 					color: "#FFFFFF",

@@ -2,7 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import "firebase/firestore";
 import { db } from "../firebase";
 import { auth } from "../firebase";
-import { differenceInDays, differenceInCalendarDays } from "date-fns";
+import {
+	differenceInDays,
+	differenceInCalendarDays,
+	isSameDay,
+} from "date-fns";
 
 const UserContext = React.createContext();
 
@@ -105,32 +109,32 @@ export function UserProvider({ children }) {
 	};
 
 	const updateLastPlayed = () => {
-    const today = new Date()
+		const today = new Date();
 		db.collection("Users").doc(isLoggedIn.uid).update({
 			lastPlayed: today,
 		});
 	};
 
 	const updateStreak = () => {
-    let today = new Date()
+		let today = new Date();
 		let streak = dbUser.streak;
-		let lastPlayed = dbUser.lastPlayed; //last time player played a game
-    let updatedStreak = dbUser.updatedStreak; //date when streak was updated
-    
-    //checks the difference between today and last played date
-    const diff = differenceInCalendarDays(today, lastPlayed);
+		let lastPlayed = dbUser.lastPlayed.toDate(); //last time player played a game
+		let updatedStreak = dbUser.updatedStreak.toDate(); //date when streak was updated
 
-    //checks if streak was updated in the last 24 hrs
-    const streakAlreadyUpdated = differenceInDays(today, updatedStreak) <= 1
+		//checks the difference between today and last played date
+		const diff = differenceInCalendarDays(today, lastPlayed);
 
-    if (diff < 1 && !streakAlreadyUpdated) {
-      streak++
-    } else if (diff > 1){
-      streak = 0
-    }
-    db.collection("Users").doc(isLoggedIn.uid).update({
-      streak: streak,
-			updatedStreak: today
+		//checks if streak was updated in the last 24 hrs
+    const streakAlreadyUpdated = isSameDay(today, updatedStreak)
+
+		if (diff <= 1 && !streakAlreadyUpdated) {
+			streak++;
+		} else if (diff > 1) {
+			streak = 1;
+		}
+		db.collection("Users").doc(isLoggedIn.uid).update({
+			streak: streak,
+			updatedStreak: today,
 		});
 	};
 
@@ -146,9 +150,9 @@ export function UserProvider({ children }) {
 		difficulty,
 		setDifficulty,
 		defineDifficulty,
-    updateProgress,
-    updateLastPlayed,
-    updateStreak
+		updateProgress,
+		updateLastPlayed,
+		updateStreak,
 	};
 
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

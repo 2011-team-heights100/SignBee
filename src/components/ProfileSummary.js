@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useUser } from "../contexts/UserContext";
-
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import {
@@ -15,6 +14,12 @@ import {
 	ListItemAvatar,
 	Avatar,
 } from "@material-ui/core";
+import { tada } from "react-animations";
+import styled, { keyframes } from "styled-components";
+
+const Tada = styled.div`
+	animation: 900ms ${keyframes`${tada}`};
+`;
 
 export default function ProfileSummary({ show, setModalShow }) {
 	const history = useHistory();
@@ -27,8 +32,9 @@ export default function ProfileSummary({ show, setModalShow }) {
 	}, [show]);
 
 	useEffect(() => {
-		getDbUser();
-	}, []);
+    getDbUser();
+  }, []);
+
 
 	const handleClickAway = () => {
 		setModalShow(false);
@@ -58,20 +64,26 @@ export default function ProfileSummary({ show, setModalShow }) {
 				<div className="center-modal">
 					<Typography variant="h2">STATS</Typography>
 					<Typography variant="h5">LEVELS COMPLETE</Typography>
-					<Typography
-						variant="h2"
-						color="primary"
-					>{`${progress} / ${totalProgress}`}</Typography>
-					<br/>
+					<Tada>
+						<Typography
+							variant="h2"
+							color="primary"
+						>{`${progress} / ${totalProgress}`}</Typography>
+					</Tada>
+					<br />
 					<Typography variant="h5">TOTAL POINTS</Typography>
-					<Typography variant="h2" color="primary">
-						{dbUser.points}
-					</Typography>
-          <br/>
+					<Tada>
+						<Typography variant="h2" color="primary">
+							{dbUser.points}
+						</Typography>
+					</Tada>
+					<br />
 					<Typography variant="h5">STREAK</Typography>
+          <Tada>
 					<Typography variant="h2" color="primary">
 						{dbUser.streak}
 					</Typography>
+          </Tada>
 				</div>
 
 				<List>
