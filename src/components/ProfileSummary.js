@@ -62,12 +62,16 @@ export default function ProfileSummary({ show, setModalShow }) {
 						variant="h2"
 						color="primary"
 					>{`${progress} / ${totalProgress}`}</Typography>
-					<br />
+					<br/>
 					<Typography variant="h5">TOTAL POINTS</Typography>
 					<Typography variant="h2" color="primary">
 						{dbUser.points}
 					</Typography>
-					{/* <Typography variant="h5">STREAK</Typography> */}
+          <br/>
+					<Typography variant="h5">STREAK</Typography>
+					<Typography variant="h2" color="primary">
+						{dbUser.streak}
+					</Typography>
 				</div>
 
 				<List>

@@ -13,7 +13,8 @@ export default function SectionModal({ name, show }) {
 		setDifficulty,
 		defineDifficulty,
 	} = useUser();
-	const history = useHistory();
+  const history = useHistory();
+  
 	let levelsCompleted = 0;
 	let totalLevels = 0;
 

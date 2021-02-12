@@ -11,18 +11,20 @@ export default function GameSummary(props) {
 
   const history = useHistory();
   const {
-    dbUser,
-    getDbUser,
-    getLevels,
-    levels,
-    currentLevel,
-    setCurrentLevel,
-    setPlayerPoints,
-    updateProgress,
-    difficulty,
-    defineDifficulty,
-  } = useUser();
-  const [totalPts, setTotalPts] = useState();
+		dbUser,
+		getDbUser,
+		getLevels,
+		levels,
+		currentLevel,
+		setCurrentLevel,
+		setPlayerPoints,
+		updateProgress,
+		difficulty,
+		defineDifficulty,
+		updateLastPlayed,
+		updateStreak,
+	} = useUser();
+  // const [totalPts, setTotalPts] = useState();
 
   useEffect(() => {
     getDbUser()
@@ -30,6 +32,8 @@ export default function GameSummary(props) {
 
   useEffect(() => {
     // getDbUser();
+    updateLastPlayed()
+    updateStreak()
     getLevels();
     return () => (counter = 0);
   }, []);
@@ -47,7 +51,7 @@ export default function GameSummary(props) {
     let userPoints = await dbUser.points;
     let newTotal = userPoints + props.location.state.totalPts;
     await setPlayerPoints(newTotal);
-    await setTotalPts(newTotal);
+    // await setTotalPts(newTotal);
     if (props.location.state.totalPts >= props.location.state.maxPts) {
       await updateProgress(currentLevel.name, difficulty);
     }

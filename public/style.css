@@ -108,6 +108,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	min-height: 800px;
+	margin-top: 10%;
 }
 
 .row {
@@ -157,8 +158,8 @@ form {
 	border-radius: 10%;
 	background-color: #ffffff;
 	opacity: 70%;
-  padding: 20px;
-  min-width: 70%;
+	padding: 20px;
+	min-width: 70%;
 }
 
 .game-summary-container {

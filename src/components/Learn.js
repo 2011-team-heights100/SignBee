@@ -61,12 +61,12 @@ function shuffle(a) {
 
 function Learn() {
   const webcamRef = useRef(null);
-  const { currentLevel, dbUser } = useUser();
+  const { currentLevel } = useUser();
   const [guess, setGuess] = useState(null);
   const [promptArr, setPromptArr] = useState([]);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(true);
-  const [gameState, setGameState] = useState(true);
+  const [gameState] = useState(true);
   const [prevTime, setPrevTime] = useState(Date.now() + 2000);
   const [promptIdx, setPromptIdx] = useState(0);
   const [thumb, setThumb] = useState(false);

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "firebase/firestore";
 import { db } from "../firebase";
 import { auth } from "../firebase";
+import { differenceInDays, differenceInCalendarDays } from "date-fns";
 
 const UserContext = React.createContext();
 
@@ -94,13 +95,43 @@ export function UserProvider({ children }) {
 			!dbUser.progress[currentLevelName].text
 		) {
 			await setDifficulty("text");
-    }
+		}
 	};
 
 	const updateProgress = (levelName, difficulty) => {
 		let progressUpdate = {};
 		progressUpdate[`progress.${levelName}.${difficulty}`] = true;
 		db.collection("Users").doc(isLoggedIn.uid).update(progressUpdate);
+	};
+
+	const updateLastPlayed = () => {
+    const today = new Date()
+		db.collection("Users").doc(isLoggedIn.uid).update({
+			lastPlayed: today,
+		});
+	};
+
+	const updateStreak = () => {
+    let today = new Date()
+		let streak = dbUser.streak;
+		let lastPlayed = dbUser.lastPlayed; //last time player played a game
+    let updatedStreak = dbUser.updatedStreak; //date when streak was updated
+    
+    //checks the difference between today and last played date
+    const diff = differenceInCalendarDays(today, lastPlayed);
+
+    //checks if streak was updated in the last 24 hrs
+    const streakAlreadyUpdated = differenceInDays(today, updatedStreak) <= 1
+
+    if (diff < 1 && !streakAlreadyUpdated) {
+      streak++
+    } else if (diff > 1){
+      streak = 0
+    }
+    db.collection("Users").doc(isLoggedIn.uid).update({
+      streak: streak,
+			updatedStreak: today
+		});
 	};
 
 	const value = {
@@ -115,7 +146,9 @@ export function UserProvider({ children }) {
 		difficulty,
 		setDifficulty,
 		defineDifficulty,
-		updateProgress,
+    updateProgress,
+    updateLastPlayed,
+    updateStreak
 	};
 
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
