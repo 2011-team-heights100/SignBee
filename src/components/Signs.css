@@ -1,0 +1,48 @@
+/*for the dashboard*/
+.flexy{
+	display:flex;
+	justify-content: space-evenly;
+	/* align-content: center; */
+}
+
+/* for the sign tiles*/
+.gltb{
+  background: none;
+  color: black;
+}
+
+.imgs{
+  /* z-index: -9; */
+}
+
+.grid{
+  /* display:flex; */
+  max-width: 200px;
+  max-height: 800px;
+}
+
+/* trying to figure out how to manipulate material ui elements*/
+/* .MuiGridListTile-imgFullWidth {
+  top: 50%;
+  width: 30%;
+  position: sticky;
+  transform: translateY(-50%);
+} */
+
+/* subtitle={<span>by: {tile.author}</span>} */
+
+/* list-style: none;
+align-content: center;
+padding: 0px;
+margin: 0px;
+box-sizing: border-box;
+overflow: visible;
+left: 0;
+right: 0;
+height: 48px;
+display: flex;
+position: absolute;
+background: rgba(0, 0, 0, 0.5);
+align-items: center;
+font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+bottom: 0; */

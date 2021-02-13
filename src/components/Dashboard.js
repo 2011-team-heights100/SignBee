@@ -5,6 +5,10 @@ import { HelpSharp } from "@material-ui/icons";
 import { slideInUp, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
 import InfoModal from "./InfoModal";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Signs from "./Signs";
+import SignsR from "./SignsR";
+import "./Signs.css";
 
 const Slide = styled.div`
   animation: 1s ${keyframes`${slideInUp}`};
@@ -29,7 +33,11 @@ export default function Dashboard() {
     setShowModal(!showModal);
   };
 
+  const matches = useMediaQuery('(min-width:800px)');
+
   return (
+    <div className="flexy">
+       {matches && <Signs />}
     <div id="hexGrid">
       <div className="row">
         <HoneyComb name="LEARN" />
@@ -66,6 +74,8 @@ export default function Dashboard() {
           <InfoModal show={showModal} />
         </Pulse>
       </div>
+    </div>
+     {matches && <SignsR />}
     </div>
   );
 }
