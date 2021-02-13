@@ -30,10 +30,9 @@ export default function GameSummary(props) {
 		updateLastPlayed,
 		updateStreak,
 	} = useUser();
-	// const [totalPts, setTotalPts] = useState();
 
 	useEffect(() => {
-		getDbUser();
+		return getDbUser();
 	}, []);
 
 	useEffect(() => {
@@ -100,71 +99,86 @@ export default function GameSummary(props) {
 		dbUser.progress[currentLevel.name].easy &&
 		dbUser.progress[currentLevel.name].medium &&
 		dbUser.progress[currentLevel.name].hard &&
-		dbUser.progress[currentLevel.name].text;
+    dbUser.progress[currentLevel.name].text;
+    
+  console.log("state in Game Summary", props)
 
 	return (
-		<div className="game-summary-container">
-			<div className="game-summary">
-				{props.location.state.totalPts === 0 && (
-					<Typography variant="h2">Oh boy...</Typography>
-				)}
-				{props.location.state.totalPts === props.location.state.maxPts && (
-					<Typography variant="h2">Well Done!</Typography>
-				)}
-				{props.location.state.totalPts < props.location.state.maxPts && (
-					<Typography variant="h2">Try Again!</Typography>
-				)}
-				{props.location.state.totalPts > props.location.state.maxPts && (
-					<>
-						<Typography variant="h2">Section Complete!</Typography>
-						<Typography variant="h6">
-							Enjoy an extra point. You deserve it!
-						</Typography>
-					</>
-				)}
-				<br />
-				<Typography variant="h5">Your Score</Typography>
-				<Tada>
-					<div id="points-container-summary">
-						<div id="score-summary">
-							<Typography
-								variant="h2"
-								style={{ fontSize: 42, textAlign: "center", color: "white" }}
-							>
-								{props.location.state.totalPts}
+		<div className="centerme">
+			<div className="game-summary-container">
+				<div>
+					{props.location.state.totalPts === 0 && (
+						<Typography variant="h2">Oh boy...</Typography>
+					)}
+					{props.location.state.totalPts === props.location.state.maxPts && (
+						<Typography variant="h2">Well Done!</Typography>
+					)}
+					{props.location.state.totalPts < props.location.state.maxPts && (
+						<Typography variant="h2">Try Again!</Typography>
+					)}
+					{props.location.state.totalPts > props.location.state.maxPts && (
+						<>
+							<Typography variant="h2">Section Complete!</Typography>
+							<Typography variant="h6">
+								Enjoy an extra point. You deserve it!
 							</Typography>
+						</>
+					)}
+					<br />
+					<Typography variant="h5">Your Score</Typography>
+					<Tada>
+						<div id="points-container-summary">
+							<div id="score-summary">
+								<Typography
+									variant="h2"
+									style={{ fontSize: 42, textAlign: "center", color: "white" }}
+								>
+									{props.location.state.totalPts}
+								</Typography>
+							</div>
+							<div id="score-star-summary">
+								<GradeIcon
+									color="primary"
+									style={{ fontSize: 100 }}
+								></GradeIcon>
+							</div>
 						</div>
-						<div id="score-star-summary">
-							<GradeIcon color="primary" style={{ fontSize: 100 }}></GradeIcon>
-						</div>
-					</div>
-				</Tada>
-				<Typography variant="h5">Total Points</Typography>
-				<Typography variant="h2" color="primary">
-					{dbUser.points}
-				</Typography>
-				<Typography variant="h5">Daily Streak</Typography>
-				<Tada>
+					</Tada>
+					<Typography variant="h5">Total Points</Typography>
 					<Typography variant="h2" color="primary">
-						{dbUser.streak}
+						{dbUser.points}
 					</Typography>
-				</Tada>
-				<br />
-				{props.location.state.totalPts === props.location.state.maxPts &&
-					!allLevelsComplete && <Button onClick={handlePlayNext}>Next</Button>}
+					<Typography variant="h5">Streak</Typography>
+					<Tada>
+						{dbUser.streak === 1 ? (
+							<Typography variant="h2" color="primary">
+								{dbUser.streak} Day
+							</Typography>
+						) : (
+							<Typography variant="h2" color="primary">
+								{dbUser.streak} Days
+							</Typography>
+						)}
+					</Tada>
+					<br />
+					{props.location.state.totalPts === props.location.state.maxPts &&
+						!allLevelsComplete && (
+							<Button onClick={handlePlayNext}>Next</Button>
+						)}
 
-				<Button variant="outlined" onClick={handleReplay}>
-					Play Again
-				</Button>
-				<Button
-					variant="outlined"
-					onClick={() => {
-						history.push("/dashboard");
-						window.location.reload();
-					}}
-				>
-					Dashboard
-				</Button>
+					<Button variant="outlined" onClick={handleReplay}>
+						Play Again
+					</Button>
+					<Button
+						variant="outlined"
+						onClick={() => {
+							history.push("/dashboard");
+							window.location.reload();
+						}}
+					>
+						Dashboard
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

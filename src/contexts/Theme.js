@@ -13,13 +13,25 @@ export default createMuiTheme({
 		},
 	},
 	typography: {
-		h2: {
+		h1: {
 			fontFamily: "Changa One",
 			marginBottom: 5,
 		},
+		h2: {
+			fontFamily: "Changa One",
+		},
+		h3: {
+			fontFamily: "Jost",
+		},
+		h4: {
+			fontFamily: "Jost",
+		},
 		h5: {
-			// fontFamily: "Changa One",
-			fontWeight: "bold",
+			fontFamily: "Jost",
+			fontWeight: 600,
+		},
+		h6: {
+			fontFamily: "Jost",
 		},
 	},
 	overrides: {
@@ -32,18 +44,20 @@ export default createMuiTheme({
 				marginBottom: 10,
 				marginLeft: 20,
 				marginRight: 20,
-        fontWeight: "bold",
-        fontSize: 16
+				fontWeight: "bold",
+				fontSize: 16,
 			},
 			containedPrimary: {
-					color: "#FFFFFF",
+				color: "#FFFFFF",
 			},
 		},
 		MuiDialog: {
 			paper: {
 				borderRadius: 20,
 				opacity: "80%",
-				padding: 15,
+				padding: "8%",
+				paddingTop: "5%",
+				paddingBottom: "5%",
 			},
 		},
 		MuiPaper: {

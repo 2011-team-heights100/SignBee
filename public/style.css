@@ -123,16 +123,9 @@ body {
 	justify-content: center;
 	align-items: center;
 	min-height: 800px;
-	/* border-radius: 10%; */
 	text-align: center;
 	align-content: center;
 	justify-items: center;
-	/* align-self: center; */
-	/* padding: 30px; */
-	/* margin: 10px; */
-	/* max-width: 600px; */
-	/* position: relative; */
-	/* top: 5vh; */
 }
 
 .center-modal {
@@ -142,8 +135,10 @@ body {
 	border-radius: 10%;
 	text-align: center;
 	align-content: center;
-	padding: 10px;
-	margin: 10px;
+  padding-left: 8%;
+  padding-right: 8%; 
+  min-width: 250px;
+	/* margin: 10px; */
 	background-color: #fef5e4;
 	position: relative;
 }
@@ -172,10 +167,15 @@ form {
 	align-content: center;
 	padding: 30px;
 	margin: 10px;
-	margin-top: 30%;
+	margin-top: 1%;
 	background-color: #ffffff;
 	opacity: 70%;
-	max-width: 600px;
+  max-width: 600px;
+  min-width: 70%
+}
+
+.game-summary{
+  justify-self: center;
 }
 
 .text-submit-container {
@@ -388,6 +388,12 @@ transparent box
 	/* margin-right: 20px; */
 }
 
+#prompt-img-learn {
+	width: 300px;
+	z-index: -1;
+	margin-right: -100px;
+}
+
 .prompt-card-learn {
 	width: 80%;
 	position: relative;
@@ -407,18 +413,6 @@ transparent box
 	opacity: 60%;
 	border-radius: 10px;
 	justify-content: center;
-}
-
-.prompt-content-learn {
-	display: flex;
-	flex-direction: column;
-	/* position: fixed; */
-	/* width: 90%; */
-	/* top: 30px;
-	left: 20px;
-	color: black;
-	font-size: 30px;
-	font-family: "Gill Sans"; */
 }
 
 #thumb-containter-learn {

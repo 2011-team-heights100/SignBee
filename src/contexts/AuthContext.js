@@ -29,6 +29,7 @@ export function AuthProvider({ children }) {
 	}
 
 	function signup(email, password, firstName, lastName) {
+    const today = new Date()
 		return auth
 			.createUserWithEmailAndPassword(email, password)
 			.then(() => {
@@ -40,9 +41,9 @@ export function AuthProvider({ children }) {
 						firstName: firstName,
 						lastName: lastName,
             points: 0,
-            streak: 0,
-            lastPlayed: 0,
-            updatedStreak: 0,
+            streak: 1,
+            lastPlayed: today,
+            updatedStreak: today,
 						progress: {
 							'ABCD': {
 								easy: false,

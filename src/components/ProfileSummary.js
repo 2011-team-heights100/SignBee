@@ -32,9 +32,8 @@ export default function ProfileSummary({ show, setModalShow }) {
 	}, [show]);
 
 	useEffect(() => {
-    getDbUser();
-  }, []);
-
+		getDbUser();
+	}, []);
 
 	const handleClickAway = () => {
 		setModalShow(false);
@@ -58,34 +57,36 @@ export default function ProfileSummary({ show, setModalShow }) {
 				onBackdropClick={handleClickAway}
 				closeAfterTransition={true}
 			>
-				<DialogTitle align="center">
+				<DialogTitle
+					align="center"
+				>
 					Hey there, {dbUser && dbUser.firstName}!
 				</DialogTitle>
 				<div className="center-modal">
 					<Typography variant="h2">STATS</Typography>
-					<Typography variant="h5">LEVELS COMPLETE</Typography>
-					<Tada>
-						<Typography
-							variant="h2"
-							color="primary"
-						>{`${progress} / ${totalProgress}`}</Typography>
-					</Tada>
-					<br />
-					<Typography variant="h5">TOTAL POINTS</Typography>
-					<Tada>
-						<Typography variant="h2" color="primary">
-							{dbUser.points}
-						</Typography>
-					</Tada>
-					<br />
-					<Typography variant="h5">STREAK</Typography>
-          <Tada>
+					<Typography variant="h5">Levels Complete</Typography>
 					<Typography variant="h2" color="primary">
-						{dbUser.streak}
+						{`${progress} / ${totalProgress}`}
 					</Typography>
-          </Tada>
+					<br />
+					<Typography variant="h5">Total Points</Typography>
+					<Typography variant="h2" color="primary">
+						{dbUser.points}
+					</Typography>
+					<br />
+					<Typography variant="h5">Streak</Typography>
+					<Tada>
+						{dbUser.streak === 1 ? (
+							<Typography variant="h2" color="primary">
+								{dbUser.streak} Day
+							</Typography>
+						) : (
+							<Typography variant="h2" color="primary">
+								{dbUser.streak} Days
+							</Typography>
+						)}
+					</Tada>
 				</div>
-
 				<List>
 					<ListItem
 						button

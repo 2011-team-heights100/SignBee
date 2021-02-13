@@ -50,18 +50,24 @@ export default function Routes() {
 							<Route path="/signin">
 								{isLoggedIn ? <Redirect to="/dashboard" /> : <SignIn />}
 							</Route>
-							<Route exact path="/app" component={App} />
+							<Route path="/app">
+								{isLoggedIn ? <App /> : <Redirect to="/" />}
+							</Route>
+							<Route path="/learn">
+								{isLoggedIn ? <Learn /> : <Redirect to="/" />}
+							</Route>
 							<Route path="/dashboard">
 								{isLoggedIn ? <Dashboard /> : <Redirect to="/" />}
 							</Route>
 							<Route path="/updateprofile">
 								{isLoggedIn ? <UpdateProfile /> : <Redirect to="/signin" />}
 							</Route>
-							<Route path="/about" component={About} />
+							<Route path="/gameplaytext">
+								{isLoggedIn ? <GameplayText /> : <Redirect to="/" />}
+							</Route>
 							<Route path="/gamesummary" component={GameSummary} />
-							<Route path="/gameplaytext" component={GameplayText} />
 							<Route path="/resetpassword" component={ResetPassword} />
-							<Route path="/learn" component={Learn} />
+							<Route path="/about" component={About} />
 						</Switch>
 					</AuthProvider>
 				</UserProvider>
