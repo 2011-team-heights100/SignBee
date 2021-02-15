@@ -350,7 +350,7 @@ transparent box
 #exit {
 	position: absolute;
 	top: 50px;
-	right: 0;
+	left: 50px;
 	width: 50px;
 }
 

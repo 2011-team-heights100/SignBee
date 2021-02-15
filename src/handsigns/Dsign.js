@@ -35,7 +35,7 @@ dSign.addDirection(Finger.Index, FingerDirection.VerticalUp, 0.70);
 
 //Index
 dSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);
-dSign.addDirection(Finger.Index, FingerDirection.VerticalUp, 0.70);
+dSign.addDirection(Finger.Index, FingerDirection.VerticalUp, 0.60);
 
 //Middle
 dSign.addCurl(Finger.Middle, FingerCurl.FullCurl, 1);

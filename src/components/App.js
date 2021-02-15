@@ -92,7 +92,7 @@ function App() {
 
 			if (hand.length > 0) {
 				const GE = new fp.GestureEstimator([
-					fp.Gestures.ThumbsUpGesture,
+					// fp.Gestures.ThumbsUpGesture,
 					Handsigns.aSign,
 					Handsigns.bSign,
 					Handsigns.cSign,
@@ -119,6 +119,7 @@ function App() {
 					Handsigns.xSign,
 					Handsigns.ySign,
 					Handsigns.zSign,
+					Handsigns.middleFinger,
 				]);
 
 				const estimatedGestures = await GE.estimate(
@@ -132,7 +133,7 @@ function App() {
 
 				if (estimated[0]) setGuess(estimated[0].name);
 			}
-			console.log("Num of tensors:", tf.memory().numTensors);
+			// console.log("Num of tensors:", tf.memory().numTensors);
 		}
 	};
 
@@ -156,8 +157,6 @@ function App() {
 		}, 5000);
 	};
 
-	console.log("hint", hint);
-
 	useEffect(() => {
 		runHandpose();
 		defineGameLevel();
@@ -174,6 +173,9 @@ function App() {
 	if ((guess !== "" || prompt !== "") && guess === prompt) {
 		memo[guess] = true;
   }
+  // if(guess === "How rude!"){
+  //   hintCounter++
+  // }
   
   let totalPts = Object.keys(memo).length - hintCounter;
   
@@ -222,12 +224,7 @@ function App() {
 								{!isAMatch && showHint ? (
 									<BounceUp>
 										<div className="hint-container">
-											<img
-												id="hint"
-												src={hint}
-												alt={prompt}
-												height="200px"
-											/>
+											<img id="hint" src={hint} alt={prompt} height="200px" />
 										</div>
 									</BounceUp>
 								) : (
@@ -242,8 +239,8 @@ function App() {
 											style={{ fontSize: 40 }}
 											onClick={() => {
 												setShowHint(true);
-                        hintCounter++
-                        console.log("hint count: ", hintCounter)
+												hintCounter++;
+												console.log("hint count: ", hintCounter);
 											}}
 										></HelpSharp>
 									</Pulse>
@@ -255,7 +252,9 @@ function App() {
 								<Typography id="gesture-guess" fontWeight="fontWeightBold">
 									YOUR GUESS {guess}
 								</Typography>
-								<Typography variant="h2">Prompt: {prompt}</Typography>
+								<Typography variant="h2" style={{ fontSize: 55, marginBottom: 10 }}>
+									Prompt: {prompt}
+								</Typography>
 							</div>
 						</div>
 					</div>

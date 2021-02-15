@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import HoneyComb from "./HoneyComb";
 import { useUser } from "../contexts/UserContext";
 import { HelpSharp } from "@material-ui/icons";
@@ -49,11 +50,13 @@ export default function Dashboard() {
 			</div>
 			<div className="row">
 				<Slide>
-					<img
-						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
-						id="bee-logo-dash"
-						alt="beeLogo"
-					/>
+					<Link className="aboutlink" to="/about">
+						<img
+							src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+							id="bee-logo-dash"
+							alt="beeLogo"
+						/>
+					</Link>
 				</Slide>
 			</div>
 			<div id="info">

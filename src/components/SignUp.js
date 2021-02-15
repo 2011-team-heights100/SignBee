@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Button, Typography, TextField, FormControl } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
@@ -43,11 +43,13 @@ export default function SignUp() {
 		<>
 			<div className="centerme">
 				<div className="logo-container">
-					<img
-						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
-						id="bee"
-						alt="beeLogo"
-					/>
+					<Link className="aboutlink" to="/about">
+						<img
+							src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+							id="bee"
+							alt="beeLogo"
+						/>
+					</Link>
 				</div>
 				<br />
 				<div className="formdiv">

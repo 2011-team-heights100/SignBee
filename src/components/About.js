@@ -17,7 +17,10 @@ function About() {
 					<Typography variant="h2">ABOUT US</Typography>
 					<br />
 					<div>
-						<Typography variant="h6">
+						<Typography
+							variant="h6"
+							style={{ paddingLeft: "10%", paddingRight: "10%" }}
+						>
 							Our goal is to create an American Sign Language alphabet learning
 							app to breach communication barriers between hearing and
 							non-hearing people.

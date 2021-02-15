@@ -47,5 +47,5 @@ jSign.addDirection(Finger.Ring, FingerDirection.HorizontalRight, 0.70);
 
 //Pinky
 jSign.addCurl(Finger.Pinky, FingerCurl.NoCurl, 1);
-jSign.addDirection(Finger.Pinky, FingerDirection.HorizontalRight, 0.70);
+jSign.addDirection(Finger.Pinky, FingerDirection.HorizontalRight, 0.50);
 

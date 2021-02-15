@@ -18,7 +18,10 @@ function LandingPage() {
 			<br />
 			<br />
 			<div className="landingbody">
-				<Typography variant="h6">
+				<Typography
+					variant="h6"
+					style={{ paddingLeft: "20%", paddingRight: "20%" }}
+				>
 					Learn American Sign Language through play!
 				</Typography>
 				<br />

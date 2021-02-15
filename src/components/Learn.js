@@ -112,7 +112,8 @@ function Learn() {
 					Handsigns.wSign,
 					Handsigns.xSign,
 					Handsigns.ySign,
-					Handsigns.zSign,
+          Handsigns.zSign,
+          Handsigns.middleFinger,
 				]);
 
 				const estimatedGestures = await GE.estimate(hand[0].landmarks, 6.5);
@@ -123,7 +124,8 @@ function Learn() {
 
 				if (estimated[0]) setGuess(estimated[0].name);
 			}
-			console.log("Num of tensors:", tf.memory().numTensors);
+      // console.log("Num of tensors:", tf.memory().numTensors);
+      console.log("guess", guess)
 		}
 	};
 
@@ -216,12 +218,20 @@ function Learn() {
 										/>
 									</div>
 								) : (
-									<Typography
-										variant="h2"
-										style={{ fontSize: 30}}
-									>
-										Match the signs!
-									</Typography>
+									<>
+										<Typography
+											variant="h2"
+											style={{ fontSize: 30, textAlign: "center" }}
+										>
+											Match the signs!
+										</Typography>
+										<Typography
+											variant="h3"
+											style={{ fontSize: 30, textAlign: "center" }}
+										>
+											Wave your hand do get started.
+										</Typography>
+									</>
 								)}
 							</div>
 						</div>
