@@ -66,8 +66,7 @@ export default function ProfileSummary({ show, setModalShow }) {
 					<Typography variant="h2">STATS</Typography>
 					<Typography variant="h5">Levels Complete</Typography>
 					<Typography variant="h2" color="primary">
-						{`${progress} / ${totalProgress}`}
-					</Typography>
+						{`${progress} / ${totalProgress}`}</Typography>
 					<br />
 					<Typography variant="h5">Total Points</Typography>
 					<Typography variant="h2" color="primary">

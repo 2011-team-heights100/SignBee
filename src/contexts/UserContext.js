@@ -3,7 +3,6 @@ import "firebase/firestore";
 import { db } from "../firebase";
 import { auth } from "../firebase";
 import {
-	differenceInDays,
 	differenceInCalendarDays,
 	isSameDay,
 } from "date-fns";

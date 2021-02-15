@@ -52,9 +52,10 @@ export default function GameplayText() {
 
   const isGuessCorrect = (guess) => {
     const currTime = Date.now();
+    
     // check has it been under 7 seconds
-    // user has exceeded time limit
     const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
+    
     if (!isWithinTimeLimit) {
       setThumb(false);
       setPromptIdx(promptIdx + 1);
@@ -80,9 +81,6 @@ export default function GameplayText() {
 	const handleClick = async (e) => {
 		await isGuessCorrect(guessRef.current.value.toUpperCase().trim());
   };
-  
-  console.log("points", points)
-  console.log("maxPts", maxPts)
 
 	return gameState ? (
 		<div className="centerme">

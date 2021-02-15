@@ -28,8 +28,6 @@ function shuffle(a) {
 	return a;
 }
 
-//add a memo that collects all the player's correct guesses and gives them a summary at the end
-
 function Learn() {
 	const webcamRef = useRef(null);
 	const { currentLevel } = useUser();
@@ -42,8 +40,6 @@ function Learn() {
 	const [promptIdx, setPromptIdx] = useState(0);
 	const [thumb, setThumb] = useState(false);
 	const history = useHistory();
-
-	console.log("currentLevel", currentLevel);
 
 	const shufflePrompts = useCallback(() => {
 		setPromptArr(shuffle(currentLevel));
@@ -124,12 +120,8 @@ function Learn() {
 
 				if (estimated[0]) setGuess(estimated[0].name);
 			}
-      // console.log("Num of tensors:", tf.memory().numTensors);
-      console.log("guess", guess)
 		}
 	};
-
-	//prompt = {letter: "A", picture: "link"}
 
 	useEffect(() => {
 		isGuessCorrect(guess);
@@ -138,9 +130,10 @@ function Learn() {
 
 	const isGuessCorrect = (guess) => {
 		const currTime = Date.now();
-		// check has it been under 7 seconds
-		// user has exceeded time limit
-		const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
+    
+    // check has it been under 7 seconds
+    const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
+    
 		if (!isWithinTimeLimit) {
 			setThumb(false);
 			setPromptIdx(promptIdx + 1);

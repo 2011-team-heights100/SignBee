@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Typography } from "@material-ui/core";
 import GradeIcon from "@material-ui/icons/Grade";
@@ -36,14 +36,11 @@ export default function GameSummary(props) {
 	}, []);
 
 	useEffect(() => {
-		// getDbUser();
 		updateLastPlayed();
 		updateStreak();
 		getLevels();
 		return () => (counter = 0);
 	}, []);
-
-	// console.log("gameplaysummary", currentLevel);
 
 	const addPoints = async () => {
 		counter++;
@@ -56,12 +53,10 @@ export default function GameSummary(props) {
 		let userPoints = await dbUser.points;
 		let newTotal = userPoints + props.location.state.totalPts;
 		await setPlayerPoints(newTotal);
-		// await setTotalPts(newTotal);
 		if (props.location.state.totalPts >= props.location.state.maxPts) {
 			await updateProgress(currentLevel.name, difficulty);
 		}
 	};
-	console.log("dbUser:", dbUser);
 
 	if (counter < 2) {
 		dbUser && addPoints();
@@ -70,7 +65,7 @@ export default function GameSummary(props) {
 	async function handlePlayNext() {
 		await setCurrentLevel(levels[currentLevel.name]);
 		await defineDifficulty(currentLevel.name);
-		//not recognizing difficulty right away
+
 		if (
 			dbUser.progress[currentLevel.name].easy &&
 			dbUser.progress[currentLevel.name].medium &&
@@ -99,9 +94,7 @@ export default function GameSummary(props) {
 		dbUser.progress[currentLevel.name].easy &&
 		dbUser.progress[currentLevel.name].medium &&
 		dbUser.progress[currentLevel.name].hard &&
-    dbUser.progress[currentLevel.name].text;
-    
-  console.log("state in Game Summary", props)
+		dbUser.progress[currentLevel.name].text;
 
 	return (
 		<div className="centerme">

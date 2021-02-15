@@ -23,9 +23,6 @@ export default function Navbar() {
 		window.location.pathname !== "/learn" &&
 		window.location.pathname !== "/app";
 
-	// console.log("showNavIcon", showNavIcon);
-	// console.log("window.location", window.location);
-
 	return (
 		<>
 			<AppBar position="static" color="transparent" elevation={0}>

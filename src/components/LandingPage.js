@@ -22,7 +22,7 @@ function LandingPage() {
 					variant="h6"
 					style={{ paddingLeft: "20%", paddingRight: "20%" }}
 				>
-					Learn American Sign Language through play!
+					Learn American Sign Language alphabet through play!
 				</Typography>
 				<br />
 				<br />

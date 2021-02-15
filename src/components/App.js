@@ -58,8 +58,6 @@ function App() {
 		}
 	});
 
-	const maxPts = promptArr.length;
-
 	const runHandpose = async () => {
 		const net = await handpose.load();
 		console.log("handpose loaded!");
@@ -88,11 +86,9 @@ function App() {
 
 			//make detections
 			const hand = await net.estimateHands(video);
-			// console.log(hand);
 
 			if (hand.length > 0) {
 				const GE = new fp.GestureEstimator([
-					// fp.Gestures.ThumbsUpGesture,
 					Handsigns.aSign,
 					Handsigns.bSign,
 					Handsigns.cSign,
@@ -133,7 +129,6 @@ function App() {
 
 				if (estimated[0]) setGuess(estimated[0].name);
 			}
-			// console.log("Num of tensors:", tf.memory().numTensors);
 		}
 	};
 
@@ -173,10 +168,8 @@ function App() {
 	if ((guess !== "" || prompt !== "") && guess === prompt) {
 		memo[guess] = true;
   }
-  // if(guess === "How rude!"){
-  //   hintCounter++
-  // }
-  
+
+  const maxPts = promptArr.length;
   let totalPts = Object.keys(memo).length - hintCounter;
   
   const isAMatch = (guess !== "" || prompt !== "") && guess === prompt;
@@ -249,7 +242,7 @@ function App() {
 						</div>
 						<div className="prompt-box">
 							<div className="prompt-content">
-								<Typography id="gesture-guess" fontWeight="fontWeightBold">
+								<Typography variant="h5" id="gesture-guess">
 									YOUR GUESS {guess}
 								</Typography>
 								<Typography variant="h2" style={{ fontSize: 55, marginBottom: 10 }}>
