@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import HoneyComb from "./HoneyComb";
 import { useUser } from "../contexts/UserContext";
 import { HelpSharp } from "@material-ui/icons";
@@ -15,57 +16,59 @@ const Pulse = styled.div`
 `;
 
 export default function Dashboard() {
-  document.body.style = "background: #FEF5E4";
+	document.body.style = "background: #FEF5E4";
 
-  const { getDbUser } = useUser();
-  const [showModal, setShowModal] = useState(false);
+	const { getDbUser, updateStreak } = useUser();
+	const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
+	useEffect(() => {
     getDbUser();
   }, []);
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    setShowModal(!showModal);
-  };
+	const handleClick = (e) => {
+		e.preventDefault();
+		setShowModal(!showModal);
+	};
 
-  return (
-    <div id="hexGrid">
-      <div className="row">
-        <HoneyComb name="LEARN" />
-      </div>
-      <div className="row">
-        <HoneyComb name="ABCD" />
-        <HoneyComb name="EFGH" />
-      </div>
-      <div className="row">
-        <HoneyComb name="IJKL" />
-        <HoneyComb name="MNOP" />
-        <HoneyComb name="QRST" />
-      </div>
-      <div className="row">
-        <HoneyComb name="UVW" />
-        <HoneyComb name="XYZ" />
-      </div>
-      <div className="row">
-        <Slide>
-          <img
-            src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
-            id="bee-logo-dash"
-            alt="beeLogo"
-          />
-        </Slide>
-      </div>
-      <div id="info">
-        <Pulse>
-          <HelpSharp
-            color="secondary"
-            style={{ fontSize: 40 }}
-            onClick={handleClick}
-          ></HelpSharp>
-          <InfoModal show={showModal} />
-        </Pulse>
-      </div>
-    </div>
-  );
+	return (
+		<div id="hexGrid">
+			<div className="row">
+				<HoneyComb name="LEARN" />
+			</div>
+			<div className="row">
+				<HoneyComb name="ABCD" />
+				<HoneyComb name="EFGH" />
+			</div>
+			<div className="row">
+				<HoneyComb name="IJKL" />
+				<HoneyComb name="MNOP" />
+				<HoneyComb name="QRST" />
+			</div>
+			<div className="row">
+				<HoneyComb name="UVW" />
+				<HoneyComb name="XYZ" />
+			</div>
+			<div className="row">
+				<Slide>
+					<Link className="aboutlink" to="/about">
+						<img
+							src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+							id="bee-logo-dash"
+							alt="beeLogo"
+						/>
+					</Link>
+				</Slide>
+			</div>
+			<div id="info">
+				<Pulse>
+					<HelpSharp
+						color="secondary"
+						style={{ fontSize: 40 }}
+						onClick={handleClick}
+					></HelpSharp>
+					<InfoModal show={showModal} />
+				</Pulse>
+			</div>
+		</div>
+	);
 }

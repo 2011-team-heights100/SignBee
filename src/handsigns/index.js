@@ -24,37 +24,38 @@ import {wSign} from './Wsign';
 import {xSign} from './Xsign';
 import {ySign} from './Ysign';
 import {zSign} from './Zsign';
-
+import {middleFinger} from './MiddleFinger'
 
 
 const Handsigns = {
-    aSign,
-    bSign,
-    cSign,
-    dSign,
-    eSign,
-    fSign,
-    gSign,
-    hSign,
-    iSign,
-    jSign,
-    kSign,
-    lSign,
-    mSign,
-    nSign,
-    oSign,
-    pSign,
-    qSign,
-    rSign,
-    sSign,
-    tSign,
-    uSign,
-    vSign,
-    wSign,
-    xSign,
-    ySign,
-    zSign,
-}
+	aSign,
+	bSign,
+	cSign,
+	dSign,
+	eSign,
+	fSign,
+	gSign,
+	hSign,
+	iSign,
+	jSign,
+	kSign,
+	lSign,
+	mSign,
+	nSign,
+	oSign,
+	pSign,
+	qSign,
+	rSign,
+	sSign,
+	tSign,
+	uSign,
+	vSign,
+	wSign,
+	xSign,
+	ySign,
+	zSign,
+	middleFinger,
+};
 
 
 export default Handsigns;

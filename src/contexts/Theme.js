@@ -1,5 +1,4 @@
 import { createMuiTheme, fade } from "@material-ui/core/styles";
-import { denseBincount } from "@tensorflow/tfjs";
 
 export default createMuiTheme({
 	palette: {
@@ -14,13 +13,25 @@ export default createMuiTheme({
 		},
 	},
 	typography: {
+		h1: {
+			fontFamily: "Changa One",
+			marginBottom: 5,
+		},
 		h2: {
 			fontFamily: "Changa One",
-			marginBottom: 20,
+		},
+		h3: {
+			fontFamily: "Jost",
+		},
+		h4: {
+			fontFamily: "Jost",
 		},
 		h5: {
-			// fontFamily: "Changa One",
-			fontWeight: "bold",
+			fontFamily: "Jost",
+			fontWeight: 600,
+		},
+		h6: {
+			fontFamily: "Jost",
 		},
 	},
 	overrides: {
@@ -33,13 +44,20 @@ export default createMuiTheme({
 				marginBottom: 10,
 				marginLeft: 20,
 				marginRight: 20,
+				fontWeight: "bold",
+				fontSize: 16,
+			},
+			containedPrimary: {
+				color: "#FFFFFF",
 			},
 		},
 		MuiDialog: {
 			paper: {
 				borderRadius: 20,
 				opacity: "80%",
-				padding: 15,
+				padding: "8%",
+				paddingTop: "5%",
+				paddingBottom: "5%",
 			},
 		},
 		MuiPaper: {
@@ -48,9 +66,9 @@ export default createMuiTheme({
 			},
 		},
 		MuiFormControl: {
-      root: {
-        margin: "normal",
-      }
+			root: {
+				margin: "normal",
+			},
 		},
 	},
 	props: {

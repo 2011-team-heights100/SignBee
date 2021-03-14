@@ -20,8 +20,7 @@ export default function SignIn() {
 			setLoading(true);
 			await signin(emailRef.current.value, passwordRef.current.value);
 			history.push("/dashboard");
-		}
-		catch (error) {
+		} catch (error) {
 			setError(`${error.message}`);
 			console.log(error);
 		}
@@ -32,11 +31,13 @@ export default function SignIn() {
 		<>
 			<div className="centerme">
 				<div className="logo-container">
-					<img
-						src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
-						id="bee"
-						alt="beeLogo"
-					/>
+					<Link className="aboutlink" to="/about">
+						<img
+							src={process.env.PUBLIC_URL + "/signbee_logo.svg"}
+							id="bee"
+							alt="beeLogo"
+						/>
+					</Link>
 				</div>
 				<br />
 				<br />

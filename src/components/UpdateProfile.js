@@ -69,8 +69,8 @@ export default function UpdateProfile() {
 							alt="beeLogo"
 						/>
 					</div>
+          <br/>
 					<div className="formdiv">
-						<br />
 						<Typography variant="h2">UPDATE</Typography>
 						{error && <Alert severity="error">{error}</Alert>}
 						<FormControl margin="normal">
@@ -97,13 +97,13 @@ export default function UpdateProfile() {
 								type="password"
 								label="Password"
 								inputRef={passwordRef}
-								placeholder="Leave blank to keep the same password"
+								placeholder="******"
 							/>
 							<TextField
 								type="password"
 								label="Confirm Password"
 								inputRef={passwordConfirmRef}
-								placeholder="Leave blank to keep the same password"
+								placeholder="******"
 							/>
 							<Link to="/resetpassword">Reset Password</Link>
 							<Button type="submit" disabled={loading} onClick={handleSubmit}>
