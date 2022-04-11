@@ -6,7 +6,6 @@ import { Dialog, List, Button, Typography } from "@material-ui/core";
 export default function SectionModal({ name, show }) {
 	const {
 		dbUser,
-		getDbUser,
 		levels,
 		getLevels,
 		setCurrentLevel,
@@ -14,12 +13,11 @@ export default function SectionModal({ name, show }) {
 		defineDifficulty,
 	} = useUser();
   const history = useHistory();
-  
+
 	let levelsCompleted = 0;
 	let totalLevels = 0;
 
 	useEffect(() => {
-		getDbUser();
 		getLevels();
 	}, []);
 

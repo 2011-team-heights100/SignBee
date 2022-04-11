@@ -18,12 +18,12 @@ const Pulse = styled.div`
 export default function Dashboard() {
 	document.body.style = "background: #FEF5E4";
 
-	const { getDbUser, updateStreak } = useUser();
+	const { getDbUser, dbUser } = useUser();
 	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
     getDbUser();
-  }, []);
+  }, [dbUser]);
 
 	const handleClick = (e) => {
 		e.preventDefault();

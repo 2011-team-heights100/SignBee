@@ -9,7 +9,7 @@ import { AuthProvider } from "../contexts/AuthContext";
 import { UserProvider } from '../contexts/UserContext'
 import firebase from "firebase/app";
 import { ThemeProvider } from "@material-ui/styles";
-
+// Copmonents
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import App from "./App";

@@ -43,11 +43,15 @@ export default function ProfileSummary({ show, setModalShow }) {
 	let progress = 0;
 	let totalProgress = 0;
 
-	for (let section in dbUser.progress) {
-		for (let level in dbUser.progress[section]) {
-			totalProgress++;
-			if (dbUser.progress[section][level]) progress++;
+	if (dbUser) {
+		for (let section in dbUser.progress) {
+			for (let level in dbUser.progress[section]) {
+				totalProgress++;
+				if (dbUser.progress[section][level]) progress++;
+			}
 		}
+	} else {
+		getDbUser();
 	}
 
 	return (
@@ -57,31 +61,30 @@ export default function ProfileSummary({ show, setModalShow }) {
 				onBackdropClick={handleClickAway}
 				closeAfterTransition={true}
 			>
-				<DialogTitle
-					align="center"
-				>
+				<DialogTitle align='center'>
 					Hey there, {dbUser && dbUser.firstName}!
 				</DialogTitle>
-				<div className="center-modal">
-					<Typography variant="h2">STATS</Typography>
-					<Typography variant="h5">Levels Complete</Typography>
-					<Typography variant="h2" color="primary">
-						{`${progress} / ${totalProgress}`}</Typography>
-					<br />
-					<Typography variant="h5">Total Points</Typography>
-					<Typography variant="h2" color="primary">
-						{dbUser.points}
+				<div className='center-modal'>
+					<Typography variant='h2'>STATS</Typography>
+					<Typography variant='h5'>Levels Complete</Typography>
+					<Typography variant='h2' color='primary'>
+						{`${progress} / ${totalProgress}`}
 					</Typography>
 					<br />
-					<Typography variant="h5">Streak</Typography>
+					<Typography variant='h5'>Total Points</Typography>
+					<Typography variant='h2' color='primary'>
+						{dbUser && dbUser.points}
+					</Typography>
+					<br />
+					<Typography variant='h5'>Streak</Typography>
 					<Tada>
-						{dbUser.streak === 1 ? (
-							<Typography variant="h2" color="primary">
-								{dbUser.streak} Day
+						{dbUser && dbUser.streak === 1 ? (
+							<Typography variant='h2' color='primary'>
+								{dbUser && dbUser.streak} Day
 							</Typography>
 						) : (
-							<Typography variant="h2" color="primary">
-								{dbUser.streak} Days
+							<Typography variant='h2' color='primary'>
+								{dbUser && dbUser.streak} Days
 							</Typography>
 						)}
 					</Tada>
@@ -92,15 +95,15 @@ export default function ProfileSummary({ show, setModalShow }) {
 						onClick={() => {
 							setOpen(false);
 							setModalShow(false);
-							history.push("/updateprofile");
+							history.push('/updateprofile');
 						}}
 					>
 						<ListItemAvatar>
 							<Avatar>
-								<PersonOutlineIcon color="secondary" />
+								<PersonOutlineIcon color='secondary' />
 							</Avatar>
 						</ListItemAvatar>
-						<ListItemText primary="Edit Account Info" />
+						<ListItemText primary='Edit Account Info' />
 					</ListItem>
 					<ListItem
 						button
@@ -112,10 +115,10 @@ export default function ProfileSummary({ show, setModalShow }) {
 					>
 						<ListItemAvatar>
 							<Avatar>
-								<IndeterminateCheckBoxIcon color="secondary" />
+								<IndeterminateCheckBoxIcon color='secondary' />
 							</Avatar>
 						</ListItemAvatar>
-						<ListItemText primary="Sign Out" />
+						<ListItemText primary='Sign Out' />
 					</ListItem>
 				</List>
 			</Dialog>

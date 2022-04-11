@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SectionModal from "./SectionModal";
 import { useUser } from "../contexts/UserContext";
 
 function HoneyComb({ name }) {
-	const { dbUser, getDbUser } = useUser();
+	const { dbUser } = useUser();
 	const [showModal, setShowModal] = useState(false);
-
-	useEffect(() => {
-		return getDbUser();
-	}, []);
 
 	let percent;
 

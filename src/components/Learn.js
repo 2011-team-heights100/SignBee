@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
@@ -41,22 +41,11 @@ function Learn() {
 	const [thumb, setThumb] = useState(false);
 	const history = useHistory();
 
-	const shufflePrompts = useCallback(() => {
-		setPromptArr(shuffle(currentLevel));
-	});
-
 	const runHandpose = async () => {
 		const net = await handpose.load();
-		console.log("handpose loaded!");
 
-		//loop and detect hands
-		start(net);
-	};
-
-	const start = (net) => {
-		setTimeout(async () => {
-			await detect(net);
-			start(net);
+		return setInterval(() => {
+			detect(net);
 		}, 500);
 	};
 
@@ -78,7 +67,6 @@ function Learn() {
 
 			//make detections
 			const hand = await net.estimateHands(video);
-			console.log(hand);
 
 			if (hand.length > 0) {
 				const GE = new fp.GestureEstimator([
@@ -130,10 +118,8 @@ function Learn() {
 
 	const isGuessCorrect = (guess) => {
 		const currTime = Date.now();
-    
-    // check has it been under 7 seconds
     const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
-    
+
 		if (!isWithinTimeLimit) {
 			setThumb(false);
 			setPromptIdx(promptIdx + 1);
@@ -149,78 +135,87 @@ function Learn() {
 	};
 
 	useEffect(() => {
-		runHandpose();
-		shufflePrompts();
-		setTimeout(() => {
+		const handposeInterval = runHandpose();
+		setPromptArr(shuffle(currentLevel));
+		const loadingTimer = setTimeout(() => {
 			setLoading(false);
-		}, 10000);
+		}, 500);
+		return () => {
+			clearInterval(handposeInterval);
+			clearTimeout(loadingTimer);
+		}
 	}, []);
 
 	return gameState ? (
-		<div className="App video-container">
-			<header className="App-header">
-				<Webcam className="video" ref={webcamRef} />
+		<div className='App video-container'>
+			<header className='App-header'>
+				<Webcam className='video' ref={webcamRef} />
 			</header>
 			{loading ? (
-				<div className="loading">
+				<div className='loading'>
 					<Wobble>
 						<img
-							src={process.env.PUBLIC_URL + "/bee.png"}
-							id="bee"
-							alt="loadingBee"
+							src={process.env.PUBLIC_URL + '/bee.png'}
+							id='bee'
+							alt='loadingBee'
 						/>
 					</Wobble>
 					<br />
-					<Typography variant="h2">Loading...</Typography>
+					<Typography variant='h2'>Loading...</Typography>
 				</div>
 			) : (
-				<div className="game-container">
-					<div id="points-container">
-						<div id="exit">
-							{" "}
+				<div className='game-container'>
+					<div id='points-container'>
+						<div id='exit'>
+							{' '}
 							<HighlightOff
-								color="primary"
-								onClick={() => history.push("/dashboard")}
+								color='primary'
+								onClick={() => history.push('/dashboard')}
 							></HighlightOff>
 						</div>
 					</div>
-					<div className="prompt-card-learn">
-						<div id="thumb-containter-learn">
+					<div className='prompt-card-learn'>
+						<div id='thumb-containter-learn'>
 							<div>
 								{thumb && (
 									<BounceUp>
-										<ThumbUp color="primary" style={{ fontSize: 100 }} />
+										<ThumbUp color='primary' style={{ fontSize: 100 }} />
 									</BounceUp>
 								)}
 							</div>
 						</div>
-						<div className="prompt-box-learn">
-							<div className="prompt-content-learn">
-								{prompt.picture ? (
-									<div id="prompt-img-letter">
-										<Typography
-											variant="h2"
-											style={{ fontSize: 100, marginRight: "-75px" }}
-										>
-											{prompt.letter}
-										</Typography>
-										<img
-											id="prompt-img-learn"
-											src={prompt.picture}
-											alt={prompt.letter}
-										/>
+						<div className='prompt-box-learn'>
+							<div className='prompt-content-learn'>
+								{guess ? (
+									<div id='learn-prompt'>
+											<Typography variant='h5' id='gesture-guess'>
+												YOUR GUESS {guess}
+											</Typography>
+										<div id='prompt-img-letter'>
+											<Typography
+												variant='h2'
+												style={{ fontSize: 100, marginRight: '-75px' }}
+											>
+												{prompt.letter}
+											</Typography>
+											<img
+												id='prompt-img-learn'
+												src={prompt.picture}
+												alt={prompt.letter}
+											/>
+										</div>
 									</div>
 								) : (
 									<>
 										<Typography
-											variant="h2"
-											style={{ fontSize: 30, textAlign: "center" }}
+											variant='h2'
+											style={{ fontSize: 30, textAlign: 'center' }}
 										>
 											Match the signs!
 										</Typography>
 										<Typography
-											variant="h3"
-											style={{ fontSize: 30, textAlign: "center" }}
+											variant='h3'
+											style={{ fontSize: 30, textAlign: 'center' }}
 										>
 											Wave your hand do get started.
 										</Typography>
@@ -233,7 +228,7 @@ function Learn() {
 			)}
 		</div>
 	) : (
-		<Redirect to={{ pathname: "/dashboard" }} />
+		<Redirect to={{ pathname: '/dashboard' }} />
 	);
 }
 

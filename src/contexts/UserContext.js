@@ -19,23 +19,19 @@ export function UserProvider({ children }) {
 	const [levels, setLevels] = useState({});
 	const [currentLevel, setCurrentLevel] = useState({});
 	const [difficulty, setDifficulty] = useState(null);
-	// const [points, setPoints] = useState({})
 
 	useEffect(() => {
-		const fetchData = async () => {
 			if (isLoggedIn) {
 				const userRef = db.collection("Users").doc(isLoggedIn.uid);
-				(() => {
-					userRef.get().then((user) => {
-						setDbUser(user.data());
-					});
-				})();
+				userRef.get().then((user) => {
+					setDbUser(user.data());
+				});
 			} else {
 				setDbUser(null);
 			}
-		};
-		return fetchData;
-	}, []);
+	}, [isLoggedIn]);
+
+
 
 	function getDbUser() {
 		if (isLoggedIn) {
@@ -105,6 +101,7 @@ export function UserProvider({ children }) {
 		let progressUpdate = {};
 		progressUpdate[`progress.${levelName}.${difficulty}`] = true;
 		db.collection("Users").doc(isLoggedIn.uid).update(progressUpdate);
+		getDbUser();
 	};
 
 	const updateLastPlayed = () => {
