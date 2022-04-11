@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import { Button, TextField, Typography } from "@material-ui/core";
@@ -26,7 +26,7 @@ function shuffle(a) {
 export default function GameplayText() {
 	document.body.style = "background: #FEF5E4";
 
-  const { currentLevel} = useUser();
+  const { currentLevel } = useUser();
   const [gameState, setGameState] = useState(true);
   const [promptArr, setPromptArr] = useState(currentLevel.text);
   const [promptIdx, setPromptIdx] = useState(0);
@@ -37,25 +37,28 @@ export default function GameplayText() {
 
 	const guessRef = useRef();
 
-	const shufflePrompts = useCallback(() => {
+	const shufflePrompts = () => {
     setPromptArr(shuffle(promptArr));
-  });
+  };
 
   useEffect(() => {
-    shufflePrompts();
-    setTimeout(() => {
+		shufflePrompts();
+
+    const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+		}, 2000);
+
+		return () => clearTimeout(timer);
   }, []);
 
   const maxPts = promptArr.length;
 
   const isGuessCorrect = (guess) => {
     const currTime = Date.now();
-    
+
     // check has it been under 7 seconds
     const isWithinTimeLimit = currTime < prevTime + timeLimitForGuess;
-    
+
     if (!isWithinTimeLimit) {
       setThumb(false);
       setPromptIdx(promptIdx + 1);

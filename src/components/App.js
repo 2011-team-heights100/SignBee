@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import * as tf from "@tensorflow/tfjs";
+import * as tf from '@tensorflow/tfjs';
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import Webcam from "react-webcam";
@@ -10,6 +10,7 @@ import { ThumbUp, Grade, HelpSharp } from "@material-ui/icons";
 import { useUser } from "../contexts/UserContext";
 import { wobble, bounceInUp, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
+
 const Wobble = styled.div`
 	animation: 6s ${keyframes`${wobble}`} infinite;
 `;
@@ -43,9 +44,8 @@ function App() {
 	const [showHint, setShowHint] = useState(false);
 	const [accuracy, setAccuracy] = useState(6);
 
-	const defineGameLevel = useCallback(() => {
-    getDbUser()
-
+	const defineGameLevel = () => {
+		getDbUser();
 		if (difficulty === "easy") {
 			setAccuracy(6.5);
 			//display hints
@@ -56,14 +56,12 @@ function App() {
 			setAccuracy(7.5);
 			setPromptArr(shuffle(promptArr));
 		}
-	});
+	};
 
 	const runHandpose = async () => {
 		const net = await handpose.load();
-		console.log("handpose loaded!");
-
 		//loop and detect hands
-		setInterval(() => {
+		return setInterval(() => {
 			detect(net);
 		}, 500);
 	};
@@ -153,14 +151,15 @@ function App() {
 	};
 
 	useEffect(() => {
-		runHandpose();
+		const handposeInterval = runHandpose();
 		defineGameLevel();
-		setTimeout(() => {
+		const loadingTimer = setTimeout(() => {
 			setLoading(false);
 			displayPrompt();
 		}, 10000);
 		return () => {
-      runHandpose()
+			clearInterval(handposeInterval);
+			clearTimeout(loadingTimer);
 			memo = {};
 		};
 	}, []);
@@ -171,7 +170,7 @@ function App() {
 
   const maxPts = promptArr.length;
   let totalPts = Object.keys(memo).length - hintCounter;
-  
+
   const isAMatch = (guess !== "" || prompt !== "") && guess === prompt;
 
 	return gameState ? (

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Button, Typography } from "@material-ui/core";
-import GradeIcon from "@material-ui/icons/Grade";
-import { useUser } from "../contexts/UserContext";
-import { tada } from "react-animations";
-import styled, { keyframes } from "styled-components";
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button, Typography } from '@material-ui/core';
+import GradeIcon from '@material-ui/icons/Grade';
+import { useUser } from '../contexts/UserContext';
+import { tada } from 'react-animations';
+import styled, { keyframes } from 'styled-components';
 
 const Tada = styled.div`
 	animation: 900ms ${keyframes`${tada}`};
@@ -13,7 +13,7 @@ const Tada = styled.div`
 let counter = 0;
 
 export default function GameSummary(props) {
-	document.body.style = "background: #F6A400;";
+	document.body.style = 'background: #F6A400;';
 
 	const history = useHistory();
 	const {
@@ -32,10 +32,6 @@ export default function GameSummary(props) {
 	} = useUser();
 
 	useEffect(() => {
-		return getDbUser();
-	}, []);
-
-	useEffect(() => {
 		updateLastPlayed();
 		updateStreak();
 		getLevels();
@@ -45,7 +41,7 @@ export default function GameSummary(props) {
 	const addPoints = async () => {
 		counter++;
 		if (
-			difficulty === "text" &&
+			difficulty === 'text' &&
 			props.location.state.maxPts === props.location.state.totalPts
 		) {
 			props.location.state.totalPts++;
@@ -73,83 +69,88 @@ export default function GameSummary(props) {
 			!dbUser.progress[currentLevel.name].text
 		) {
 			history.push({
-				pathname: "/gameplaytext",
+				pathname: '/gameplaytext',
 			});
 		} else {
-			history.push("/app");
+			history.push('/app');
 		}
 	}
 
 	function handleReplay() {
-		if (difficulty === "text") {
+		if (difficulty === 'text') {
 			history.push({
-				pathname: "/gameplaytext",
+				pathname: '/gameplaytext',
 			});
 		} else {
-			history.push("/app");
+			history.push('/app');
 		}
 	}
 
-	const allLevelsComplete =
-		dbUser.progress[currentLevel.name].easy &&
-		dbUser.progress[currentLevel.name].medium &&
-		dbUser.progress[currentLevel.name].hard &&
-		dbUser.progress[currentLevel.name].text;
+	let allLevelsComplete;
+	if (dbUser) {
+		allLevelsComplete =
+			dbUser.progress[currentLevel.name].easy &&
+			dbUser.progress[currentLevel.name].medium &&
+			dbUser.progress[currentLevel.name].hard &&
+			dbUser.progress[currentLevel.name].text;
+	} else {
+		getDbUser();
+	}
 
 	return (
-		<div className="centerme">
-			<div className="game-summary-container">
+		<div className='centerme'>
+			<div className='game-summary-container'>
 				<div>
 					{props.location.state.totalPts === 0 && (
-						<Typography variant="h2">Oh boy...</Typography>
+						<Typography variant='h2'>Oh boy...</Typography>
 					)}
 					{props.location.state.totalPts === props.location.state.maxPts && (
-						<Typography variant="h2">Well Done!</Typography>
+						<Typography variant='h2'>Well Done!</Typography>
 					)}
 					{props.location.state.totalPts < props.location.state.maxPts && (
-						<Typography variant="h2">Try Again!</Typography>
+						<Typography variant='h2'>Try Again!</Typography>
 					)}
 					{props.location.state.totalPts > props.location.state.maxPts && (
 						<>
-							<Typography variant="h2">Section Complete!</Typography>
-							<Typography variant="h6">
+							<Typography variant='h2'>Section Complete!</Typography>
+							<Typography variant='h6'>
 								Enjoy an extra point. You deserve it!
 							</Typography>
 						</>
 					)}
 					<br />
-					<Typography variant="h5">Your Score</Typography>
+					<Typography variant='h5'>Your Score</Typography>
 					<Tada>
-						<div id="points-container-summary">
-							<div id="score-summary">
+						<div id='points-container-summary'>
+							<div id='score-summary'>
 								<Typography
-									variant="h2"
-									style={{ fontSize: 42, textAlign: "center", color: "white" }}
+									variant='h2'
+									style={{ fontSize: 42, textAlign: 'center', color: 'white' }}
 								>
 									{props.location.state.totalPts}
 								</Typography>
 							</div>
-							<div id="score-star-summary">
+							<div id='score-star-summary'>
 								<GradeIcon
-									color="primary"
+									color='primary'
 									style={{ fontSize: 100 }}
 								></GradeIcon>
 							</div>
 						</div>
 					</Tada>
-					<Typography variant="h5">Total Points</Typography>
-					<Typography variant="h2" color="primary">
-						{dbUser.points}
+					<Typography variant='h5'>Total Points</Typography>
+					<Typography variant='h2' color='primary'>
+						{dbUser && dbUser.points}
 					</Typography>
-					<Typography variant="h5">Streak</Typography>
+					<Typography variant='h5'>Streak</Typography>
 					<Tada>
-						{dbUser.streak === 1 ? (
-							<Typography variant="h2" color="primary">
-								{dbUser.streak} Day
+						{dbUser && dbUser.streak === 1 ? (
+							<Typography variant='h2' color='primary'>
+								{dbUser && dbUser.streak} Day
 							</Typography>
 						) : (
-							<Typography variant="h2" color="primary">
-								{dbUser.streak} Days
+							<Typography variant='h2' color='primary'>
+								{dbUser && dbUser.streak} Days
 							</Typography>
 						)}
 					</Tada>
@@ -159,14 +160,14 @@ export default function GameSummary(props) {
 							<Button onClick={handlePlayNext}>Next</Button>
 						)}
 
-					<Button variant="outlined" onClick={handleReplay}>
+					<Button variant='outlined' onClick={handleReplay}>
 						Play Again
 					</Button>
 					<Button
-						variant="outlined"
+						variant='outlined'
 						onClick={() => {
-							history.push("/dashboard");
-							window.location.reload();
+							history.push('/dashboard');
+							// window.location.reload();
 						}}
 					>
 						Dashboard
