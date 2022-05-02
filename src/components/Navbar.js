@@ -25,7 +25,7 @@ export default function Navbar() {
 					<Grid container justify='space-between'>
 						<div></div>
 						{currentUser && (
-							<IconButton color='secondary' onClick={handleClick}>
+							<IconButton id='userIcon' aria-label='user account menu' color='secondary' onClick={handleClick}>
 								{showNavIcon && <AccountCircle style={{ fontSize: 40 }} />}
 							</IconButton>
 						)}
