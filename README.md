@@ -2,7 +2,7 @@
 
 SignBee is a sign language learning mobile app and website that is designed to make learning sign language alphabet fun.
 
-Checkout our walkthrough of the SignBee game on YouTube here or [Play:](https://signbee-79d6e.web.app/)
+Checkout our walkthrough of the SignBee game on YouTube [here:](https://www.youtube.com/watch?v=tnisNMkvQAs) or [Play:](https://signbee-79d6e.web.app/)
 
 -  On your device, go to the [link](https://signbee-79d6e.web.app/)
 -  Sign up to our app
@@ -16,7 +16,9 @@ Once the webcam is initiated, a player must follow prompts by making the corresp
 
 ### App
 
-![alt text](http://url/to/img.png)
+![alt text](https://firebasestorage.googleapis.com/v0/b/signbee-79d6e.appspot.com/o/Screenshots%2FSignBee_SS_dashboard.png?alt=media&token=f807c10f-b877-4229-9e7f-de588cc65732)
+![alt text](https://firebasestorage.googleapis.com/v0/b/signbee-79d6e.appspot.com/o/Screenshots%2FSignBee_SS_easy_lvl.png?alt=media&token=37056d98-ee4f-4377-9c72-635bce9b25b5)
+![alt text](https://firebasestorage.googleapis.com/v0/b/signbee-79d6e.appspot.com/o/Screenshots%2FSignbee_SS_hard_lvl.png?alt=media&token=72a47b96-9444-46c1-bd0b-e90a1202f14f)
 
 ### Technologies we used:
 
